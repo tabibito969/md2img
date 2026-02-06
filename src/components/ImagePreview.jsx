@@ -18,6 +18,34 @@ import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/pris
 /*                              IMAGE PREVIEW                                 */
 /* ========================================================================== */
 
+const isRelativeUrl = (value) => {
+    if (value.startsWith('//')) return false
+    return !/^[a-z][a-z0-9+.-]*:/i.test(value)
+}
+
+const getSafeHref = (href) => {
+    if (!href) return null
+    const value = href.trim()
+    if (isRelativeUrl(value)) return value
+    if (value.startsWith('mailto:')) return value
+    try {
+        const url = new URL(value)
+        if (url.protocol === 'http:' || url.protocol === 'https:') return value
+    } catch {
+        return null
+    }
+    return null
+}
+
+const getSafeImageSrc = (src) => {
+    if (!src) return null
+    const value = src.trim()
+    if (value.startsWith('data:image/')) return value
+    if (value.startsWith('blob:')) return value
+    if (isRelativeUrl(value)) return value
+    return null
+}
+
 const ImagePreview = forwardRef(function ImagePreview(
     { markdown, theme, padding = 48 },
     ref,
@@ -46,6 +74,37 @@ const ImagePreview = forwardRef(function ImagePreview(
                 ) : (
                     <code className={className}>{children}</code>
                 )
+            },
+            a({ href, children }) {
+                const safeHref = getSafeHref(href)
+                if (!safeHref) {
+                    return (
+                        <span className="md-link-blocked">{children}</span>
+                    )
+                }
+                const isExternal =
+                    !isRelativeUrl(safeHref) && !safeHref.startsWith('mailto:')
+                return (
+                    <a
+                        href={safeHref}
+                        target={isExternal ? '_blank' : undefined}
+                        rel={isExternal ? 'noopener noreferrer' : undefined}
+                    >
+                        {children}
+                    </a>
+                )
+            },
+            img({ src, alt }) {
+                const safeSrc = getSafeImageSrc(src)
+                if (!safeSrc) {
+                    return (
+                        <div className="md-img-blocked">
+                            外链图片已禁用
+                            {alt ? `：${alt}` : ''}
+                        </div>
+                    )
+                }
+                return <img src={safeSrc} alt={alt || ''} loading="lazy" />
             },
         }),
         [isDark],

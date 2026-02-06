@@ -291,6 +291,12 @@
   font-weight: 500;
 }
 
+.markdown-body .md-link-blocked {
+  color: var(--md-text-muted);
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
 /* ---------- Emphasis ---------- */
 
 .markdown-body strong {
@@ -367,6 +373,16 @@
   max-width: 100%;
   border-radius: 8px;
   margin: 1em 0;
+}
+
+.markdown-body .md-img-blocked {
+  margin: 1em 0;
+  padding: 0.75em 1em;
+  border-radius: 8px;
+  border: 1px dashed var(--md-border);
+  color: var(--md-text-muted);
+  background: var(--md-bg-subtle);
+  font-size: 0.9em;
 }
 
 /* ---------- Tables ---------- */
