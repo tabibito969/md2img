@@ -18,6 +18,11 @@ export const markdownStyles = [
         description: 'GitHub 风格',
     },
     {
+        id: 'emerald',
+        name: 'Emerald',
+        description: '翡翠暗色风格，绿色强调',
+    },
+    {
         id: 'classic',
         name: 'Classic',
         description: '经典自定义风格',

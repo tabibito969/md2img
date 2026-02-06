@@ -51,6 +51,8 @@ const getBodyClassName = (styleId, isDark) => {
     switch (styleId) {
         case 'github':
             return 'markdown-body'
+        case 'emerald':
+            return 'md-emerald'
         case 'classic':
             return 'md-classic'
         case 'prose':
