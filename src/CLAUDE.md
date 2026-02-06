@@ -4,25 +4,32 @@
 
 ## 成员清单
 
-| 文件        | 职责                                              |
-| ----------- | ------------------------------------------------- |
-| `main.jsx`  | 应用入口，挂载 React 根节点到 DOM                 |
-| `App.jsx`   | 主应用组件，页面路由与布局容器                    |
-| `App.css`   | 应用级样式（Vite 模板遗留，待清理迁移至 Tailwind）|
-| `index.css` | Tailwind v4 入口，`@import "tailwindcss"`         |
+| 文件        | 职责                                                       |
+| ----------- | ---------------------------------------------------------- |
+| `main.jsx`  | 应用入口，挂载 React 根节点到 DOM                          |
+| `App.jsx`   | 主应用组件，管理 theme + markdownStyle 状态，编辑→预览→导出 |
+| `index.css` | Tailwind v4 入口 + typography 插件 + github-markdown-css + 三套 Markdown 排版样式 |
 
 ## 子目录
 
-| 目录      | 职责                     |
-| --------- | ------------------------ |
-| `assets/` | 静态资源（SVG、图片等）  |
+| 目录          | 职责                                      |
+| ------------- | ----------------------------------------- |
+| `assets/`     | 静态资源（SVG、图片等）                   |
+| `components/` | UI 组件（MarkdownEditor, ImagePreview, Toolbar, ui/） |
+| `config/`     | 配置文件（themes, markdownStyles, defaults） |
+| `lib/`        | 工具函数（cn 等）                          |
 
 ## 依赖关系
 
 ```text
 main.jsx
   └── App.jsx
-        └── App.css
+        ├── config/themes.js
+        ├── config/markdownStyles.js
+        ├── config/defaults.js
+        ├── components/Toolbar.jsx
+        ├── components/MarkdownEditor.jsx
+        └── components/ImagePreview.jsx
 ```
 
 ---

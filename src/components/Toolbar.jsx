@@ -1,20 +1,24 @@
 /**
  * ============================================================================
- * [INPUT]: 接收 currentTheme、onThemeChange、onDownload、onCopy、copied、
- *          isExporting props
+ * [INPUT]: 接收 currentTheme、onThemeChange、currentStyle、onStyleChange、
+ *          onDownload、onCopy、copied、isExporting props
  *          依赖 lucide-react 图标
  *          依赖 @/config/themes 主题列表
+ *          依赖 @/config/markdownStyles 样式列表
  * [OUTPUT]: 对外提供 Toolbar 组件（默认导出）
- * [POS]: 顶部工具栏，包含主题选择器和导出按钮
+ * [POS]: 顶部工具栏，包含主题选择器、CSS 样式选择器和导出按钮
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
 import { Download, Copy, Check, Sparkles, Loader2 } from 'lucide-react'
 import { themes } from '@/config/themes'
+import { markdownStyles } from '@/config/markdownStyles'
 
 export default function Toolbar({
     currentTheme,
     onThemeChange,
+    currentStyle,
+    onStyleChange,
     onDownload,
     onCopy,
     copied,
@@ -28,26 +32,52 @@ export default function Toolbar({
                 <span className="text-sm tracking-tight">Md2Img</span>
             </div>
 
-            {/* ===================== THEME DOTS ===================== */}
-            <div className="flex items-center gap-1.5">
-                {themes.map((theme) => (
-                    <button
-                        key={theme.id}
-                        type="button"
-                        onClick={() => onThemeChange(theme)}
-                        aria-label={`切换主题: ${theme.name}`}
-                        className="group relative"
-                    >
-                        <span
-                            className={`block h-6 w-6 rounded-full transition-all duration-200 ${
-                                currentTheme.id === theme.id
-                                    ? 'ring-2 ring-foreground ring-offset-2 ring-offset-background scale-110'
-                                    : 'hover:scale-110 opacity-70 hover:opacity-100'
+            {/* ================ THEME DOTS + STYLE SELECTOR ================ */}
+            <div className="flex items-center gap-4">
+                {/* Theme Dots */}
+                <div className="flex items-center gap-1.5">
+                    {themes.map((theme) => (
+                        <button
+                            key={theme.id}
+                            type="button"
+                            onClick={() => onThemeChange(theme)}
+                            aria-label={`切换主题: ${theme.name}`}
+                            className="group relative"
+                        >
+                            <span
+                                className={`block h-6 w-6 rounded-full transition-all duration-200 ${
+                                    currentTheme.id === theme.id
+                                        ? 'ring-2 ring-foreground ring-offset-2 ring-offset-background scale-110'
+                                        : 'hover:scale-110 opacity-70 hover:opacity-100'
+                                }`}
+                                style={{ background: theme.dot }}
+                            />
+                        </button>
+                    ))}
+                </div>
+
+                {/* Divider */}
+                <div className="h-5 w-px bg-border/60" />
+
+                {/* CSS Style Selector */}
+                <div className="flex items-center gap-1 bg-muted/50 rounded-lg p-0.5">
+                    {markdownStyles.map((style) => (
+                        <button
+                            key={style.id}
+                            type="button"
+                            onClick={() => onStyleChange(style)}
+                            aria-label={`排版风格: ${style.name}`}
+                            title={style.description}
+                            className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all duration-200 ${
+                                currentStyle.id === style.id
+                                    ? 'bg-background text-foreground shadow-sm'
+                                    : 'text-foreground/50 hover:text-foreground/80'
                             }`}
-                            style={{ background: theme.dot }}
-                        />
-                    </button>
-                ))}
+                        >
+                            {style.name}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             {/* ==================== ACTION BUTTONS ==================== */}

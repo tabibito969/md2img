@@ -16,6 +16,7 @@ import MarkdownEditor from '@/components/MarkdownEditor'
 import ImagePreview from '@/components/ImagePreview'
 import Toolbar from '@/components/Toolbar'
 import { themes, defaultThemeId } from '@/config/themes'
+import { markdownStyles, defaultStyleId } from '@/config/markdownStyles'
 import { defaultMarkdown } from '@/config/defaults'
 
 /* ========================================================================== */
@@ -26,6 +27,9 @@ function App() {
     const [markdown, setMarkdown] = useState(defaultMarkdown)
     const [theme, setTheme] = useState(
         themes.find((t) => t.id === defaultThemeId),
+    )
+    const [mdStyle, setMdStyle] = useState(
+        markdownStyles.find((s) => s.id === defaultStyleId),
     )
     const [copied, setCopied] = useState(false)
     const [isExporting, setIsExporting] = useState(false)
@@ -138,6 +142,8 @@ function App() {
             <Toolbar
                 currentTheme={theme}
                 onThemeChange={setTheme}
+                currentStyle={mdStyle}
+                onStyleChange={setMdStyle}
                 onDownload={handleDownload}
                 onCopy={handleCopy}
                 copied={copied}
@@ -167,6 +173,7 @@ function App() {
                             ref={previewRef}
                             markdown={markdown}
                             theme={theme}
+                            markdownStyle={mdStyle.id}
                         />
                     </div>
                 </div>

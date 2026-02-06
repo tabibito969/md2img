@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * [INPUT]: 接收 markdown、theme、padding props
+ * [INPUT]: 接收 markdown、theme、padding、markdownStyle props
  *          依赖 react-markdown + remark-gfm 渲染 Markdown
  *          依赖 react-syntax-highlighter 代码高亮
  * [OUTPUT]: 对外提供 ImagePreview 组件（forwardRef 默认导出）
@@ -46,8 +46,24 @@ const getSafeImageSrc = (src) => {
     return null
 }
 
+/* ---------- 根据 markdownStyle + variant 计算容器 CSS 类名 ---------- */
+const getBodyClassName = (styleId, isDark) => {
+    switch (styleId) {
+        case 'github':
+            return 'markdown-body'
+        case 'classic':
+            return 'md-classic'
+        case 'prose':
+        default:
+            return [
+                'prose prose-lg max-w-none',
+                isDark ? 'prose-invert' : 'prose-slate',
+            ].join(' ')
+    }
+}
+
 const ImagePreview = forwardRef(function ImagePreview(
-    { markdown, theme, padding = 48 },
+    { markdown, theme, padding = 48, markdownStyle = 'prose' },
     ref,
 ) {
     const isDark = theme.variant === 'dark'
@@ -110,6 +126,8 @@ const ImagePreview = forwardRef(function ImagePreview(
         [isDark],
     )
 
+    const bodyClassName = getBodyClassName(markdownStyle, isDark)
+
     return (
         <div
             ref={ref}
@@ -122,7 +140,7 @@ const ImagePreview = forwardRef(function ImagePreview(
             <div
                 className={`preview-card ${isDark ? 'variant-dark' : 'variant-light'}`}
             >
-                <div className="markdown-body">
+                <div className={bodyClassName}>
                     <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={markdownComponents}
