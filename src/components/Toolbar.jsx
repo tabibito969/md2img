@@ -1,6 +1,7 @@
 /**
  * ============================================================================
- * [INPUT]: 接收 currentTheme、onThemeChange、onDownload、onCopy、copied props
+ * [INPUT]: 接收 currentTheme、onThemeChange、onDownload、onCopy、copied、
+ *          isExporting props
  *          依赖 lucide-react 图标
  *          依赖 @/config/themes 主题列表
  * [OUTPUT]: 对外提供 Toolbar 组件（默认导出）
@@ -8,7 +9,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { Download, Copy, Check, Sparkles } from 'lucide-react'
+import { Download, Copy, Check, Sparkles, Loader2 } from 'lucide-react'
 import { themes } from '@/config/themes'
 
 export default function Toolbar({
@@ -17,6 +18,7 @@ export default function Toolbar({
     onDownload,
     onCopy,
     copied,
+    isExporting,
 }) {
     return (
         <div className="flex items-center justify-between px-5 h-14 border-b border-border/40 bg-background/95 backdrop-blur-md shrink-0">
@@ -31,9 +33,10 @@ export default function Toolbar({
                 {themes.map((theme) => (
                     <button
                         key={theme.id}
+                        type="button"
                         onClick={() => onThemeChange(theme)}
+                        aria-label={`切换主题: ${theme.name}`}
                         className="group relative"
-                        title={theme.name}
                     >
                         <span
                             className={`block h-6 w-6 rounded-full transition-all duration-200 ${
@@ -50,8 +53,10 @@ export default function Toolbar({
             {/* ==================== ACTION BUTTONS ==================== */}
             <div className="flex items-center gap-1.5">
                 <button
+                    type="button"
                     onClick={onCopy}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-foreground/70 rounded-lg hover:bg-muted hover:text-foreground transition-colors"
+                    disabled={isExporting}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-foreground/70 rounded-lg hover:bg-muted hover:text-foreground transition-colors disabled:opacity-40 disabled:pointer-events-none"
                 >
                     {copied ? (
                         <Check className="h-4 w-4 text-green-500" />
@@ -63,10 +68,16 @@ export default function Toolbar({
                     </span>
                 </button>
                 <button
+                    type="button"
                     onClick={onDownload}
-                    className="flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+                    disabled={isExporting}
+                    className="flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40 disabled:pointer-events-none"
                 >
-                    <Download className="h-4 w-4" />
+                    {isExporting ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                        <Download className="h-4 w-4" />
+                    )}
                     <span className="hidden sm:inline">下载</span>
                 </button>
             </div>

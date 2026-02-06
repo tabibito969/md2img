@@ -203,7 +203,7 @@
   max-width: 100%;
 }
 
-.preview-card.light {
+.preview-card.variant-light {
   --md-text: #1a1a2e;
   --md-text-muted: #64748b;
   --md-border: rgba(0, 0, 0, 0.08);
@@ -214,7 +214,7 @@
   color: var(--md-text);
 }
 
-.preview-card.dark {
+.preview-card.variant-dark {
   --md-text: #e2e8f0;
   --md-text-muted: #94a3b8;
   --md-border: rgba(255, 255, 255, 0.1);

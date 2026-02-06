@@ -8,42 +8,11 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { forwardRef } from 'react'
+import { forwardRef, useMemo } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-
-/* ========================================================================== */
-/*                          MARKDOWN COMPONENT MAP                            */
-/* ========================================================================== */
-
-const markdownComponents = {
-    code(props) {
-        const { children, className, ...rest } = props
-        const match = /language-(\w+)/.exec(className || '')
-        return match ? (
-            <SyntaxHighlighter
-                style={oneDark}
-                language={match[1]}
-                PreTag="div"
-                customStyle={{
-                    margin: 0,
-                    borderRadius: '8px',
-                    fontSize: '0.875rem',
-                    lineHeight: 1.6,
-                }}
-                {...rest}
-            >
-                {String(children).replace(/\n$/, '')}
-            </SyntaxHighlighter>
-        ) : (
-            <code className={className} {...rest}>
-                {children}
-            </code>
-        )
-    },
-}
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 /* ========================================================================== */
 /*                              IMAGE PREVIEW                                 */
@@ -55,6 +24,33 @@ const ImagePreview = forwardRef(function ImagePreview(
 ) {
     const isDark = theme.variant === 'dark'
 
+    /* ---------- 根据主题明暗动态切换代码高亮风格 ---------- */
+    const markdownComponents = useMemo(
+        () => ({
+            code({ children, className }) {
+                const match = /language-(\w+)/.exec(className || '')
+                return match ? (
+                    <SyntaxHighlighter
+                        style={isDark ? oneDark : oneLight}
+                        language={match[1]}
+                        PreTag="div"
+                        customStyle={{
+                            margin: 0,
+                            borderRadius: '8px',
+                            fontSize: '0.875rem',
+                            lineHeight: 1.6,
+                        }}
+                    >
+                        {String(children).replace(/\n$/, '')}
+                    </SyntaxHighlighter>
+                ) : (
+                    <code className={className}>{children}</code>
+                )
+            },
+        }),
+        [isDark],
+    )
+
     return (
         <div
             ref={ref}
@@ -65,9 +61,9 @@ const ImagePreview = forwardRef(function ImagePreview(
             }}
         >
             <div
-                className={`preview-card ${isDark ? 'dark' : 'light'}`}
+                className={`preview-card ${isDark ? 'variant-dark' : 'variant-light'}`}
             >
-                <div className={`markdown-body ${isDark ? 'dark' : ''}`}>
+                <div className="markdown-body">
                     <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={markdownComponents}
