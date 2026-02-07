@@ -105,7 +105,7 @@ export default function TemplatePanel({ onApplyTemplate, activeTemplateId }) {
     return (
         <div className="flex flex-col h-full">
             {/* Tabs */}
-            <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0">
+            <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0 bg-[#18181A]">
                 {[
                     { id: 'template', label: t('templatePanel.template') },
                     { id: 'layout', label: t('templatePanel.layout') },
@@ -130,7 +130,7 @@ export default function TemplatePanel({ onApplyTemplate, activeTemplateId }) {
             <div className="h-px bg-white/[0.06]" />
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto sidebar-scroll p-2.5">
+            <div className="flex-1 overflow-y-auto sidebar-scroll p-2.5 bg-[#101010]">
                 {activeTab === 'template' && (
                     <div className="grid grid-cols-2 gap-2">
                         {templates.map((tpl) => (

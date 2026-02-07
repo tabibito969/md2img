@@ -95,7 +95,7 @@ export default function BackgroundPanel({
             <div className="h-px bg-white/[0.06]" />
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto sidebar-scroll">
+            <div className="flex-1 overflow-y-auto sidebar-scroll bg-[#101010]">
                 {activeTab === 'color' && (
                     <div className="p-2.5 bg-[#101010]">
                         {/* Upload Button */}
@@ -127,7 +127,7 @@ export default function BackgroundPanel({
                                             key={bg.id}
                                             type="button"
                                             onClick={() => onThemeChange(bg)}
-                                            className={`aspect-square rounded-[8px] overflow-hidden transition-all duration-150 ${
+                                            className={`aspect-square rounded-full overflow-hidden transition-all duration-150 ${
                                                 currentTheme.id === bg.id
                                                     ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-1 ring-offset-[#1a1a30] scale-105'
                                                     : 'hover:scale-105 opacity-80 hover:opacity-100'
@@ -160,7 +160,7 @@ export default function BackgroundPanel({
                                             key={bg.id}
                                             type="button"
                                             onClick={() => onThemeChange(bg)}
-                                            className={`aspect-square rounded-[8px] transition-all duration-150 ${
+                                            className={`aspect-square rounded-full transition-all duration-150 ${
                                                 currentTheme.id === bg.id
                                                     ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-1 ring-offset-[#1a1a30] scale-105'
                                                     : 'hover:scale-105 opacity-80 hover:opacity-100'
