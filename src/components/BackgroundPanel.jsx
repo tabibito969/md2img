@@ -42,6 +42,9 @@ export default function BackgroundPanel({
             setCustomBackgrounds((prev) => [...prev, customTheme])
             onThemeChange(customTheme)
         }
+        reader.onerror = () => {
+            console.error('背景图片读取失败')
+        }
         reader.readAsDataURL(file)
         e.target.value = ''
     }

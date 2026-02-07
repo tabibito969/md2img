@@ -17,7 +17,7 @@ export default function IconSidebar({ activeTab, onTabChange }) {
     return (
         <div className="flex flex-col items-center w-[52px] h-full bg-gradient-to-b from-[#16162a] to-[#111122] border-r border-white/[0.04] shrink-0 select-none">
             {/* Logo */}
-            <div className="flex items-center justify-center w-full h-[52px]">
+            <div className="flex items-center justify-center w-full h-[52px]" aria-hidden="true">
                 <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
                     <Sparkles className="h-3.5 w-3.5 text-white" />
                 </div>
@@ -27,7 +27,7 @@ export default function IconSidebar({ activeTab, onTabChange }) {
             <div className="w-6 h-px bg-white/[0.06] mb-2" />
 
             {/* Nav Icons */}
-            <div className="flex flex-col items-center gap-0.5 w-full px-1.5">
+            <div className="flex flex-col items-center gap-0.5 w-full px-1.5" role="tablist" aria-label="侧栏导航">
                 {tabs.map((tab) => {
                     const Icon = tab.icon
                     const isActive = activeTab === tab.id
@@ -35,6 +35,8 @@ export default function IconSidebar({ activeTab, onTabChange }) {
                         <button
                             key={tab.id}
                             type="button"
+                            role="tab"
+                            aria-selected={isActive}
                             onClick={() => onTabChange(tab.id)}
                             className="group relative flex flex-col items-center justify-center w-full py-2.5 rounded-lg"
                             title={tab.label}

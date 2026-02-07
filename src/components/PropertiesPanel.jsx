@@ -6,7 +6,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Info, Minus, Plus } from 'lucide-react'
 
 /* ---------- Section Header ---------- */
@@ -91,6 +91,20 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
     const [activeTab, setActiveTab] = useState('properties')
     const [aspectRatio, setAspectRatio] = useState('auto')
 
+    /* Sync aspectRatio when cardConfig changes externally (e.g., via template) */
+    useEffect(() => {
+        if (cardConfig.height === 0) {
+            setAspectRatio('auto')
+        } else {
+            const match = aspectRatios.find((ar) => {
+                if (ar.value === 'auto') return false
+                const [w, h] = ar.value.split(':').map(Number)
+                return cardConfig.height === Math.round(cardConfig.width * (h / w))
+            })
+            setAspectRatio(match ? match.value : 'auto')
+        }
+    }, [cardConfig.height, cardConfig.width])
+
     const updateConfig = (key, value) => {
         onConfigChange((prev) => ({ ...prev, [key]: value }))
     }
@@ -101,7 +115,9 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
             updateConfig('height', 0)
         } else {
             const [w, h] = ratio.split(':').map(Number)
-            updateConfig('height', Math.round(cardConfig.width * (h / w)))
+            if (w && h) {
+                updateConfig('height', Math.round(cardConfig.width * (h / w)))
+            }
         }
     }
 
@@ -145,6 +161,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
                             <ToggleSwitch
                                 checked={cardConfig.syncAll}
                                 onChange={(v) => updateConfig('syncAll', v)}
+                                aria-label="同步所有卡片"
                             />
                         </div>
 
@@ -154,6 +171,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
                             <ToggleSwitch
                                 checked={cardConfig.watermark}
                                 onChange={(v) => updateConfig('watermark', v)}
+                                aria-label="水印"
                             />
                         </div>
 

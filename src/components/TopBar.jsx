@@ -33,8 +33,10 @@ export default function TopBar({
             <div className="flex items-center gap-2 min-w-0">
                 <button
                     type="button"
-                    className="p-1.5 text-white/20 hover:text-white/55 rounded-md hover:bg-white/[0.04] shrink-0"
-                    title="撤销"
+                    disabled
+                    aria-label="撤销"
+                    className="p-1.5 text-white/20 rounded-md shrink-0 opacity-30 cursor-not-allowed"
+                    title="撤销（即将推出）"
                 >
                     <Undo2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
                 </button>
@@ -43,6 +45,7 @@ export default function TopBar({
                     value={cardName}
                     onChange={(e) => onCardNameChange(e.target.value)}
                     placeholder="添加卡片名称"
+                    aria-label="卡片名称"
                     className="bg-transparent text-white/55 text-[12px] placeholder:text-white/18 outline-none min-w-0 flex-1 max-w-[160px] border-b border-transparent focus:border-white/12 py-0.5"
                 />
             </div>
@@ -55,6 +58,7 @@ export default function TopBar({
                         type="button"
                         onClick={() => onStyleChange(style)}
                         title={style.description}
+                        aria-label={`排版风格: ${style.name}`}
                         className={`px-2.5 py-[4px] text-[11px] font-medium rounded-[5px] ${
                             currentStyle.id === style.id
                                 ? 'bg-white/[0.10] text-white/90 shadow-sm shadow-black/10'
@@ -70,8 +74,10 @@ export default function TopBar({
             <div className="flex items-center justify-end gap-0.5">
                 <button
                     type="button"
-                    className="p-1.5 text-white/20 rounded-md hover:bg-white/[0.04] hover:text-white/45"
-                    title="分享"
+                    disabled
+                    aria-label="分享"
+                    className="p-1.5 text-white/20 rounded-md opacity-30 cursor-not-allowed"
+                    title="分享（即将推出）"
                 >
                     <Share2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
                 </button>

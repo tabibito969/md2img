@@ -134,7 +134,7 @@ export default function TemplatePanel({ onApplyTemplate, activeTemplateId }) {
                                 key={tpl.id}
                                 template={tpl}
                                 isActive={activeTemplateId === tpl.id}
-                                onClick={() => onApplyTemplate(tpl.config)}
+                                onClick={() => onApplyTemplate(tpl.id, tpl.config)}
                             />
                         ))}
                     </div>

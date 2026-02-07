@@ -25,18 +25,19 @@ import { defaultMarkdown } from '@/config/defaults'
 /*                                    APP                                     */
 /* ========================================================================== */
 
-let cardIdCounter = 1
-
 function App() {
     /* ----------------------- SIDEBAR STATE ----------------------- */
     const [sidebarTab, setSidebarTab] = useState('template')
 
     /* ----------------------- CARD STATE ----------------------- */
     const [cards, setCards] = useState([
-        { id: cardIdCounter, name: '', markdown: defaultMarkdown },
+        { id: 1, name: '', markdown: defaultMarkdown },
     ])
     const [activeIndex, setActiveIndex] = useState(0)
-    const activeCard = cards[activeIndex]
+    const activeCard = cards[activeIndex] ?? cards[0]
+
+    /* ----------------------- TEMPLATE ID STATE ----------------------- */
+    const [activeTemplateId, setActiveTemplateId] = useState(null)
 
     /* ----------------------- STYLE STATE ----------------------- */
     const [theme, setTheme] = useState(
@@ -69,6 +70,9 @@ function App() {
     const previewRef = useRef(null)
     const canvasRef = useRef(null)
     const copiedTimer = useRef(null)
+    const cardIdCounterRef = useRef(1)
+    const cardsRef = useRef(cards)
+    cardsRef.current = cards
 
     /* ----------------------- CANVAS SCALE ----------------------- */
     const [canvasWidth, setCanvasWidth] = useState(600)
@@ -110,36 +114,38 @@ function App() {
     )
 
     const addCard = useCallback(() => {
-        cardIdCounter++
+        cardIdCounterRef.current++
         const newCard = {
-            id: cardIdCounter,
+            id: cardIdCounterRef.current,
             name: '',
             markdown: defaultMarkdown,
         }
-        setCards((prev) => [...prev, newCard])
-        setActiveIndex((prev) => prev + 1)
+        setCards((prev) => {
+            setActiveIndex(prev.length)
+            return [...prev, newCard]
+        })
     }, [])
 
-    const deleteCard = useCallback(
-        (index) => {
-            if (cards.length <= 1) return
-            setCards((prev) => prev.filter((_, i) => i !== index))
-            setActiveIndex((prev) => {
-                if (prev >= cards.length - 1) return Math.max(0, cards.length - 2)
-                if (prev > index) return prev - 1
-                return prev
+    const deleteCard = useCallback((index) => {
+        setCards((prev) => {
+            if (prev.length <= 1) return prev
+            const newCards = prev.filter((_, i) => i !== index)
+            setActiveIndex((prevIdx) => {
+                if (prevIdx >= newCards.length) return Math.max(0, newCards.length - 1)
+                if (prevIdx > index) return prevIdx - 1
+                return prevIdx
             })
-        },
-        [cards.length],
-    )
+            return newCards
+        })
+    }, [])
 
     const goToPrevCard = useCallback(() => {
         setActiveIndex((prev) => Math.max(0, prev - 1))
     }, [])
 
     const goToNextCard = useCallback(() => {
-        setActiveIndex((prev) => Math.min(cards.length - 1, prev + 1))
-    }, [cards.length])
+        setActiveIndex((prev) => Math.min(cardsRef.current.length - 1, prev + 1))
+    }, [])
 
     /* ----------------------- MARKDOWN ----------------------- */
     const setMarkdown = useCallback(
@@ -154,7 +160,8 @@ function App() {
 
     /* ----------------------- TEMPLATE APPLY ----------------------- */
     const handleApplyTemplate = useCallback(
-        (templateConfig) => {
+        (templateId, templateConfig) => {
+            setActiveTemplateId(templateId)
             if (templateConfig.theme) {
                 const t = themes.find((th) => th.id === templateConfig.theme)
                 if (t) setTheme(t)
@@ -178,6 +185,7 @@ function App() {
                 }),
             }))
             if (templateConfig.shadow) setShadow(templateConfig.shadow)
+            if (templateConfig.overlay) setOverlay(templateConfig.overlay)
         },
         [],
     )
@@ -212,7 +220,7 @@ function App() {
         } finally {
             setIsExporting(false)
         }
-    }, [captureImage, activeCard.name])
+    }, [captureImage, activeCard?.name])
 
     const handleCopy = useCallback(async () => {
         if (!previewRef.current) return
@@ -254,6 +262,7 @@ function App() {
                 currentOverlay={overlay}
                 onOverlayChange={setOverlay}
                 onApplyTemplate={handleApplyTemplate}
+                activeTemplateId={activeTemplateId}
             />
 
             {/* ========================= MAIN AREA ========================= */}
@@ -284,6 +293,7 @@ function App() {
                                     type="button"
                                     onClick={goToPrevCard}
                                     disabled={activeIndex === 0}
+                                    aria-label="上一张卡片"
                                     className="p-2 rounded-full bg-white/[0.03] text-white/25 hover:text-white/60 hover:bg-white/[0.06] disabled:opacity-0 disabled:pointer-events-none"
                                 >
                                     <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
@@ -319,6 +329,7 @@ function App() {
                                     type="button"
                                     onClick={goToNextCard}
                                     disabled={activeIndex === cards.length - 1}
+                                    aria-label="下一张卡片"
                                     className="p-2 rounded-full bg-white/[0.03] text-white/25 hover:text-white/60 hover:bg-white/[0.06] disabled:opacity-0 disabled:pointer-events-none"
                                 >
                                     <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
@@ -331,6 +342,7 @@ function App() {
                             <button
                                 type="button"
                                 onClick={addCard}
+                                aria-label="添加新卡片"
                                 className="flex items-center gap-1.5 px-5 py-1.5 border border-dashed border-white/10 rounded-lg text-[12px] text-white/25 hover:text-white/55 hover:border-white/25 hover:bg-white/[0.02]"
                             >
                                 <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
@@ -347,6 +359,7 @@ function App() {
                                 <button
                                     type="button"
                                     onClick={() => deleteCard(activeIndex)}
+                                    aria-label="删除当前卡片"
                                     className="text-[11px] text-red-400/30 hover:text-red-400/70"
                                 >
                                     删除
@@ -399,6 +412,7 @@ function App() {
 
                         {/* Editor Textarea */}
                         <textarea
+                            aria-label="Markdown 编辑器"
                             value={activeCard.markdown}
                             onChange={(e) => setMarkdown(e.target.value)}
                             onKeyDown={(e) => {

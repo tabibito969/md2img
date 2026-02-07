@@ -22,6 +22,7 @@ const MarkdownEditor = forwardRef(function MarkdownEditor(
             {/* 编辑区 */}
             <textarea
                 ref={ref}
+                aria-label="Markdown 编辑器"
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 onScroll={onScroll}
