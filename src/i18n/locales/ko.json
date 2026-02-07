@@ -1,0 +1,249 @@
+{
+    "sidebar": {
+        "template": "템플릿",
+        "background": "배경",
+        "nav": "사이드바 내비게이션"
+    },
+    "templatePanel": {
+        "template": "템플릿",
+        "layout": "레이아웃",
+        "layoutComingSoon": "레이아웃 기능 출시 예정"
+    },
+    "backgroundPanel": {
+        "color": "색상",
+        "shadow": "그림자",
+        "uploadBg": "배경 업로드",
+        "custom": "사용자 정의",
+        "imageOnly": "이미지 파일만 지원됩니다",
+        "imageTooLarge": "이미지가 너무 큽니다. 10MB 이하"
+    },
+    "shadowPanel": {
+        "selectShadow": "그림자 선택",
+        "overlayTexture": "텍스처 오버레이"
+    },
+    "topBar": {
+        "undo": "실행 취소",
+        "undoComingSoon": "실행 취소 (출시 예정)",
+        "cardNamePlaceholder": "카드 이름 추가",
+        "cardName": "카드 이름",
+        "styleLabel": "타이포그래피: {{name}}",
+        "share": "공유",
+        "shareComingSoon": "공유 (출시 예정)",
+        "copy": "복사",
+        "copied": "복사됨",
+        "export": "내보내기"
+    },
+    "properties": {
+        "properties": "속성",
+        "visibility": "표시/숨기기",
+        "syncAll": "모든 카드 동기화",
+        "watermark": "워터마크",
+        "template": "템플릿",
+        "templateSize": "템플릿 크기",
+        "bgColor": "배경색",
+        "aspectRatio": "화면비",
+        "adaptive": "자동",
+        "container": "컨테이너",
+        "padding": "패딩",
+        "borderRadius": "모서리 둥글기",
+        "visibilityComingSoon": "표시 설정 출시 예정"
+    },
+    "editor": {
+        "markdown": "Markdown",
+        "chars": "{{count}}자",
+        "finishEditing": "완료",
+        "editorLabel": "Markdown 편집기",
+        "editorPlaceholder": "Markdown을 입력하거나 붙여넣기...",
+        "prevCard": "이전 카드",
+        "nextCard": "다음 카드",
+        "addCard": "카드 추가",
+        "addNewCard": "새 카드 추가",
+        "cardCounter": "카드 {{current}}/{{total}}",
+        "delete": "삭제",
+        "deleteCard": "현재 카드 삭제",
+        "loadingEditor": "편집기 로딩 중...",
+        "externalImageBlocked": "외부 이미지 비활성화됨"
+    },
+    "toast": {
+        "clipboardNotSupported": "클립보드를 지원하지 않습니다. 다운로드를 이용하세요",
+        "imageCopyNotSupported": "이미지 복사를 지원하지 않습니다. 다운로드를 이용하세요",
+        "clipboardDenied": "클립보드 권한이 거부되었습니다",
+        "imageEmpty": "생성된 이미지가 비어있습니다",
+        "downloaded": "이미지가 다운로드되었습니다",
+        "exportFailed": "내보내기 실패, 다시 시도하세요",
+        "copiedToClipboard": "클립보드에 복사되었습니다",
+        "copyFailed": "복사 실패, 다시 시도하세요"
+    },
+    "config": {
+        "themeCategory": {
+            "gradient": "그라데이션",
+            "nature": "자연",
+            "dark": "다크",
+            "mesh": "메시 그라데이션",
+            "solid": "솔리드"
+        },
+        "theme": {
+            "radiant-1": "새벽", "radiant-2": "따뜻한 햇살", "radiant-3": "에메랄드",
+            "radiant-4": "오로라", "radiant-5": "석양", "radiant-6": "은하수",
+            "radiant-7": "화염", "radiant-8": "심해", "radiant-9": "호박",
+            "radiant-10": "포도", "radiant-11": "라벤더", "radiant-12": "산호",
+            "nature-1": "일출", "nature-2": "숲", "nature-3": "설산",
+            "nature-4": "사막", "nature-5": "빙하", "nature-6": "벚꽃",
+            "dark-1": "심야", "dark-2": "용암", "dark-3": "심연",
+            "dark-4": "카본", "dark-5": "별하늘", "dark-6": "미드나잇",
+            "mesh-1": "비비드", "mesh-2": "무지개빛", "mesh-3": "솜사탕",
+            "mesh-4": "은하", "mesh-5": "바다소금", "mesh-6": "아침노을",
+            "solid-1": "화이트", "solid-2": "라이트 그레이", "solid-3": "블랙",
+            "solid-4": "다크 그레이", "solid-5": "라이트 블루", "solid-6": "라이트 핑크",
+            "solid-7": "라이트 그린", "solid-8": "라이트 퍼플", "solid-9": "다크 퍼플",
+            "solid-10": "다크 레드"
+        },
+        "shadow": {
+            "none": "없음", "soft": "소프트", "medium": "미디엄", "hard": "하드",
+            "elevated": "엘리베이트", "glow-blue": "블루 글로우", "glow-purple": "퍼플 글로우",
+            "glow-pink": "핑크 글로우", "inset": "인셋", "sharp": "샤프",
+            "retro": "레트로", "ambient": "앰비언트"
+        },
+        "overlay": {
+            "none": "없음", "diagonal-lines": "대각선", "diagonal-lines-dense": "촘촘한 대각선",
+            "crosshatch": "크로스해치", "dots": "점", "dots-dense": "촘촘한 점",
+            "grid": "그리드", "grid-dense": "촘촘한 그리드", "horizontal-lines": "가로선",
+            "vertical-lines": "세로선", "zigzag": "지그재그", "noise-light": "라이트 노이즈"
+        },
+        "templateName": {
+            "default": "기본", "transparent": "투명", "quote": "명언",
+            "excerpt": "서평", "memo": "메모", "bento": "벤토",
+            "noir": "느와르", "frame": "프레임", "minimal": "미니멀", "story": "스토리"
+        },
+        "templateDesc": {
+            "default": "클래식 그라데이션 + 둥근 카드", "transparent": "밝은 배경 + 반투명 카드",
+            "quote": "따뜻한 그라데이션 + 큰 인용문", "excerpt": "우아한 스타일 + 세련된 타이포그래피",
+            "memo": "깔끔한 흰색 + GitHub 스타일", "bento": "선명한 그라데이션 + 컴팩트",
+            "noir": "다크 스타일 + 에메랄드 타이포그래피", "frame": "그리드 텍스처 + 사각형",
+            "minimal": "미니멀 흰색 + 그림자 없음", "story": "핑크 그라데이션 + 부드러운 모서리"
+        },
+        "mdStyle": {
+            "prose": "Tailwind Typography",
+            "github": "GitHub 스타일",
+            "emerald": "에메랄드 다크, 그린 강조",
+            "classic": "클래식 커스텀 스타일"
+        }
+    },
+    "defaults": {
+        "markdown": "# Markdown2Image\n\nMarkdown을 아름다운 이미지로 변환, 원클릭으로 SNS에 공유.\n\n## 하이라이트\n\n- **실시간 미리보기** — 편집하면서 최종 결과 확인\n- **풍부한 배경** — 40+ 그라데이션 / 솔리드 / 커스텀 이미지\n- **그림자 & 텍스처** — 다양한 box-shadow와 오버레이 효과\n- **템플릿 시스템** — 원클릭으로 프리셋 스타일 전환\n- **원클릭 내보내기** — PNG 다운로드 또는 클립보드에 복사\n\n## 코드 예시\n\n```javascript\nfunction hello(name) {\n  console.log(`Hello, ${name}!`);\n}\n\nhello('World');\n```\n\n> \"단순함은 궁극의 정교함이다.\" — 레오나르도 다 빈치\n\n---\n\n*카드를 클릭하면 편집 모드로 진입합니다*"
+    },
+    "landing": {
+        "navbar": {
+            "features": "기능",
+            "testimonials": "후기",
+            "showcase": "갤러리",
+            "faq": "FAQ",
+            "getStarted": "시작하기"
+        },
+        "hero": {
+            "tagline": "크리에이터와 미디어 팀을 위해",
+            "headlinePre": "",
+            "headlinePost": "로 당신의 글을 빛나게",
+            "subtitle": "Markdown을 멋진 비주얼 카드로 변환. 40+ 그라데이션 배경, 10+ 타이포그래피 템플릿, 원클릭 HD PNG 내보내기.",
+            "badgeLivePreview": "실시간 미리보기",
+            "badge40Bg": "40+ 배경",
+            "badgeTemplates": "템플릿 시스템",
+            "badgeHDExport": "HD 내보내기",
+            "ctaStart": "시작하기",
+            "ctaLearnMore": "자세히 보기",
+            "noSignUp": "가입 불필요, 무료 사용"
+        },
+        "painPoints": {
+            "label": "문제 해결",
+            "title": "이런 고민이 있으신가요?",
+            "subtitle": "콘텐츠 제작 현장의 가장 흔한 장애물을 분석하고 즉시 사용 가능한 솔루션을 제공합니다.",
+            "p1Title": "텍스트만으로는 눈에 안 띄나요?",
+            "p1Desc": "정보가 무시되기 쉽습니다. 시각적 임팩트로 관심과 확산을 높이세요.",
+            "p2Title": "레이아웃 조정이 힘드시나요?",
+            "p2Desc": "폰트, 간격, 색상의 수동 조정은 번거롭습니다. 매번 처음부터 디자인하는 건 비효율적.",
+            "p3Title": "스크린샷 품질이 일정하지 않나요?",
+            "p3Desc": "수동 캡처는 흐리고 크기가 불균일. SNS에서의 결과물이 좋지 않습니다.",
+            "p4Title": "통일된 비주얼이 없나요?",
+            "p4Desc": "매번 다른 스타일은 브랜드 일관성을 떨어뜨리고 전문성에 영향을 줍니다."
+        },
+        "features": {
+            "label": "기능과 특징",
+            "title": "Md2Img로 무엇을 할 수 있나요?",
+            "subtitle": "콘텐츠 제작부터 공유까지 전방위 지원.",
+            "f1Title": "Markdown 실시간 렌더링",
+            "f1Desc": "WYSIWYG — 편집과 미리보기 사이 갭 제로.",
+            "f2Title": "40+ 배경 테마",
+            "f2Desc": "그라데이션, 솔리드, 커스텀 이미지를 카테고리별로 선택.",
+            "f3Title": "그림자 & 텍스처 시스템",
+            "f3Desc": "12종 그림자 프리셋 + 12종 텍스처 오버레이로 프리미엄 품질.",
+            "f4Title": "10+ 타이포그래피 템플릿",
+            "f4Desc": "명언, 서평, 메모, 느와르... 원클릭으로 프리셋 스타일 전환.",
+            "f5Title": "멀티카드 관리",
+            "f5Desc": "추가, 전환, 삭제. 아트보드처럼 효율적으로 관리.",
+            "f6Title": "원클릭 HD 내보내기",
+            "f6Desc": "2x 해상도 PNG 내보내기 또는 클립보드에 직접 복사."
+        },
+        "testimonials": {
+            "title": "사용자들이 Md2Img를 선택하는 이유",
+            "subtitle": "다양한 분야 사용자들의 실제 후기",
+            "row1": [
+                { "name": "린이", "role": "콘텐츠 크리에이터", "text": "Markdown을 이미지로 변환하는 게 너무 편리해요. 몇 분이면 원고가 멋진 카드가 됩니다." },
+                { "name": "저우헝", "role": "기업가", "text": "템플릿 시스템으로 팀 시간을 크게 절약. 브랜드 색상과 폰트를 원클릭 적용." },
+                { "name": "Yuki", "role": "SNS 블로거", "text": "아름다운 그라데이션, 읽기 좋은 타이포그래피. SNS에 최적화된 내보내기." },
+                { "name": "천샤오", "role": "브랜드 매니저", "text": "템플릿 일괄 적용이 최고. 캠페인 비주얼을 빠르게 통일할 수 있어요." },
+                { "name": "Aiden", "role": "교육 블로거", "text": "메모 템플릿으로 지식 카드 제작. HD 내보내기로 수업에 활용." },
+                { "name": "왕치", "role": "이커머스 셀러", "text": "상품 하이라이트 카드를 일괄 생성. 마케팅 소재가 하루면 완성." },
+                { "name": "리밍", "role": "UI 디자이너", "text": "그림자와 텍스처 시스템이 훌륭해요. 다른 도구보다 카드 품질이 뛰어나요." },
+                { "name": "장웨이", "role": "프로덕트 매니저", "text": "멀티카드 관리가 실용적. 시리즈 이미지를 한 번에 만들고 표준화된 출력." }
+            ],
+            "row2": [
+                { "name": "Emma", "role": "마케팅", "text": "다른 도구보다 훨씬 직관적. 캠페인 포스터 효율이 두 배로." },
+                { "name": "류양", "role": "미디어 운영", "text": "모서리와 그림자 조절이 세밀. 유사 제품보다 카드 품질이 뛰어나요." },
+                { "name": "Alex", "role": "기업가", "text": "풍부한 템플릿 라이브러리. 모든 시나리오에 맞는 것을 찾아 디자인 비용 절감." },
+                { "name": "자오야", "role": "교육 강사", "text": "HD 내보내기가 강력. 인쇄 품질도 좋고 수강생 반응도 좋아요." },
+                { "name": "Mark", "role": "인디 개발자", "text": "오픈소스, 무료. 코드 품질이 높아 워크플로우에 매끄럽게 통합." },
+                { "name": "쑨리", "role": "PR 전문가", "text": "긴급 상황에서 빠르게 이미지 생성. 상사도 효율성을 칭찬." },
+                { "name": "David", "role": "콘텐츠 기획자", "text": "전문적인 색상 조합. 디자인 미경험자도 세련된 작품을 만들 수 있어요." },
+                { "name": "천천", "role": "학생", "text": "수업 노트 공유 카드 제작에 최적. Markdown으로 작성하고 원클릭 생성." }
+            ]
+        },
+        "showcase": {
+            "title": "쇼케이스 갤러리",
+            "subtitle": "다양한 배경 + 타이포그래피 스타일의 카드 예시"
+        },
+        "faq": {
+            "title": "자주 묻는 질문",
+            "items": [
+                { "q": "무료인가요?", "a": "네, Md2Img는 완전 무료이며 오픈소스입니다. 모든 기능, 템플릿, 배경 테마를 제한 없이 사용할 수 있으며 가입이 필요 없습니다." },
+                { "q": "어떤 Markdown 문법을 지원하나요?", "a": "GitHub Flavored Markdown (GFM) 전체를 지원합니다. 제목, 목록, 굵게, 기울임, 링크, 이미지, 코드 블록, 테이블, 작업 목록, 취소선 등." },
+                { "q": "내보내기 이미지 해상도는?", "a": "기본 2x 픽셀 비율의 PNG 형식으로 내보내기. 고해상도 디스플레이에서도 선명하게 표시. 예: 540px 카드는 1080px 이미지로 내보내기." },
+                { "q": "커스텀 배경 이미지를 사용할 수 있나요?", "a": "네. 배경 패널에서 '배경 업로드'를 클릭하여 로컬 이미지를 선택하세요. JPG, PNG, WebP 등 주요 포맷 지원." },
+                { "q": "코드 구문 강조를 지원하나요?", "a": "네. Prism 엔진으로 JavaScript, Python, Go, Rust 등 수십 개 언어를 지원하며, 테마에 따라 라이트/다크 코드 스타일 자동 전환." },
+                { "q": "데이터는 안전한가요?", "a": "완전히 안전합니다. 모든 편집과 내보내기는 브라우저에서 로컬로 처리됩니다. 서버에 업로드되는 것은 없습니다." }
+            ]
+        },
+        "cta": {
+            "titlePre": "모든 준비가 되었습니다, ",
+            "titleHighlight": "창작을 시작",
+            "titlePost": "하세요!",
+            "subtitle": "Md2Img의 가능성을 발견했습니다. 망설이지 말고 첫 번째 카드를 만들어 아이디어를 현실로!",
+            "button": "시작하기"
+        },
+        "footer": {
+            "desc": "Markdown을 멋진 비주얼 카드로 변환. 무료, 오픈소스, 프라이버시 우선.",
+            "product": "제품",
+            "startCreating": "시작하기",
+            "features": "기능",
+            "faq": "FAQ",
+            "social": "소셜",
+            "copyright": "© {{year}} Md2Img. 오픈소스, 로컬 실행, 데이터 안전."
+        }
+    },
+    "langSwitcher": {
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "en": "English",
+        "ja": "日本語",
+        "ko": "한국어"
+    }
+}

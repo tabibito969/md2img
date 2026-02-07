@@ -15,6 +15,7 @@ import {
     Undo2,
     ChevronDown,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { markdownStyles } from '@/config/markdownStyles'
 
 export default function TopBar({
@@ -27,6 +28,8 @@ export default function TopBar({
     copied,
     isExporting,
 }) {
+    const { t } = useTranslation()
+
     return (
         <div className="flex items-center px-3 h-[48px] border-b border-white/[0.04] bg-[#16162a]/60 backdrop-blur-xl shrink-0 gap-3 overflow-hidden">
             {/* Left: Undo + Card Name */}
@@ -34,9 +37,9 @@ export default function TopBar({
                 <button
                     type="button"
                     disabled
-                    aria-label="撤销"
+                    aria-label={t('topBar.undo')}
                     className="p-1.5 text-white/20 rounded-md shrink-0 opacity-30 cursor-not-allowed"
-                    title="撤销（即将推出）"
+                    title={t('topBar.undoComingSoon')}
                 >
                     <Undo2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
                 </button>
@@ -44,8 +47,8 @@ export default function TopBar({
                     type="text"
                     value={cardName}
                     onChange={(e) => onCardNameChange(e.target.value)}
-                    placeholder="添加卡片名称"
-                    aria-label="卡片名称"
+                    placeholder={t('topBar.cardNamePlaceholder')}
+                    aria-label={t('topBar.cardName')}
                     className="bg-transparent text-white/55 text-[12px] placeholder:text-white/18 outline-none min-w-0 flex-1 max-w-[160px] border-b border-transparent focus:border-white/12 py-0.5"
                 />
             </div>
@@ -57,8 +60,8 @@ export default function TopBar({
                         key={style.id}
                         type="button"
                         onClick={() => onStyleChange(style)}
-                        title={style.description}
-                        aria-label={`排版风格: ${style.name}`}
+                        title={t(`config.mdStyle.${style.id}`)}
+                        aria-label={t('topBar.styleLabel', { name: style.name })}
                         className={`px-2.5 py-[4px] text-[11px] font-medium rounded-[5px] whitespace-nowrap ${
                             currentStyle.id === style.id
                                 ? 'bg-white/[0.10] text-white/90 shadow-sm shadow-black/10'
@@ -75,9 +78,9 @@ export default function TopBar({
                 <button
                     type="button"
                     disabled
-                    aria-label="分享"
+                    aria-label={t('topBar.share')}
                     className="p-1.5 text-white/20 rounded-md opacity-30 cursor-not-allowed"
-                    title="分享（即将推出）"
+                    title={t('topBar.shareComingSoon')}
                 >
                     <Share2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
                 </button>
@@ -87,14 +90,14 @@ export default function TopBar({
                     onClick={onCopy}
                     disabled={isExporting}
                     className="flex items-center gap-1 px-2 py-[5px] text-[11px] text-white/35 rounded-md hover:bg-white/[0.04] hover:text-white/65 disabled:opacity-30 disabled:pointer-events-none"
-                    title="复制"
+                    title={t('topBar.copy')}
                 >
                     {copied ? (
                         <Check className="h-3.5 w-3.5 text-emerald-400" />
                     ) : (
                         <Copy className="h-3.5 w-3.5" strokeWidth={1.5} />
                     )}
-                    <span>{copied ? '已复制' : '复制'}</span>
+                    <span>{copied ? t('topBar.copied') : t('topBar.copy')}</span>
                 </button>
 
                 <button
@@ -108,7 +111,7 @@ export default function TopBar({
                     ) : (
                         <Download className="h-3.5 w-3.5" strokeWidth={1.5} />
                     )}
-                    <span>导出</span>
+                    <span>{t('topBar.export')}</span>
                     <ChevronDown className="h-2.5 w-2.5 opacity-40 ml-0.5" />
                 </button>
             </div>

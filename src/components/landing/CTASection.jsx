@@ -1,7 +1,10 @@
 import { Link } from 'react-router'
 import { motion as Motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 export default function CTASection() {
+    const { t } = useTranslation()
+
     return (
         <section className="py-20 md:py-28 px-5 relative overflow-hidden">
             {/* Glow */}
@@ -17,21 +20,21 @@ export default function CTASection() {
                 className="relative max-w-2xl mx-auto text-center"
             >
                 <h2 className="text-3xl md:text-5xl font-extrabold text-white leading-tight">
-                    一切准备就绪，
+                    {t('landing.cta.titlePre')}
                     <br />
                     <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                        开始创作
+                        {t('landing.cta.titleHighlight')}
                     </span>
-                    {' '}吧！
+                    {t('landing.cta.titlePost')}
                 </h2>
                 <p className="mt-5 text-white/40 text-sm md:text-base max-w-md mx-auto leading-relaxed">
-                    你已经发现了 Md2Img 的潜力，别再犹豫，立即动手制作你的第一张卡片，让创意成为现实！
+                    {t('landing.cta.subtitle')}
                 </p>
                 <Link
                     to="/app"
                     className="inline-block mt-8 px-8 py-3 text-sm font-medium bg-indigo-500 text-white rounded-xl hover:bg-indigo-400 shadow-lg shadow-indigo-500/25 transition-all"
                 >
-                    开始使用
+                    {t('landing.cta.button')}
                 </Link>
             </Motion.div>
         </section>

@@ -1,20 +1,23 @@
 import { Link } from 'react-router'
 import { Sparkles } from 'lucide-react'
 import { SiGithub, SiX } from 'react-icons/si'
-
-const footerLinks = {
-    product: [
-        { label: '开始创作', to: '/app' },
-        { label: '功能特点', href: '#features' },
-        { label: '常见问题', href: '#faq' },
-    ],
-    social: [
-        { label: 'GitHub', icon: SiGithub, href: 'https://github.com' },
-        { label: 'Twitter/X', icon: SiX, href: 'https://x.com' },
-    ],
-}
+import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
+    const { t } = useTranslation()
+
+    const footerLinks = {
+        product: [
+            { label: t('landing.footer.startCreating'), to: '/app' },
+            { label: t('landing.footer.features'), href: '#features' },
+            { label: t('landing.footer.faq'), href: '#faq' },
+        ],
+        social: [
+            { label: 'GitHub', icon: SiGithub, href: 'https://github.com' },
+            { label: 'Twitter/X', icon: SiX, href: 'https://x.com' },
+        ],
+    }
+
     return (
         <footer className="border-t border-white/[0.04] bg-[#08080f]">
             <div className="max-w-6xl mx-auto px-5 py-12">
@@ -28,13 +31,13 @@ export default function Footer() {
                             <span className="text-sm font-semibold text-white">Md2Img</span>
                         </div>
                         <p className="text-[12px] text-white/30 leading-relaxed max-w-xs">
-                            将 Markdown 快速转为高质视觉卡片，免费开源，隐私安全。
+                            {t('landing.footer.desc')}
                         </p>
                     </div>
 
                     {/* Product links */}
                     <div>
-                        <h4 className="text-[11px] text-white/40 font-medium tracking-wider uppercase mb-4">产品</h4>
+                        <h4 className="text-[11px] text-white/40 font-medium tracking-wider uppercase mb-4">{t('landing.footer.product')}</h4>
                         <ul className="space-y-2">
                             {footerLinks.product.map((l) =>
                                 l.to ? (
@@ -56,7 +59,7 @@ export default function Footer() {
 
                     {/* Social */}
                     <div>
-                        <h4 className="text-[11px] text-white/40 font-medium tracking-wider uppercase mb-4">社交媒体</h4>
+                        <h4 className="text-[11px] text-white/40 font-medium tracking-wider uppercase mb-4">{t('landing.footer.social')}</h4>
                         <div className="flex items-center gap-3">
                             {footerLinks.social.map((s) => {
                                 const Icon = s.icon
@@ -80,7 +83,7 @@ export default function Footer() {
                 {/* Copyright */}
                 <div className="mt-10 pt-6 border-t border-white/[0.04] text-center">
                     <p className="text-[11px] text-white/20">
-                        &copy; {new Date().getFullYear()} Md2Img. 开源免费，本地运行，数据安全。
+                        {t('landing.footer.copyright', { year: new Date().getFullYear() })}
                     </p>
                 </div>
             </div>

@@ -7,9 +7,11 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { StrictMode, lazy, Suspense } from 'react'
+import { StrictMode, lazy, Suspense, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import './i18n'
 import './index.css'
 import LandingPage from './pages/LandingPage'
 
@@ -17,6 +19,13 @@ import LandingPage from './pages/LandingPage'
 const EditorPage = lazy(() => import('./pages/EditorPage'))
 
 function AppRouter() {
+    const { i18n, t } = useTranslation()
+
+    /* 语言切换时更新 html lang 属性 */
+    useEffect(() => {
+        document.documentElement.lang = i18n.language
+    }, [i18n.language])
+
     return (
         <BrowserRouter>
             <Routes>
@@ -27,7 +36,7 @@ function AppRouter() {
                         <Suspense
                             fallback={
                                 <div className="h-screen w-screen flex items-center justify-center bg-[#111118] text-white/40 text-sm">
-                                    加载编辑器...
+                                    {t('editor.loadingEditor')}
                                 </div>
                             }
                         >

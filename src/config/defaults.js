@@ -1,11 +1,15 @@
 /**
  * ============================================================================
- * [OUTPUT]: 对外提供 defaultMarkdown 字符串
- * [POS]: 默认示例内容，用户首次打开时展示
+ * [OUTPUT]: 对外提供 getDefaultMarkdown 函数
+ * [POS]: 默认示例内容，根据语言返回对应 Markdown
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
+import i18n from '@/i18n'
 
+export const getDefaultMarkdown = () => i18n.t('defaults.markdown')
+
+/* 向后兼容：提供静态默认值（用于不方便调用 i18n 的场景） */
 export const defaultMarkdown = `# Markdown2Image
 
 将 Markdown 转换为精美图片，一键分享到社交媒体。

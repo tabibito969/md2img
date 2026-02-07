@@ -12,6 +12,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { toBlob } from 'html-to-image'
 import { Toaster, toast } from 'sonner'
 import { Plus, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import IconSidebar from '@/components/IconSidebar'
 import ContentSidebar from '@/components/ContentSidebar'
 import TopBar from '@/components/TopBar'
@@ -19,7 +20,7 @@ import PropertiesPanel from '@/components/PropertiesPanel'
 import ImagePreview from '@/components/ImagePreview'
 import { themes, defaultThemeId } from '@/config/themes'
 import { markdownStyles, defaultStyleId } from '@/config/markdownStyles'
-import { defaultMarkdown } from '@/config/defaults'
+import { getDefaultMarkdown } from '@/config/defaults'
 
 const DEFAULT_DOWNLOAD_NAME = 'markdown-image'
 
@@ -48,26 +49,26 @@ const getDownloadFilename = (name) => {
     return base.toLowerCase().endsWith('.png') ? base : `${base}.png`
 }
 
-const canCopyImage = () => {
+const canCopyImage = (t) => {
     if (!window.isSecureContext || !navigator?.clipboard) {
-        toast.error('当前环境不支持剪贴板复制，请使用下载')
+        toast.error(t('toast.clipboardNotSupported'))
         return false
     }
     if (typeof ClipboardItem === 'undefined') {
-        toast.error('当前浏览器不支持图片复制，请使用下载')
+        toast.error(t('toast.imageCopyNotSupported'))
         return false
     }
     return true
 }
 
-const ensureClipboardPermission = async () => {
+const ensureClipboardPermission = async (t) => {
     if (!navigator.permissions?.query) return true
     try {
         const result = await navigator.permissions.query({
             name: 'clipboard-write',
         })
         if (result.state === 'denied') {
-            toast.error('剪贴板权限被拒绝')
+            toast.error(t('toast.clipboardDenied'))
             return false
         }
     } catch {
@@ -81,12 +82,14 @@ const ensureClipboardPermission = async () => {
 /* ========================================================================== */
 
 function App() {
+    const { t } = useTranslation()
+
     /* ----------------------- SIDEBAR STATE ----------------------- */
     const [sidebarTab, setSidebarTab] = useState('template')
 
     /* ----------------------- CARD STATE ----------------------- */
     const [cards, setCards] = useState([
-        { id: 1, name: '', markdown: defaultMarkdown },
+        { id: 1, name: '', markdown: getDefaultMarkdown() },
     ])
     const [activeIndex, setActiveIndex] = useState(0)
     const activeCard = cards[activeIndex] ?? cards[0]
@@ -173,7 +176,7 @@ function App() {
         const newCard = {
             id: cardIdCounterRef.current,
             name: '',
-            markdown: defaultMarkdown,
+            markdown: getDefaultMarkdown(),
         }
         setCards((prev) => {
             setActiveIndex(prev.length)
@@ -261,44 +264,44 @@ function App() {
         setIsExporting(true)
         try {
             const blob = await captureImage()
-            if (!blob) throw new Error('生成图片为空')
+            if (!blob) throw new Error(t('toast.imageEmpty'))
             const url = URL.createObjectURL(blob)
             const link = document.createElement('a')
             link.download = getDownloadFilename(activeCard?.name)
             link.href = url
             link.click()
             URL.revokeObjectURL(url)
-            toast.success('图片已下载')
+            toast.success(t('toast.downloaded'))
         } catch (err) {
             console.error('导出失败:', err)
-            toast.error('导出失败，请重试')
+            toast.error(t('toast.exportFailed'))
         } finally {
             setIsExporting(false)
         }
-    }, [captureImage, activeCard?.name])
+    }, [captureImage, activeCard?.name, t])
 
     const handleCopy = useCallback(async () => {
         if (!previewRef.current) return
-        if (!canCopyImage()) return
-        if (!(await ensureClipboardPermission())) return
+        if (!canCopyImage(t)) return
+        if (!(await ensureClipboardPermission(t))) return
         setIsExporting(true)
         try {
             const blob = await captureImage()
-            if (!blob) throw new Error('生成图片为空')
+            if (!blob) throw new Error(t('toast.imageEmpty'))
             await navigator.clipboard.write([
                 new ClipboardItem({ 'image/png': blob }),
             ])
             setCopied(true)
             clearTimeout(copiedTimer.current)
             copiedTimer.current = setTimeout(() => setCopied(false), 2000)
-            toast.success('已复制到剪贴板')
+            toast.success(t('toast.copiedToClipboard'))
         } catch (err) {
             console.error('复制失败:', err)
-            toast.error('复制失败，请重试')
+            toast.error(t('toast.copyFailed'))
         } finally {
             setIsExporting(false)
         }
-    }, [captureImage])
+    }, [captureImage, t])
 
     /* ------------------------------ RENDER ------------------------------ */
     return (
@@ -350,7 +353,7 @@ function App() {
                                     type="button"
                                     onClick={goToPrevCard}
                                     disabled={activeIndex === 0}
-                                    aria-label="上一张卡片"
+                                    aria-label={t('editor.prevCard')}
                                     className="p-2 rounded-full bg-white/[0.03] text-white/25 hover:text-white/60 hover:bg-white/[0.06] disabled:opacity-0 disabled:pointer-events-none"
                                 >
                                     <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
@@ -386,7 +389,7 @@ function App() {
                                     type="button"
                                     onClick={goToNextCard}
                                     disabled={activeIndex === cards.length - 1}
-                                    aria-label="下一张卡片"
+                                    aria-label={t('editor.nextCard')}
                                     className="p-2 rounded-full bg-white/[0.03] text-white/25 hover:text-white/60 hover:bg-white/[0.06] disabled:opacity-0 disabled:pointer-events-none"
                                 >
                                     <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
@@ -399,27 +402,27 @@ function App() {
                             <button
                                 type="button"
                                 onClick={addCard}
-                                aria-label="添加新卡片"
+                                aria-label={t('editor.addNewCard')}
                                 className="flex items-center gap-1.5 px-5 py-1.5 border border-dashed border-white/10 rounded-lg text-[12px] text-white/25 hover:text-white/55 hover:border-white/25 hover:bg-white/[0.02]"
                             >
                                 <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
-                                添加卡片
+                                {t('editor.addCard')}
                             </button>
                         </div>
 
                         {/* Card Counter & Controls */}
                         <div className="flex items-center justify-center gap-3 mt-2.5 mb-4">
                             <span className="text-[11px] text-white/20 font-mono">
-                                卡片 {activeIndex + 1}/{cards.length}
+                                {t('editor.cardCounter', { current: activeIndex + 1, total: cards.length })}
                             </span>
                             {cards.length > 1 && (
                                 <button
                                     type="button"
                                     onClick={() => deleteCard(activeIndex)}
-                                    aria-label="删除当前卡片"
+                                    aria-label={t('editor.deleteCard')}
                                     className="text-[11px] text-red-400/30 hover:text-red-400/70"
                                 >
-                                    删除
+                                    {t('editor.delete')}
                                 </button>
                             )}
                         </div>
@@ -447,10 +450,10 @@ function App() {
                         <div className="flex items-center justify-between px-4 h-11 border-b border-white/[0.05] shrink-0">
                             <div className="flex items-center gap-3">
                                 <span className="text-[10px] uppercase tracking-[0.15em] text-white/25 font-medium">
-                                    Markdown
+                                    {t('editor.markdown')}
                                 </span>
                                 <span className="text-[10px] text-white/15 font-mono">
-                                    {activeCard.markdown.length} chars
+                                    {t('editor.chars', { count: activeCard.markdown.length })}
                                 </span>
                             </div>
                             <div className="flex items-center gap-2">
@@ -462,14 +465,14 @@ function App() {
                                     onClick={() => setIsEditing(false)}
                                     className="text-[11px] text-white/50 hover:text-white/90 px-2.5 py-1 rounded-md bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/20 font-medium"
                                 >
-                                    完成编辑
+                                    {t('editor.finishEditing')}
                                 </button>
                             </div>
                         </div>
 
                         {/* Editor Textarea */}
                         <textarea
-                            aria-label="Markdown 编辑器"
+                            aria-label={t('editor.editorLabel')}
                             value={activeCard.markdown}
                             onChange={(e) => setMarkdown(e.target.value)}
                             onKeyDown={(e) => {
@@ -491,7 +494,7 @@ function App() {
                                 }
                             }}
                             className="flex-1 min-h-[420px] w-full resize-none bg-transparent p-5 text-[13px] text-white/80 font-mono leading-[1.8] outline-none placeholder:text-white/15 selection:bg-indigo-500/25 sidebar-scroll"
-                            placeholder="在这里输入或粘贴 Markdown..."
+                            placeholder={t('editor.editorPlaceholder')}
                             spellCheck={false}
                             autoFocus
                         />

@@ -10,6 +10,7 @@
 import { useState, useRef } from 'react'
 import { toast } from 'sonner'
 import { Upload } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { backgroundCategories } from '@/config/themes'
 import ShadowPanel from './ShadowPanel'
 
@@ -26,6 +27,7 @@ export default function BackgroundPanel({
     currentOverlay,
     onOverlayChange,
 }) {
+    const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('color')
     const [customBackgrounds, setCustomBackgrounds] = useState([])
     const fileInputRef = useRef(null)
@@ -35,12 +37,12 @@ export default function BackgroundPanel({
         const file = e.target.files?.[0]
         if (!file) return
         if (!isValidImageFile(file)) {
-            toast.error('仅支持图片文件')
+            toast.error(t('backgroundPanel.imageOnly'))
             e.target.value = ''
             return
         }
         if (file.size > MAX_UPLOAD_BYTES) {
-            toast.error('图片过大，请小于 10MB')
+            toast.error(t('backgroundPanel.imageTooLarge'))
             e.target.value = ''
             return
         }
@@ -70,8 +72,8 @@ export default function BackgroundPanel({
             {/* Tabs */}
             <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0">
                 {[
-                    { id: 'color', label: '颜色' },
-                    { id: 'shadow', label: '阴影' },
+                    { id: 'color', label: t('backgroundPanel.color') },
+                    { id: 'shadow', label: t('backgroundPanel.shadow') },
                 ].map((tab) => (
                     <button
                         key={tab.id}
@@ -103,7 +105,7 @@ export default function BackgroundPanel({
                             className="w-full flex items-center justify-center gap-2 py-2 mb-3 border border-dashed border-white/10 rounded-lg text-[12px] text-white/30 hover:text-white/60 hover:border-white/25 hover:bg-white/[0.02]"
                         >
                             <Upload className="h-3.5 w-3.5" strokeWidth={1.5} />
-                            上传背景
+                            {t('backgroundPanel.uploadBg')}
                         </button>
                         <input
                             ref={fileInputRef}
@@ -117,7 +119,7 @@ export default function BackgroundPanel({
                         {customBackgrounds.length > 0 && (
                             <div className="mb-4">
                                 <h4 className="text-[11px] text-white/30 mb-2 font-medium tracking-wide">
-                                    自定义
+                                    {t('backgroundPanel.custom')}
                                 </h4>
                                 <div className="grid grid-cols-5 gap-1.5">
                                     {customBackgrounds.map((bg) => (
@@ -148,9 +150,9 @@ export default function BackgroundPanel({
 
                         {/* Categorized Backgrounds */}
                         {backgroundCategories.map((category) => (
-                            <div key={category.name} className="mb-4">
+                            <div key={category.key} className="mb-4">
                                 <h4 className="text-[11px] text-white/30 mb-2 font-medium tracking-wide">
-                                    {category.name}
+                                    {t(`config.themeCategory.${category.key}`)}
                                 </h4>
                                 <div className="grid grid-cols-5 gap-1.5">
                                     {category.items.map((bg) => (
@@ -164,7 +166,7 @@ export default function BackgroundPanel({
                                                     : 'hover:scale-105 opacity-80 hover:opacity-100'
                                             }`}
                                             style={{ background: bg.dot }}
-                                            title={bg.name}
+                                            title={t(`config.theme.${bg.id}`, bg.name)}
                                         />
                                     ))}
                                 </div>

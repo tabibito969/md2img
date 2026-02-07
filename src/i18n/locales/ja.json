@@ -1,0 +1,249 @@
+{
+    "sidebar": {
+        "template": "テンプレート",
+        "background": "背景",
+        "nav": "サイドバー"
+    },
+    "templatePanel": {
+        "template": "テンプレート",
+        "layout": "レイアウト",
+        "layoutComingSoon": "レイアウト機能は近日公開"
+    },
+    "backgroundPanel": {
+        "color": "カラー",
+        "shadow": "シャドウ",
+        "uploadBg": "背景をアップロード",
+        "custom": "カスタム",
+        "imageOnly": "画像ファイルのみ対応",
+        "imageTooLarge": "画像が大きすぎます（10MB以下）"
+    },
+    "shadowPanel": {
+        "selectShadow": "シャドウを選択",
+        "overlayTexture": "テクスチャオーバーレイ"
+    },
+    "topBar": {
+        "undo": "元に戻す",
+        "undoComingSoon": "元に戻す（近日公開）",
+        "cardNamePlaceholder": "カード名を追加",
+        "cardName": "カード名",
+        "styleLabel": "スタイル: {{name}}",
+        "share": "共有",
+        "shareComingSoon": "共有（近日公開）",
+        "copy": "コピー",
+        "copied": "コピー済",
+        "export": "エクスポート"
+    },
+    "properties": {
+        "properties": "プロパティ",
+        "visibility": "表示/非表示",
+        "syncAll": "全カードを同期",
+        "watermark": "ウォーターマーク",
+        "template": "テンプレート",
+        "templateSize": "テンプレートサイズ",
+        "bgColor": "背景色",
+        "aspectRatio": "アスペクト比",
+        "adaptive": "自動",
+        "container": "コンテナ",
+        "padding": "パディング",
+        "borderRadius": "角丸",
+        "visibilityComingSoon": "表示設定は近日公開"
+    },
+    "editor": {
+        "markdown": "Markdown",
+        "chars": "{{count}} 文字",
+        "finishEditing": "完了",
+        "editorLabel": "Markdown エディタ",
+        "editorPlaceholder": "Markdownを入力または貼り付け...",
+        "prevCard": "前のカード",
+        "nextCard": "次のカード",
+        "addCard": "カードを追加",
+        "addNewCard": "新しいカードを追加",
+        "cardCounter": "カード {{current}}/{{total}}",
+        "delete": "削除",
+        "deleteCard": "このカードを削除",
+        "loadingEditor": "エディタを読み込み中...",
+        "externalImageBlocked": "外部画像は無効です"
+    },
+    "toast": {
+        "clipboardNotSupported": "クリップボードに対応していません。ダウンロードをご利用ください",
+        "imageCopyNotSupported": "画像コピーに対応していません。ダウンロードをご利用ください",
+        "clipboardDenied": "クリップボードの権限が拒否されました",
+        "imageEmpty": "画像が空です",
+        "downloaded": "画像をダウンロードしました",
+        "exportFailed": "エクスポートに失敗しました。再試行してください",
+        "copiedToClipboard": "クリップボードにコピーしました",
+        "copyFailed": "コピーに失敗しました。再試行してください"
+    },
+    "config": {
+        "themeCategory": {
+            "gradient": "グラデーション",
+            "nature": "ナチュラル",
+            "dark": "ダーク",
+            "mesh": "メッシュ",
+            "solid": "ソリッド"
+        },
+        "theme": {
+            "radiant-1": "夜明け", "radiant-2": "暖陽", "radiant-3": "翡翠",
+            "radiant-4": "オーロラ", "radiant-5": "夕焼け", "radiant-6": "天の川",
+            "radiant-7": "炎", "radiant-8": "深海", "radiant-9": "琥珀",
+            "radiant-10": "ぶどう", "radiant-11": "ラベンダー", "radiant-12": "珊瑚",
+            "nature-1": "日の出", "nature-2": "森林", "nature-3": "雪山",
+            "nature-4": "砂漠", "nature-5": "氷河", "nature-6": "桜",
+            "dark-1": "深夜", "dark-2": "溶岩", "dark-3": "深淵",
+            "dark-4": "カーボン", "dark-5": "星空", "dark-6": "ミッドナイト",
+            "mesh-1": "ビビッド", "mesh-2": "虹光", "mesh-3": "コットンキャンディ",
+            "mesh-4": "銀河", "mesh-5": "海塩", "mesh-6": "朝焼け",
+            "solid-1": "ホワイト", "solid-2": "ライトグレー", "solid-3": "ブラック",
+            "solid-4": "ダークグレー", "solid-5": "ライトブルー", "solid-6": "ライトピンク",
+            "solid-7": "ライトグリーン", "solid-8": "ライトパープル", "solid-9": "ダークパープル",
+            "solid-10": "ダークレッド"
+        },
+        "shadow": {
+            "none": "なし", "soft": "ソフト", "medium": "ミディアム", "hard": "ハード",
+            "elevated": "エレベート", "glow-blue": "ブルーグロー", "glow-purple": "パープルグロー",
+            "glow-pink": "ピンクグロー", "inset": "インセット", "sharp": "シャープ",
+            "retro": "レトロ", "ambient": "アンビエント"
+        },
+        "overlay": {
+            "none": "なし", "diagonal-lines": "斜線", "diagonal-lines-dense": "細斜線",
+            "crosshatch": "クロスハッチ", "dots": "ドット", "dots-dense": "細ドット",
+            "grid": "グリッド", "grid-dense": "細グリッド", "horizontal-lines": "横線",
+            "vertical-lines": "縦線", "zigzag": "ジグザグ", "noise-light": "ライトノイズ"
+        },
+        "templateName": {
+            "default": "デフォルト", "transparent": "透明", "quote": "名言",
+            "excerpt": "書評", "memo": "メモ", "bento": "弁当",
+            "noir": "ノワール", "frame": "フレーム", "minimal": "ミニマル", "story": "ストーリー"
+        },
+        "templateDesc": {
+            "default": "クラシックグラデ + 角丸カード", "transparent": "淡い背景 + 半透明カード",
+            "quote": "暖色グラデ + 大文字引用", "excerpt": "上品なスタイル + 洗練された組版",
+            "memo": "シンプル白地 + GitHub スタイル", "bento": "鮮やかグラデ + コンパクト",
+            "noir": "ダークスタイル + エメラルド組版", "frame": "グリッドテクスチャ + 四角",
+            "minimal": "極シンプル白地 + 影なし", "story": "ピンクグラデ + 柔らか角丸"
+        },
+        "mdStyle": {
+            "prose": "Tailwind Typography",
+            "github": "GitHub スタイル",
+            "emerald": "エメラルドダーク、グリーン強調",
+            "classic": "クラシックカスタム"
+        }
+    },
+    "defaults": {
+        "markdown": "# Markdown2Image\n\nMarkdown を美しい画像に変換、ワンクリックで SNS にシェア。\n\n## ハイライト\n\n- **リアルタイムプレビュー** — 編集しながら最終結果を確認\n- **豊富な背景** — 40+ グラデーション / ソリッド / カスタム画像\n- **シャドウ & テクスチャ** — 多彩な box-shadow とオーバーレイ効果\n- **テンプレートシステム** — ワンクリックでプリセットスタイルを切替\n- **ワンクリックエクスポート** — PNG ダウンロードまたはクリップボードにコピー\n\n## コード例\n\n```javascript\nfunction hello(name) {\n  console.log(`Hello, ${name}!`);\n}\n\nhello('World');\n```\n\n> 「シンプルさは究極の洗練である。」—— レオナルド・ダ・ヴィンチ\n\n---\n\n*カードをクリックして編集モードへ*"
+    },
+    "landing": {
+        "navbar": {
+            "features": "機能",
+            "testimonials": "レビュー",
+            "showcase": "ギャラリー",
+            "faq": "FAQ",
+            "getStarted": "今すぐ始める"
+        },
+        "hero": {
+            "tagline": "クリエイターとメディアチームのために",
+            "headlinePre": "",
+            "headlinePost": " であなたの言葉を輝かせよう",
+            "subtitle": "Markdown を美しいビジュアルカードに変換。40+ グラデーション背景、10+ テンプレート、ワンクリック HD PNG エクスポート。",
+            "badgeLivePreview": "リアルタイムプレビュー",
+            "badge40Bg": "40+ 背景",
+            "badgeTemplates": "テンプレート",
+            "badgeHDExport": "HD エクスポート",
+            "ctaStart": "今すぐ始める",
+            "ctaLearnMore": "詳しく見る",
+            "noSignUp": "登録不要、無料で利用可能"
+        },
+        "painPoints": {
+            "label": "課題解決",
+            "title": "こんな悩みはありませんか？",
+            "subtitle": "コンテンツ制作の現場でよくある課題を分析し、すぐに使えるソリューションを提供します。",
+            "p1Title": "テキストだけでは目立たない？",
+            "p1Desc": "情報が埋もれてしまう。視覚的なインパクトで注目度と拡散力を高めましょう。",
+            "p2Title": "レイアウト調整が大変？",
+            "p2Desc": "フォント、間隔、色の手動調整は面倒。毎回ゼロからデザインするのは非効率。",
+            "p3Title": "スクリーンショットの品質がバラバラ？",
+            "p3Desc": "手動キャプチャはぼやけやすく、サイズも不統一。SNS での見栄えが悪い。",
+            "p4Title": "統一されたビジュアルがない？",
+            "p4Desc": "毎回違うスタイルでは、ブランドの一貫性が損なわれ、プロフェッショナルさに欠ける。"
+        },
+        "features": {
+            "label": "機能と特徴",
+            "title": "Md2Img で何ができる？",
+            "subtitle": "コンテンツ制作からシェアまで、フルサポート。",
+            "f1Title": "Markdown リアルタイムレンダリング",
+            "f1Desc": "WYSIWYG — 編集とプレビューの間にギャップなし。",
+            "f2Title": "40+ 背景テーマ",
+            "f2Desc": "グラデーション、ソリッド、カスタム画像をカテゴリ別に選択。",
+            "f3Title": "シャドウ & テクスチャシステム",
+            "f3Desc": "12 種のシャドウプリセット + 12 種のテクスチャで高品質な仕上がり。",
+            "f4Title": "10+ タイポグラフィテンプレート",
+            "f4Desc": "名言、書評、メモ、ノワール...ワンクリックでスタイル切替。",
+            "f5Title": "マルチカード管理",
+            "f5Desc": "追加・切替・削除。アートボードのように効率的に管理。",
+            "f6Title": "ワンクリック HD エクスポート",
+            "f6Desc": "2x 解像度 PNG エクスポート、またはクリップボードに直接コピー。"
+        },
+        "testimonials": {
+            "title": "ユーザーが Md2Img を選ぶ理由",
+            "subtitle": "様々な分野のユーザーからのリアルな声",
+            "row1": [
+                { "name": "林一", "role": "コンテンツクリエイター", "text": "Markdown から画像への変換がとても便利。数分で原稿が美しいカードに変わります。" },
+                { "name": "周衡", "role": "経営者", "text": "テンプレートシステムでチームの時間を大幅節約。ブランドカラーもワンクリック。" },
+                { "name": "Yuki", "role": "SNS ブロガー", "text": "美しいグラデーション、読みやすいタイポグラフィ。各SNSに最適。" },
+                { "name": "陳瀟", "role": "ブランドマネージャー", "text": "テンプレートの一括適用が最高。キャンペーンビジュアルの統一が素早くできます。" },
+                { "name": "Aiden", "role": "教育ブロガー", "text": "メモテンプレートでナレッジカードを作成。HD エクスポートで授業にも最適。" },
+                { "name": "王琪", "role": "EC セラー", "text": "商品ハイライトカードを一括生成。マーケティング素材が1日で完成。" },
+                { "name": "李明", "role": "UI デザイナー", "text": "シャドウとテクスチャシステムが素晴らしい。他のツールより高品質。" },
+                { "name": "張偉", "role": "プロダクトマネージャー", "text": "マルチカード管理が実用的。シリーズ画像を一括作成、標準化された出力。" }
+            ],
+            "row2": [
+                { "name": "Emma", "role": "マーケティング", "text": "他のツールよりずっと使いやすい。キャンペーンポスターの効率が倍増。" },
+                { "name": "劉洋", "role": "メディア運営", "text": "角丸やシャドウの調整が細かい。カードの品質が同類製品を上回る。" },
+                { "name": "Alex", "role": "起業家", "text": "テンプレートが豊富。あらゆるシーンに対応でき、デザインコストを大幅削減。" },
+                { "name": "趙雅", "role": "研修講師", "text": "HD エクスポートが強力。印刷品質も良く、受講生の評判も上々。" },
+                { "name": "Mark", "role": "個人開発者", "text": "オープンソースで無料。コード品質が高く、ワークフローにスムーズに統合。" },
+                { "name": "孫麗", "role": "PR スペシャリスト", "text": "緊急時に素早く画像生成。上司も効率の良さを絶賛。" },
+                { "name": "David", "role": "コンテンツプランナー", "text": "プロフェッショナルな配色。デザイン未経験でもセンスの良い作品が作れる。" },
+                { "name": "陳晨", "role": "学生", "text": "授業ノートのシェアカード作成に最適。Markdown で書いてワンクリック生成。" }
+            ]
+        },
+        "showcase": {
+            "title": "ギャラリー",
+            "subtitle": "異なる背景とタイポグラフィスタイルのカード例"
+        },
+        "faq": {
+            "title": "よくある質問",
+            "items": [
+                { "q": "無料で使えますか？", "a": "はい、Md2Img は完全無料でオープンソースです。全機能・テンプレート・背景テーマが無制限、登録不要です。" },
+                { "q": "どの Markdown 構文に対応していますか？", "a": "GitHub Flavored Markdown (GFM) に完全対応。見出し、リスト、太字、斜体、リンク、画像、コードブロック、テーブル、タスクリスト、取り消し線などをサポート。" },
+                { "q": "エクスポート画像の解像度は？", "a": "デフォルトで 2x ピクセル比の PNG 形式。高解像度ディスプレイでも鮮明に表示。例：540px カードは 1080px の画像としてエクスポート。" },
+                { "q": "カスタム背景画像は使えますか？", "a": "はい。背景パネルの「背景をアップロード」から画像を選択。JPG、PNG、WebP など主要フォーマットに対応。" },
+                { "q": "コードのシンタックスハイライトに対応？", "a": "はい。Prism エンジンで JavaScript、Python、Go、Rust など数十の言語に対応。テーマに応じてライト/ダークを自動切替。" },
+                { "q": "データは安全ですか？", "a": "完全に安全です。編集・エクスポートはすべてブラウザ上で完結。サーバーへのアップロードは一切ありません。" }
+            ]
+        },
+        "cta": {
+            "titlePre": "準備は整いました、",
+            "titleHighlight": "創作を始め",
+            "titlePost": "ましょう！",
+            "subtitle": "Md2Img の可能性を発見しました。迷わず最初のカードを作って、アイデアを形にしましょう！",
+            "button": "今すぐ始める"
+        },
+        "footer": {
+            "desc": "Markdown を美しいビジュアルカードに変換。無料・オープンソース・プライバシー重視。",
+            "product": "プロダクト",
+            "startCreating": "今すぐ始める",
+            "features": "機能",
+            "faq": "FAQ",
+            "social": "ソーシャル",
+            "copyright": "© {{year}} Md2Img. オープンソース、ローカル実行、データ安全。"
+        }
+    },
+    "langSwitcher": {
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "en": "English",
+        "ja": "日本語",
+        "ko": "한국어"
+    }
+}

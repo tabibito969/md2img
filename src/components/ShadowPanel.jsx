@@ -6,6 +6,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
+import { useTranslation } from 'react-i18next'
 import { shadowPresets, overlayTextures } from '@/config/shadows'
 
 export default function ShadowPanel({
@@ -14,12 +15,14 @@ export default function ShadowPanel({
     currentOverlay,
     onOverlayChange,
 }) {
+    const { t } = useTranslation()
+
     return (
         <div className="p-2.5">
             {/* Shadow Presets */}
             <div className="mb-5">
                 <h4 className="text-[11px] text-white/30 mb-2 font-medium tracking-wide">
-                    选择阴影
+                    {t('shadowPanel.selectShadow')}
                 </h4>
                 <div className="grid grid-cols-4 gap-1.5">
                     {shadowPresets.map((preset) => (
@@ -32,7 +35,7 @@ export default function ShadowPanel({
                                     ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-1 ring-offset-[#1a1a30]'
                                     : 'ring-1 ring-white/[0.04] hover:ring-white/[0.1] opacity-80 hover:opacity-100'
                             }`}
-                            title={preset.name}
+                            title={t(`config.shadow.${preset.id}`)}
                         >
                             <div
                                 className="w-6 h-6 bg-white/90 rounded-[4px]"
@@ -44,7 +47,7 @@ export default function ShadowPanel({
                                 }}
                             />
                             <span className="absolute bottom-[3px] left-0 right-0 text-[8px] text-white/25 text-center truncate px-0.5 leading-none">
-                                {preset.name}
+                                {t(`config.shadow.${preset.id}`)}
                             </span>
                         </button>
                     ))}
@@ -54,7 +57,7 @@ export default function ShadowPanel({
             {/* Overlay Textures */}
             <div>
                 <h4 className="text-[11px] text-white/30 mb-2 font-medium tracking-wide">
-                    纹理叠加
+                    {t('shadowPanel.overlayTexture')}
                 </h4>
                 <div className="grid grid-cols-4 gap-1.5">
                     {overlayTextures.map((texture) => (
@@ -67,7 +70,7 @@ export default function ShadowPanel({
                                     ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-1 ring-offset-[#1a1a30]'
                                     : 'ring-1 ring-white/[0.04] hover:ring-white/[0.1] opacity-80 hover:opacity-100'
                             }`}
-                            title={texture.name}
+                            title={t(`config.overlay.${texture.id}`)}
                         >
                             <div
                                 className="w-full h-full bg-[#222240]"
@@ -78,7 +81,7 @@ export default function ShadowPanel({
                                 }}
                             />
                             <span className="absolute bottom-[3px] left-0 right-0 text-[8px] text-white/25 text-center truncate px-0.5 leading-none">
-                                {texture.name}
+                                {t(`config.overlay.${texture.id}`)}
                             </span>
                         </button>
                     ))}

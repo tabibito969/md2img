@@ -8,6 +8,7 @@
  */
 import { useState } from 'react'
 import { Info, Minus, Plus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 /* ---------- Section Header ---------- */
 function SectionLabel({ children, info }) {
@@ -79,7 +80,7 @@ function ToggleSwitch({ checked, onChange }) {
 
 /* ---------- Aspect Ratio Presets ---------- */
 const aspectRatios = [
-    { label: '自适应', value: 'auto' },
+    { labelKey: 'properties.adaptive', label: '自适应', value: 'auto' },
     { label: '1:1', value: '1:1' },
     { label: '3:4', value: '3:4' },
     { label: '4:3', value: '4:3' },
@@ -98,6 +99,7 @@ const resolveAspectRatio = (width, height) => {
 }
 
 export default function PropertiesPanel({ cardConfig, onConfigChange, currentTheme }) {
+    const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('properties')
     const activeAspectRatio = resolveAspectRatio(
         cardConfig.width,
@@ -124,8 +126,8 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
             {/* Header Tabs */}
             <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0">
                 {[
-                    { id: 'properties', label: '属性' },
-                    { id: 'visibility', label: '显示隐藏' },
+                    { id: 'properties', label: t('properties.properties') },
+                    { id: 'visibility', label: t('properties.visibility') },
                 ].map((tab) => (
                     <button
                         key={tab.id}
@@ -153,7 +155,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
                         {/* Sync All Cards */}
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-1.5">
-                                <span className="text-[12px] text-white/60">同步所有卡片</span>
+                                <span className="text-[12px] text-white/60">{t('properties.syncAll')}</span>
                                 <Info className="h-3 w-3 text-white/15" strokeWidth={1.5} />
                             </div>
                             <ToggleSwitch
@@ -165,7 +167,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
 
                         {/* Watermark */}
                         <div className="flex items-center justify-between">
-                            <span className="text-[12px] text-white/60">水印</span>
+                            <span className="text-[12px] text-white/60">{t('properties.watermark')}</span>
                             <ToggleSwitch
                                 checked={cardConfig.watermark}
                                 onChange={(v) => updateConfig('watermark', v)}
@@ -178,11 +180,11 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
 
                         {/* Template Section */}
                         <div>
-                            <h3 className="text-[12px] text-white/60 font-medium mb-3">模板</h3>
+                            <h3 className="text-[12px] text-white/60 font-medium mb-3">{t('properties.template')}</h3>
 
                             {/* Template Size */}
                             <div className="mb-3.5">
-                                <SectionLabel info>模板尺寸</SectionLabel>
+                                <SectionLabel info>{t('properties.templateSize')}</SectionLabel>
                                 <div className="grid grid-cols-2 gap-2">
                                     <NumberInput
                                         label="W"
@@ -205,21 +207,21 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
 
                             {/* Background Color Display */}
                             <div className="mb-3.5">
-                                <SectionLabel info>背景色</SectionLabel>
+                                <SectionLabel info>{t('properties.bgColor')}</SectionLabel>
                                 <div className="flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.04] rounded-lg px-3 py-2 h-8">
                                     <span
                                         className="w-4 h-4 rounded-full shrink-0 ring-1 ring-white/10"
                                         style={{ background: currentTheme.dot }}
                                     />
                                     <span className="text-[12px] text-white/50 truncate">
-                                        {currentTheme.name}
+                                        {t(`config.theme.${currentTheme.id}`, currentTheme.name)}
                                     </span>
                                 </div>
                             </div>
 
                             {/* Aspect Ratio */}
                             <div className="mb-3.5">
-                                <SectionLabel>尺寸比例</SectionLabel>
+                                <SectionLabel>{t('properties.aspectRatio')}</SectionLabel>
                                 <div className="grid grid-cols-3 gap-1">
                                     {aspectRatios.map((ar) => (
                                         <button
@@ -232,7 +234,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
                                                     : 'bg-white/[0.03] text-white/35 hover:text-white/55 border border-white/[0.04] hover:border-white/[0.08]'
                                             }`}
                                         >
-                                            {ar.label}
+                                            {ar.labelKey ? t(ar.labelKey) : ar.label}
                                         </button>
                                     ))}
                                 </div>
@@ -244,11 +246,11 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
 
                         {/* Container Section */}
                         <div>
-                            <h3 className="text-[12px] text-white/60 font-medium mb-3">容器</h3>
+                            <h3 className="text-[12px] text-white/60 font-medium mb-3">{t('properties.container')}</h3>
 
                             {/* Padding */}
                             <div className="mb-3.5">
-                                <SectionLabel>内边距</SectionLabel>
+                                <SectionLabel>{t('properties.padding')}</SectionLabel>
                                 <NumberInput
                                     label="↔"
                                     value={cardConfig.padding}
@@ -260,7 +262,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
 
                             {/* Border Radius */}
                             <div className="mb-3.5">
-                                <SectionLabel>圆角半径</SectionLabel>
+                                <SectionLabel>{t('properties.borderRadius')}</SectionLabel>
                                 <NumberInput
                                     label="⌒"
                                     value={cardConfig.borderRadius}
@@ -275,7 +277,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
 
                 {activeTab === 'visibility' && (
                     <div className="p-4 text-[12px] text-white/25 text-center py-12">
-                        显示隐藏设置即将推出
+                        {t('properties.visibilityComingSoon')}
                     </div>
                 )}
             </div>

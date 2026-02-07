@@ -7,10 +7,11 @@
  * ============================================================================
  */
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { templates } from '@/config/templates'
 
 /* ---------- Template Thumbnail Preview ---------- */
-function TemplateThumbnail({ template, isActive, onClick }) {
+function TemplateThumbnail({ template, isActive, onClick, t }) {
     const { preview } = template
     return (
         <button
@@ -21,7 +22,7 @@ function TemplateThumbnail({ template, isActive, onClick }) {
                     ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-2 ring-offset-[#1a1a30] shadow-lg shadow-indigo-500/10'
                     : 'ring-1 ring-white/[0.06] hover:ring-white/[0.12] opacity-85 hover:opacity-100'
             }`}
-            title={`${template.name} — ${template.description}`}
+            title={`${t(`config.templateName.${template.id}`)} — ${t(`config.templateDesc.${template.id}`)}`}
         >
             {/* Preview card */}
             <div
@@ -88,7 +89,7 @@ function TemplateThumbnail({ template, isActive, onClick }) {
             {/* Label — frosted glass */}
             <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 via-black/30 to-transparent pt-5 pb-1.5 px-2">
                 <span className="text-[10px] font-medium text-white/90 tracking-wide">
-                    {template.name}
+                    {t(`config.templateName.${template.id}`)}
                 </span>
             </div>
         </button>
@@ -96,6 +97,7 @@ function TemplateThumbnail({ template, isActive, onClick }) {
 }
 
 export default function TemplatePanel({ onApplyTemplate, activeTemplateId }) {
+    const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('template')
 
     return (
@@ -103,8 +105,8 @@ export default function TemplatePanel({ onApplyTemplate, activeTemplateId }) {
             {/* Tabs */}
             <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0">
                 {[
-                    { id: 'template', label: '模板' },
-                    { id: 'layout', label: '布局' },
+                    { id: 'template', label: t('templatePanel.template') },
+                    { id: 'layout', label: t('templatePanel.layout') },
                 ].map((tab) => (
                     <button
                         key={tab.id}
@@ -135,13 +137,14 @@ export default function TemplatePanel({ onApplyTemplate, activeTemplateId }) {
                                 template={tpl}
                                 isActive={activeTemplateId === tpl.id}
                                 onClick={() => onApplyTemplate(tpl.id, tpl.config)}
+                                t={t}
                             />
                         ))}
                     </div>
                 )}
                 {activeTab === 'layout' && (
                     <div className="text-xs text-white/25 text-center py-12">
-                        布局选项即将推出
+                        {t('templatePanel.layoutComingSoon')}
                     </div>
                 )}
             </div>

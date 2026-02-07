@@ -1,0 +1,249 @@
+{
+    "sidebar": {
+        "template": "Templates",
+        "background": "Background",
+        "nav": "Sidebar navigation"
+    },
+    "templatePanel": {
+        "template": "Templates",
+        "layout": "Layout",
+        "layoutComingSoon": "Layout options coming soon"
+    },
+    "backgroundPanel": {
+        "color": "Color",
+        "shadow": "Shadow",
+        "uploadBg": "Upload Background",
+        "custom": "Custom",
+        "imageOnly": "Only image files are supported",
+        "imageTooLarge": "Image too large, max 10MB"
+    },
+    "shadowPanel": {
+        "selectShadow": "Select Shadow",
+        "overlayTexture": "Overlay Texture"
+    },
+    "topBar": {
+        "undo": "Undo",
+        "undoComingSoon": "Undo (coming soon)",
+        "cardNamePlaceholder": "Add card name",
+        "cardName": "Card name",
+        "styleLabel": "Typography: {{name}}",
+        "share": "Share",
+        "shareComingSoon": "Share (coming soon)",
+        "copy": "Copy",
+        "copied": "Copied",
+        "export": "Export"
+    },
+    "properties": {
+        "properties": "Properties",
+        "visibility": "Visibility",
+        "syncAll": "Sync all cards",
+        "watermark": "Watermark",
+        "template": "Template",
+        "templateSize": "Template Size",
+        "bgColor": "Background",
+        "aspectRatio": "Aspect Ratio",
+        "adaptive": "Auto",
+        "container": "Container",
+        "padding": "Padding",
+        "borderRadius": "Border Radius",
+        "visibilityComingSoon": "Visibility settings coming soon"
+    },
+    "editor": {
+        "markdown": "Markdown",
+        "chars": "{{count}} chars",
+        "finishEditing": "Done",
+        "editorLabel": "Markdown Editor",
+        "editorPlaceholder": "Type or paste Markdown here...",
+        "prevCard": "Previous card",
+        "nextCard": "Next card",
+        "addCard": "Add Card",
+        "addNewCard": "Add new card",
+        "cardCounter": "Card {{current}}/{{total}}",
+        "delete": "Delete",
+        "deleteCard": "Delete current card",
+        "loadingEditor": "Loading editor...",
+        "externalImageBlocked": "External images disabled"
+    },
+    "toast": {
+        "clipboardNotSupported": "Clipboard not supported, please download instead",
+        "imageCopyNotSupported": "Image copy not supported, please download instead",
+        "clipboardDenied": "Clipboard permission denied",
+        "imageEmpty": "Generated image is empty",
+        "downloaded": "Image downloaded",
+        "exportFailed": "Export failed, please try again",
+        "copiedToClipboard": "Copied to clipboard",
+        "copyFailed": "Copy failed, please try again"
+    },
+    "config": {
+        "themeCategory": {
+            "gradient": "Gradient",
+            "nature": "Nature",
+            "dark": "Dark",
+            "mesh": "Mesh Gradient",
+            "solid": "Solid"
+        },
+        "theme": {
+            "radiant-1": "Dawn", "radiant-2": "Warm Sun", "radiant-3": "Emerald",
+            "radiant-4": "Aurora", "radiant-5": "Sunset", "radiant-6": "Milky Way",
+            "radiant-7": "Blaze", "radiant-8": "Deep Sea", "radiant-9": "Amber",
+            "radiant-10": "Grape", "radiant-11": "Lavender", "radiant-12": "Coral",
+            "nature-1": "Sunrise", "nature-2": "Forest", "nature-3": "Snow Peak",
+            "nature-4": "Desert", "nature-5": "Glacier", "nature-6": "Sakura",
+            "dark-1": "Midnight", "dark-2": "Lava", "dark-3": "Abyss",
+            "dark-4": "Carbon", "dark-5": "Starry", "dark-6": "Navy",
+            "mesh-1": "Vivid", "mesh-2": "Iridescent", "mesh-3": "Cotton Candy",
+            "mesh-4": "Galaxy", "mesh-5": "Sea Salt", "mesh-6": "Morning Glow",
+            "solid-1": "White", "solid-2": "Light Gray", "solid-3": "Black",
+            "solid-4": "Dark Gray", "solid-5": "Light Blue", "solid-6": "Light Pink",
+            "solid-7": "Light Green", "solid-8": "Light Purple", "solid-9": "Dark Purple",
+            "solid-10": "Dark Red"
+        },
+        "shadow": {
+            "none": "None", "soft": "Soft", "medium": "Medium", "hard": "Hard",
+            "elevated": "Elevated", "glow-blue": "Blue Glow", "glow-purple": "Purple Glow",
+            "glow-pink": "Pink Glow", "inset": "Inset", "sharp": "Sharp",
+            "retro": "Retro", "ambient": "Ambient"
+        },
+        "overlay": {
+            "none": "None", "diagonal-lines": "Diagonal", "diagonal-lines-dense": "Dense Diagonal",
+            "crosshatch": "Crosshatch", "dots": "Dots", "dots-dense": "Dense Dots",
+            "grid": "Grid", "grid-dense": "Dense Grid", "horizontal-lines": "Horizontal",
+            "vertical-lines": "Vertical", "zigzag": "Zigzag", "noise-light": "Light Noise"
+        },
+        "templateName": {
+            "default": "Default", "transparent": "Transparent", "quote": "Quote",
+            "excerpt": "Excerpt", "memo": "Memo", "bento": "Bento",
+            "noir": "Noir", "frame": "Frame", "minimal": "Minimal", "story": "Story"
+        },
+        "templateDesc": {
+            "default": "Classic gradient + rounded card", "transparent": "Light bg + translucent card",
+            "quote": "Warm gradient + large quote", "excerpt": "Elegant style + refined typography",
+            "memo": "Clean white + GitHub style", "bento": "Vibrant gradient + compact layout",
+            "noir": "Dark style + emerald typography", "frame": "Grid texture + squared layout",
+            "minimal": "Minimal white + no shadow", "story": "Pink gradient + soft corners"
+        },
+        "mdStyle": {
+            "prose": "Tailwind Typography",
+            "github": "GitHub Style",
+            "emerald": "Emerald dark, green accent",
+            "classic": "Classic custom style"
+        }
+    },
+    "defaults": {
+        "markdown": "# Markdown2Image\n\nConvert Markdown into beautiful images, share to social media with one click.\n\n## Highlights\n\n- **Live Preview** — See the final result as you edit\n- **Rich Backgrounds** — 40+ gradients / solid colors / custom images\n- **Shadow & Texture** — Multiple box-shadow and overlay effects\n- **Template System** — Switch preset typography styles with one click\n- **One-Click Export** — Download PNG or copy to clipboard\n\n## Code Example\n\n```javascript\nfunction hello(name) {\n  console.log(`Hello, ${name}!`);\n}\n\nhello('World');\n```\n\n> \"Simplicity is the ultimate sophistication.\" — Leonardo da Vinci\n\n---\n\n*Click the card to enter edit mode*"
+    },
+    "landing": {
+        "navbar": {
+            "features": "Features",
+            "testimonials": "Testimonials",
+            "showcase": "Showcase",
+            "faq": "FAQ",
+            "getStarted": "Get Started"
+        },
+        "hero": {
+            "tagline": "Built for creators and media teams",
+            "headlinePre": "Make your words ",
+            "headlinePost": " stand out instantly",
+            "subtitle": "Turn Markdown into stunning visual cards. 40+ gradient backgrounds, 10+ typography templates, one-click HD PNG export.",
+            "badgeLivePreview": "Live Preview",
+            "badge40Bg": "40+ Backgrounds",
+            "badgeTemplates": "Template System",
+            "badgeHDExport": "HD Export",
+            "ctaStart": "Get Started",
+            "ctaLearnMore": "Learn More",
+            "noSignUp": "No sign-up required, free to use"
+        },
+        "painPoints": {
+            "label": "Pain Points",
+            "title": "Facing these challenges?",
+            "subtitle": "We identified the most common obstacles in content creation and built instant solutions.",
+            "p1Title": "Plain text lacks impact?",
+            "p1Desc": "Information gets overlooked. You need visually striking content to boost engagement and reach.",
+            "p2Title": "Formatting is tedious?",
+            "p2Desc": "Manually adjusting fonts, spacing, and colors is painful — starting from scratch every time.",
+            "p3Title": "Inconsistent screenshots?",
+            "p3Desc": "Manual screenshots are blurry and inconsistent, reducing quality on social media.",
+            "p4Title": "No unified visual identity?",
+            "p4Desc": "Every image looks different, lacking brand consistency and professional appearance."
+        },
+        "features": {
+            "label": "Features",
+            "title": "What can Md2Img do for you?",
+            "subtitle": "Full support from content creation to sharing.",
+            "f1Title": "Live Markdown Rendering",
+            "f1Desc": "WYSIWYG editing — zero gap between writing and preview.",
+            "f2Title": "40+ Background Themes",
+            "f2Desc": "Gradients, solid colors, custom images — browse by category.",
+            "f3Title": "Shadow & Texture System",
+            "f3Desc": "12 shadow presets + 12 texture overlays for premium quality.",
+            "f4Title": "10+ Typography Templates",
+            "f4Desc": "Quote, Excerpt, Memo, Noir... switch preset styles instantly.",
+            "f5Title": "Multi-Card Management",
+            "f5Desc": "Add, switch, delete cards — manage like an artboard.",
+            "f6Title": "One-Click HD Export",
+            "f6Desc": "2x resolution PNG export, or copy directly to clipboard."
+        },
+        "testimonials": {
+            "title": "Why users choose Md2Img",
+            "subtitle": "Real feedback from users across industries",
+            "row1": [
+                { "name": "Lin Yi", "role": "Content Creator", "text": "Converting Markdown to images is so convenient. A manuscript becomes a beautiful card in minutes, with one-click background switching." },
+                { "name": "Zhou Heng", "role": "Business Owner", "text": "The template system saves our team tons of time. Brand colors and fonts applied in one click, more consistent output." },
+                { "name": "Yuki", "role": "Social Media Blogger", "text": "Beautiful gradients, friendly typography, exports ready for all social platforms." },
+                { "name": "Chen Xiao", "role": "Brand Manager", "text": "Template duplication across projects is amazing. Visual consistency achieved quickly for campaigns." },
+                { "name": "Aiden", "role": "Education Blogger", "text": "I use the memo template for knowledge cards. HD export is perfect for classroom sharing." },
+                { "name": "Wang Qi", "role": "E-commerce Seller", "text": "Batch-generate product highlight cards. Marketing materials ready in a day, efficiency doubled." },
+                { "name": "Li Ming", "role": "UI Designer", "text": "The shadow and texture system is brilliant. Card quality far exceeds other tools." },
+                { "name": "Zhang Wei", "role": "Product Manager", "text": "Multi-card management is very practical. Create a series at once, standardized output." }
+            ],
+            "row2": [
+                { "name": "Emma", "role": "Marketing", "text": "So much smoother than other tools. Campaign poster efficiency doubled." },
+                { "name": "Liu Yang", "role": "Media Operator", "text": "Fine-tuned corners and shadows. Card quality surpasses similar products." },
+                { "name": "Alex", "role": "Entrepreneur", "text": "Rich template library. Finding the right one for any scenario saves massive design costs." },
+                { "name": "Zhao Ya", "role": "Trainer", "text": "HD export is powerful. Print quality is great too, students love it." },
+                { "name": "Mark", "role": "Indie Developer", "text": "Open source and free. High code quality, integrates smoothly into my workflow." },
+                { "name": "Sun Li", "role": "PR Specialist", "text": "Quick image generation in emergencies. My boss praises the efficiency." },
+                { "name": "David", "role": "Content Planner", "text": "Professional color combinations. Even non-designers create tasteful work." },
+                { "name": "Chen Chen", "role": "Student", "text": "Making note-sharing cards for class. Classmates love them — write in Markdown, generate in one click." }
+            ]
+        },
+        "showcase": {
+            "title": "Showcase Gallery",
+            "subtitle": "Card examples with different backgrounds and typography styles"
+        },
+        "faq": {
+            "title": "FAQ",
+            "items": [
+                { "q": "Is it free to use?", "a": "Yes, Md2Img is completely free and open source. All features, templates, and background themes are unlimited, no sign-up required." },
+                { "q": "Which Markdown syntax is supported?", "a": "Full GitHub Flavored Markdown (GFM) syntax, including headings, lists, bold, italic, links, images, code blocks, tables, task lists, strikethrough, and more." },
+                { "q": "What is the export resolution?", "a": "Exports at 2x pixel ratio in PNG format by default, ensuring crisp display on high-resolution screens. For example, a 540px card exports as a 1080px image." },
+                { "q": "Can I use custom background images?", "a": "Yes. Click \"Upload Background\" in the background panel to use a local image as card background. Supports JPG, PNG, WebP, and other common formats." },
+                { "q": "Does it support code syntax highlighting?", "a": "Yes. Powered by Prism highlighting engine, supporting JavaScript, Python, Go, Rust, and dozens of other languages, with automatic light/dark code theme switching." },
+                { "q": "Is my data safe?", "a": "Completely safe. All editing and exporting happens locally in your browser — nothing is uploaded to any server. Your content stays on your device." }
+            ]
+        },
+        "cta": {
+            "titlePre": "Everything is ready, ",
+            "titleHighlight": "start creating",
+            "titlePost": " now!",
+            "subtitle": "You've discovered the power of Md2Img. Don't hesitate — create your first card and bring your ideas to life!",
+            "button": "Get Started"
+        },
+        "footer": {
+            "desc": "Turn Markdown into stunning visual cards. Free, open source, privacy-first.",
+            "product": "Product",
+            "startCreating": "Start Creating",
+            "features": "Features",
+            "faq": "FAQ",
+            "social": "Social",
+            "copyright": "© {{year}} Md2Img. Open source, runs locally, data stays safe."
+        }
+    },
+    "langSwitcher": {
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "en": "English",
+        "ja": "日本語",
+        "ko": "한국어"
+    }
+}

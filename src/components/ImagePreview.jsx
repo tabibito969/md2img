@@ -10,6 +10,7 @@
  * ============================================================================
  */
 import { forwardRef, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -80,6 +81,7 @@ const ImagePreview = forwardRef(function ImagePreview(
     },
     ref,
 ) {
+    const { t } = useTranslation()
     const isDark = theme.variant === 'dark'
 
     /* ---------- Resolve shadow and overlay ---------- */
@@ -133,7 +135,7 @@ const ImagePreview = forwardRef(function ImagePreview(
                 if (!safeSrc) {
                     return (
                         <div className="md-img-blocked">
-                            外链图片已禁用
+                            {t('editor.externalImageBlocked')}
                             {alt ? `：${alt}` : ''}
                         </div>
                     )
@@ -141,7 +143,7 @@ const ImagePreview = forwardRef(function ImagePreview(
                 return <img src={safeSrc} alt={alt || ''} loading="lazy" />
             },
         }),
-        [isDark],
+        [isDark, t],
     )
 
     const bodyClassName = getBodyClassName(markdownStyle, isDark)

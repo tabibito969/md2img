@@ -7,13 +7,15 @@
  * ============================================================================
  */
 import { LayoutTemplate, Image, Sparkles } from 'lucide-react'
-
-const tabs = [
-    { id: 'template', icon: LayoutTemplate, label: '模板' },
-    { id: 'background', icon: Image, label: '背景' },
-]
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function IconSidebar({ activeTab, onTabChange }) {
+    const { t } = useTranslation()
+    const tabs = [
+        { id: 'template', icon: LayoutTemplate, labelKey: 'sidebar.template' },
+        { id: 'background', icon: Image, labelKey: 'sidebar.background' },
+    ]
     return (
         <div className="flex flex-col items-center w-[52px] h-full bg-gradient-to-b from-[#16162a] to-[#111122] border-r border-white/[0.04] shrink-0 select-none">
             {/* Logo */}
@@ -27,7 +29,7 @@ export default function IconSidebar({ activeTab, onTabChange }) {
             <div className="w-6 h-px bg-white/[0.06] mb-2" />
 
             {/* Nav Icons */}
-            <div className="flex flex-col items-center gap-0.5 w-full px-1.5" role="tablist" aria-label="侧栏导航">
+            <div className="flex flex-col items-center gap-0.5 w-full px-1.5" role="tablist" aria-label={t('sidebar.nav')}>
                 {tabs.map((tab) => {
                     const Icon = tab.icon
                     const isActive = activeTab === tab.id
@@ -39,7 +41,7 @@ export default function IconSidebar({ activeTab, onTabChange }) {
                             aria-selected={isActive}
                             onClick={() => onTabChange(tab.id)}
                             className="group relative flex flex-col items-center justify-center w-full py-2.5 rounded-lg"
-                            title={tab.label}
+                            title={t(tab.labelKey)}
                         >
                             {/* Active indicator - left bar */}
                             {isActive && (
@@ -61,11 +63,16 @@ export default function IconSidebar({ activeTab, onTabChange }) {
                                         : 'text-white/25 group-hover:text-white/50'
                                 }`}
                             >
-                                {tab.label}
+                                {t(tab.labelKey)}
                             </span>
                         </button>
                     )
                 })}
+            </div>
+
+            {/* Language Switcher at bottom */}
+            <div className="mt-auto mb-3">
+                <LanguageSwitcher variant="sidebar" />
             </div>
         </div>
     )

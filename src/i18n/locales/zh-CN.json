@@ -1,0 +1,249 @@
+{
+    "sidebar": {
+        "template": "模板",
+        "background": "背景",
+        "nav": "侧栏导航"
+    },
+    "templatePanel": {
+        "template": "模板",
+        "layout": "布局",
+        "layoutComingSoon": "布局选项即将推出"
+    },
+    "backgroundPanel": {
+        "color": "颜色",
+        "shadow": "阴影",
+        "uploadBg": "上传背景",
+        "custom": "自定义",
+        "imageOnly": "仅支持图片文件",
+        "imageTooLarge": "图片过大，请小于 10MB"
+    },
+    "shadowPanel": {
+        "selectShadow": "选择阴影",
+        "overlayTexture": "纹理叠加"
+    },
+    "topBar": {
+        "undo": "撤销",
+        "undoComingSoon": "撤销（即将推出）",
+        "cardNamePlaceholder": "添加卡片名称",
+        "cardName": "卡片名称",
+        "styleLabel": "排版风格: {{name}}",
+        "share": "分享",
+        "shareComingSoon": "分享（即将推出）",
+        "copy": "复制",
+        "copied": "已复制",
+        "export": "导出"
+    },
+    "properties": {
+        "properties": "属性",
+        "visibility": "显示隐藏",
+        "syncAll": "同步所有卡片",
+        "watermark": "水印",
+        "template": "模板",
+        "templateSize": "模板尺寸",
+        "bgColor": "背景色",
+        "aspectRatio": "尺寸比例",
+        "adaptive": "自适应",
+        "container": "容器",
+        "padding": "内边距",
+        "borderRadius": "圆角半径",
+        "visibilityComingSoon": "显示隐藏设置即将推出"
+    },
+    "editor": {
+        "markdown": "Markdown",
+        "chars": "{{count}} 字符",
+        "finishEditing": "完成编辑",
+        "editorLabel": "Markdown 编辑器",
+        "editorPlaceholder": "在这里输入或粘贴 Markdown...",
+        "prevCard": "上一张卡片",
+        "nextCard": "下一张卡片",
+        "addCard": "添加卡片",
+        "addNewCard": "添加新卡片",
+        "cardCounter": "卡片 {{current}}/{{total}}",
+        "delete": "删除",
+        "deleteCard": "删除当前卡片",
+        "loadingEditor": "加载编辑器...",
+        "externalImageBlocked": "外链图片已禁用"
+    },
+    "toast": {
+        "clipboardNotSupported": "当前环境不支持剪贴板复制，请使用下载",
+        "imageCopyNotSupported": "当前浏览器不支持图片复制，请使用下载",
+        "clipboardDenied": "剪贴板权限被拒绝",
+        "imageEmpty": "生成图片为空",
+        "downloaded": "图片已下载",
+        "exportFailed": "导出失败，请重试",
+        "copiedToClipboard": "已复制到剪贴板",
+        "copyFailed": "复制失败，请重试"
+    },
+    "config": {
+        "themeCategory": {
+            "gradient": "渐变",
+            "nature": "自然",
+            "dark": "暗色",
+            "mesh": "网格渐变",
+            "solid": "纯色"
+        },
+        "theme": {
+            "radiant-1": "晨曦", "radiant-2": "暖阳", "radiant-3": "翡翠",
+            "radiant-4": "极光", "radiant-5": "落日", "radiant-6": "星河",
+            "radiant-7": "烈焰", "radiant-8": "深海", "radiant-9": "琥珀",
+            "radiant-10": "葡萄", "radiant-11": "薰衣草", "radiant-12": "珊瑚",
+            "nature-1": "日出", "nature-2": "森林", "nature-3": "雪山",
+            "nature-4": "沙漠", "nature-5": "冰川", "nature-6": "樱花",
+            "dark-1": "暗夜", "dark-2": "熔岩", "dark-3": "深渊",
+            "dark-4": "碳黑", "dark-5": "星空", "dark-6": "午夜蓝",
+            "mesh-1": "极彩", "mesh-2": "虹光", "mesh-3": "棉花糖",
+            "mesh-4": "银河", "mesh-5": "海盐", "mesh-6": "朝霞",
+            "solid-1": "纯白", "solid-2": "浅灰", "solid-3": "纯黑",
+            "solid-4": "深灰", "solid-5": "淡蓝", "solid-6": "淡粉",
+            "solid-7": "淡绿", "solid-8": "淡紫", "solid-9": "暗紫",
+            "solid-10": "暗红"
+        },
+        "shadow": {
+            "none": "无", "soft": "柔和", "medium": "中等", "hard": "硬边",
+            "elevated": "悬浮", "glow-blue": "蓝光", "glow-purple": "紫光",
+            "glow-pink": "粉光", "inset": "内嵌", "sharp": "锐利",
+            "retro": "复古", "ambient": "环境光"
+        },
+        "overlay": {
+            "none": "无", "diagonal-lines": "斜线", "diagonal-lines-dense": "密斜线",
+            "crosshatch": "交叉线", "dots": "圆点", "dots-dense": "密圆点",
+            "grid": "网格", "grid-dense": "密网格", "horizontal-lines": "横线",
+            "vertical-lines": "竖线", "zigzag": "锯齿", "noise-light": "浅噪点"
+        },
+        "templateName": {
+            "default": "默认", "transparent": "透明", "quote": "金句",
+            "excerpt": "书摘", "memo": "备忘录", "bento": "便当",
+            "noir": "黑日", "frame": "框界", "minimal": "简约", "story": "故事"
+        },
+        "templateDesc": {
+            "default": "经典渐变背景 + 圆角卡片", "transparent": "淡色背景 + 半透明卡片",
+            "quote": "温暖渐变 + 大字引言", "excerpt": "淡雅风格 + 优雅排版",
+            "memo": "简洁白底 + GitHub 排版", "bento": "鲜艳渐变 + 紧凑布局",
+            "noir": "暗黑风格 + 翡翠排版", "frame": "网格纹理 + 方正布局",
+            "minimal": "极简白底 + 无阴影", "story": "粉色渐变 + 柔和圆角"
+        },
+        "mdStyle": {
+            "prose": "Tailwind Typography 排版",
+            "github": "GitHub 风格",
+            "emerald": "翡翠暗色风格，绿色强调",
+            "classic": "经典自定义风格"
+        }
+    },
+    "defaults": {
+        "markdown": "# Markdown2Image\n\n将 Markdown 转换为精美图片，一键分享到社交媒体。\n\n## 特性亮点\n\n- **实时预览** — 编辑即可看到最终效果\n- **丰富背景** — 40+ 渐变 / 纯色 / 自定义图片\n- **阴影纹理** — 多种 box-shadow 和叠加效果\n- **模板系统** — 一键切换预设排版风格\n- **一键导出** — 下载 PNG 或复制到剪贴板\n\n## 代码示例\n\n```javascript\nfunction hello(name) {\n  console.log(`Hello, ${name}!`);\n}\n\nhello('World');\n```\n\n> \"简约是终极的精致。\" —— 达·芬奇\n\n---\n\n*点击卡片即可进入编辑模式*"
+    },
+    "landing": {
+        "navbar": {
+            "features": "功能特点",
+            "testimonials": "用户评价",
+            "showcase": "案例",
+            "faq": "常见问题",
+            "getStarted": "立即开始创作"
+        },
+        "hero": {
+            "tagline": "为创作者与自媒体团队而设",
+            "headlinePre": "用 ",
+            "headlinePost": " 让你的文字一眼出彩",
+            "subtitle": "将 Markdown 快速转为高质视觉卡片，40+ 渐变背景，10+ 排版模板，一键导出高清 PNG。",
+            "badgeLivePreview": "实时预览",
+            "badge40Bg": "40+ 背景",
+            "badgeTemplates": "模板系统",
+            "badgeHDExport": "高清导出",
+            "ctaStart": "立即开始创作",
+            "ctaLearnMore": "了解更多",
+            "noSignUp": "无需注册，免费使用"
+        },
+        "painPoints": {
+            "label": "痛点解决",
+            "title": "你是否遇到这些困扰？",
+            "subtitle": "关注真实创作场景，我们提炼出最常见的阻碍，并提供即用即得的解决方案。",
+            "p1Title": "纯文字缺乏吸引力？",
+            "p1Desc": "信息容易被忽略，需要更具视觉冲击力的表达方式来提升关注度与传播效率。",
+            "p2Title": "排版调整费时费力？",
+            "p2Desc": "手动调整字体、间距、颜色非常繁琐，每次都要从零开始设计。",
+            "p3Title": "截图质量不稳定？",
+            "p3Desc": "手动截图模糊、尺寸不统一，发到社交媒体上效果大打折扣。",
+            "p4Title": "没有统一的视觉风格？",
+            "p4Desc": "每次做图风格不同，缺乏品牌一致性，影响专业形象。"
+        },
+        "features": {
+            "label": "功能与特点",
+            "title": "Md2Img 能为你做什么？",
+            "subtitle": "从内容创作到分享发布，为你提供全方位支持。",
+            "f1Title": "Markdown 实时渲染",
+            "f1Desc": "所见即所得，编辑与预览零距离，专注内容表达。",
+            "f2Title": "40+ 背景主题",
+            "f2Desc": "渐变、纯色、自定义图片，按分类快速浏览与选择。",
+            "f3Title": "阴影与纹理系统",
+            "f3Desc": "12 种阴影预设 + 12 种纹理叠加，轻松打造高级质感。",
+            "f4Title": "10+ 排版模板",
+            "f4Desc": "金句、书摘、备忘录、黑日...一键切换预设风格。",
+            "f5Title": "多卡片批量管理",
+            "f5Desc": "添加、切换、删除多张卡片，像管理画板一样高效。",
+            "f6Title": "一键高清导出",
+            "f6Desc": "2x 分辨率 PNG 导出，或直接复制到剪贴板分享。"
+        },
+        "testimonials": {
+            "title": "用户选择 Md2Img 的理由",
+            "subtitle": "来自各行各业用户的真实反馈",
+            "row1": [
+                { "name": "林一", "role": "内容创作者", "text": "Markdown 转图片太方便了，几分钟就能把一篇稿件变成精美卡片，背景还能一键切换。" },
+                { "name": "周衡", "role": "企业主", "text": "模板系统帮团队省了大量时间，品牌色和字体一键套用，产出更稳定。" },
+                { "name": "Yuki", "role": "社交媒体博主", "text": "背景渐变很精致，中文排版友好，直接导出适配小红书和微博。" },
+                { "name": "陈潇", "role": "品牌运营", "text": "模板复制到整组作品太好用，活动视觉能快速统一，上线节奏更稳。" },
+                { "name": "Aiden", "role": "教育博主", "text": "常用备忘录模板做知识卡片，高清导出便于课堂分享。" },
+                { "name": "王琪", "role": "电商卖家", "text": "批量生成商品亮点卡，转化素材一天就能备齐，效率翻倍。" },
+                { "name": "李明", "role": "UI 设计师", "text": "阴影和纹理系统太棒了，做出来的卡片质感比其他工具好很多。" },
+                { "name": "张伟", "role": "产品经理", "text": "多卡片管理功能很实用，一次做一套系列图，输出标准化。" }
+            ],
+            "row2": [
+                { "name": "Emma", "role": "市场营销", "text": "操作比其他工具顺手太多，做活动海报效率提升了一倍。" },
+                { "name": "刘洋", "role": "自媒体运营", "text": "圆角和阴影调节很细致，做出来的卡片质感比同类产品好很多。" },
+                { "name": "Alex", "role": "创业者", "text": "模板库足够丰富，各种场景都能找到合适的，节省了大量设计成本。" },
+                { "name": "赵雅", "role": "培训讲师", "text": "高清导出很给力，打印出来的效果也很棒，学员反馈很好。" },
+                { "name": "Mark", "role": "独立开发者", "text": "开源免费，代码质量高，集成到自己的工作流里很顺利。" },
+                { "name": "孙丽", "role": "公关专员", "text": "紧急情况下能快速出图，救急功能很强，老板都夸效率高。" },
+                { "name": "David", "role": "内容策划", "text": "颜色搭配很专业，不懂设计也能做出有品味的作品。" },
+                { "name": "陈晨", "role": "学生", "text": "做课堂笔记分享卡片，同学们都说好看，用 Markdown 写完一键生成。" }
+            ]
+        },
+        "showcase": {
+            "title": "精选案例，点亮创意",
+            "subtitle": "不同背景 + 排版风格的卡片效果展示"
+        },
+        "faq": {
+            "title": "常见问题",
+            "items": [
+                { "q": "是否免费使用？", "a": "是的，Md2Img 完全免费且开源。所有功能、模板、背景主题均可无限制使用，无需注册。" },
+                { "q": "支持哪些 Markdown 语法？", "a": "支持完整的 GitHub Flavored Markdown (GFM) 语法，包括标题、列表、粗体、斜体、链接、图片、代码块、表格、任务列表、删除线等。" },
+                { "q": "导出图片的分辨率是多少？", "a": "默认以 2x 像素比导出 PNG 格式，确保在高分辨率屏幕上也能清晰显示。例如 540px 宽的卡片，实际导出为 1080px 宽的图片。" },
+                { "q": "可以自定义背景图片吗？", "a": "可以。在背景面板中点击\"上传背景\"按钮，选择本地图片即可作为卡片背景使用。支持 JPG、PNG、WebP 等常见格式。" },
+                { "q": "支持代码语法高亮吗？", "a": "支持。使用 Prism 语法高亮引擎，支持 JavaScript、Python、Go、Rust 等数十种编程语言，并根据主题自动切换明暗代码风格。" },
+                { "q": "数据是否安全？", "a": "完全安全。所有编辑和导出操作均在你的浏览器本地完成，不会上传任何内容到服务器。你的文字始终只存在于你的设备上。" }
+            ]
+        },
+        "cta": {
+            "titlePre": "一切准备就绪，",
+            "titleHighlight": "开始创作",
+            "titlePost": " 吧！",
+            "subtitle": "你已经发现了 Md2Img 的潜力，别再犹豫，立即动手制作你的第一张卡片，让创意成为现实！",
+            "button": "开始使用"
+        },
+        "footer": {
+            "desc": "将 Markdown 快速转为高质视觉卡片，免费开源，隐私安全。",
+            "product": "产品",
+            "startCreating": "开始创作",
+            "features": "功能特点",
+            "faq": "常见问题",
+            "social": "社交媒体",
+            "copyright": "© {{year}} Md2Img. 开源免费，本地运行，数据安全。"
+        }
+    },
+    "langSwitcher": {
+        "zh-CN": "简体中文",
+        "zh-TW": "繁體中文",
+        "en": "English",
+        "ja": "日本語",
+        "ko": "한국어"
+    }
+}

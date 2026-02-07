@@ -68,22 +68,27 @@ export const themes = [
 
 export const backgroundCategories = [
     {
+        key: 'gradient',
         name: '渐变',
         items: themes.filter((t) => t.id.startsWith('radiant-')),
     },
     {
+        key: 'nature',
         name: '自然',
         items: themes.filter((t) => t.id.startsWith('nature-')),
     },
     {
+        key: 'dark',
         name: '暗色',
         items: themes.filter((t) => t.id.startsWith('dark-')),
     },
     {
+        key: 'mesh',
         name: '网格渐变',
         items: themes.filter((t) => t.id.startsWith('mesh-')),
     },
     {
+        key: 'solid',
         name: '纯色',
         items: themes.filter((t) => t.id.startsWith('solid-')),
     },

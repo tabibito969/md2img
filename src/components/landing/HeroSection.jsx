@@ -1,12 +1,13 @@
 import { Link } from 'react-router'
 import { motion as Motion } from 'framer-motion'
 import { Eye, Palette, LayoutTemplate, ImageDown } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
-const badges = [
-    { icon: Eye, label: '实时预览', color: 'from-blue-500 to-cyan-400' },
-    { icon: Palette, label: '40+ 背景', color: 'from-purple-500 to-pink-400' },
-    { icon: LayoutTemplate, label: '模板系统', color: 'from-amber-500 to-orange-400' },
-    { icon: ImageDown, label: '高清导出', color: 'from-emerald-500 to-teal-400' },
+const badgeConfig = [
+    { icon: Eye, labelKey: 'landing.hero.badgeLivePreview', color: 'from-blue-500 to-cyan-400' },
+    { icon: Palette, labelKey: 'landing.hero.badge40Bg', color: 'from-purple-500 to-pink-400' },
+    { icon: LayoutTemplate, labelKey: 'landing.hero.badgeTemplates', color: 'from-amber-500 to-orange-400' },
+    { icon: ImageDown, labelKey: 'landing.hero.badgeHDExport', color: 'from-emerald-500 to-teal-400' },
 ]
 
 const fadeUp = {
@@ -15,6 +16,8 @@ const fadeUp = {
 }
 
 export default function HeroSection() {
+    const { t } = useTranslation()
+
     return (
         <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
             {/* Glow background */}
@@ -29,7 +32,7 @@ export default function HeroSection() {
                     variants={fadeUp}
                     className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/20 bg-indigo-500/5 text-[12px] text-indigo-300 mb-6"
                 >
-                    为创作者与自媒体团队而设
+                    {t('landing.hero.tagline')}
                 </Motion.div>
 
                 {/* Main headline */}
@@ -40,12 +43,12 @@ export default function HeroSection() {
                     variants={fadeUp}
                     className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight"
                 >
-                    <span className="text-white">用 </span>
+                    <span className="text-white">{t('landing.hero.headlinePre')}</span>
                     <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                         Md2Img
                     </span>
                     <br className="hidden sm:block" />
-                    <span className="text-white"> 让你的文字一眼出彩</span>
+                    <span className="text-white">{t('landing.hero.headlinePost')}</span>
                 </Motion.h1>
 
                 {/* Subtitle */}
@@ -56,7 +59,7 @@ export default function HeroSection() {
                     variants={fadeUp}
                     className="mt-5 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed"
                 >
-                    将 Markdown 快速转为高质视觉卡片，40+ 渐变背景，10+ 排版模板，一键导出高清 PNG。
+                    {t('landing.hero.subtitle')}
                 </Motion.p>
 
                 {/* Badges */}
@@ -67,17 +70,17 @@ export default function HeroSection() {
                     variants={fadeUp}
                     className="flex flex-wrap justify-center gap-3 mt-8"
                 >
-                    {badges.map((b) => {
+                    {badgeConfig.map((b) => {
                         const Icon = b.icon
                         return (
                             <span
-                                key={b.label}
+                                key={b.labelKey}
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-[12px] text-white/60"
                             >
                                 <span className={`w-4 h-4 rounded-full bg-gradient-to-br ${b.color} flex items-center justify-center`}>
                                     <Icon className="h-2.5 w-2.5 text-white" strokeWidth={2} />
                                 </span>
-                                {b.label}
+                                {t(b.labelKey)}
                             </span>
                         )
                     })}
@@ -95,13 +98,13 @@ export default function HeroSection() {
                         to="/app"
                         className="px-6 py-2.5 text-sm font-medium bg-indigo-500 text-white rounded-xl hover:bg-indigo-400 shadow-lg shadow-indigo-500/25 transition-all"
                     >
-                        立即开始创作
+                        {t('landing.hero.ctaStart')}
                     </Link>
                     <a
                         href="#features"
                         className="px-6 py-2.5 text-sm font-medium text-white/60 rounded-xl border border-white/10 hover:bg-white/[0.04] hover:text-white/80 transition-all"
                     >
-                        了解更多
+                        {t('landing.hero.ctaLearnMore')}
                     </a>
                 </Motion.div>
 
@@ -169,7 +172,7 @@ export default function HeroSection() {
                     variants={fadeUp}
                     className="mt-6 text-[12px] text-white/25"
                 >
-                    无需注册，免费使用
+                    {t('landing.hero.noSignUp')}
                 </Motion.p>
             </div>
         </section>

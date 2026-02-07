@@ -1,4 +1,5 @@
 import { motion as Motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 /* Showcase cards simulate different theme + style combos */
 const showcaseCards = [
@@ -51,6 +52,8 @@ function MiniCard({ card }) {
 }
 
 export default function ShowcaseSection() {
+    const { t } = useTranslation()
+
     return (
         <section id="showcase" className="py-20 md:py-28 px-5">
             <div className="max-w-6xl mx-auto">
@@ -62,10 +65,10 @@ export default function ShowcaseSection() {
                     className="text-center mb-14"
                 >
                     <h2 className="text-3xl md:text-4xl font-bold text-white">
-                        精选案例，点亮创意
+                        {t('landing.showcase.title')}
                     </h2>
                     <p className="mt-3 text-white/35 text-sm">
-                        不同背景 + 排版风格的卡片效果展示
+                        {t('landing.showcase.subtitle')}
                     </p>
                 </Motion.div>
 

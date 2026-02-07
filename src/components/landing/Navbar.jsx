@@ -2,15 +2,11 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import { Sparkles, Menu, X } from 'lucide-react'
 import { motion as Motion, useScroll, useTransform } from 'framer-motion'
-
-const navLinks = [
-    { label: '功能特点', href: '#features' },
-    { label: '用户评价', href: '#testimonials' },
-    { label: '案例', href: '#showcase' },
-    { label: '常见问题', href: '#faq' },
-]
+import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '../LanguageSwitcher'
 
 export default function Navbar() {
+    const { t } = useTranslation()
     const [mobileOpen, setMobileOpen] = useState(false)
     const { scrollY } = useScroll()
     const backgroundColor = useTransform(
@@ -18,6 +14,13 @@ export default function Navbar() {
         [0, 100],
         ['rgba(10,10,20,0)', 'rgba(10,10,20,0.92)'],
     )
+
+    const navLinks = [
+        { label: t('landing.navbar.features'), href: '#features' },
+        { label: t('landing.navbar.testimonials'), href: '#testimonials' },
+        { label: t('landing.navbar.showcase'), href: '#showcase' },
+        { label: t('landing.navbar.faq'), href: '#faq' },
+    ]
 
     /* Close mobile menu on resize */
     useEffect(() => {
@@ -54,13 +57,14 @@ export default function Navbar() {
                         ))}
                     </div>
 
-                    {/* CTA */}
+                    {/* CTA + Language Switcher */}
                     <div className="hidden md:flex items-center gap-3">
+                        <LanguageSwitcher />
                         <Link
                             to="/app"
                             className="px-4 py-[6px] text-[13px] font-medium bg-indigo-500 text-white rounded-lg hover:bg-indigo-400 shadow-sm shadow-indigo-500/25 transition-colors"
                         >
-                            立即开始创作
+                            {t('landing.navbar.getStarted')}
                         </Link>
                     </div>
 
@@ -87,12 +91,15 @@ export default function Navbar() {
                                 {l.label}
                             </a>
                         ))}
+                        <div className="py-2">
+                            <LanguageSwitcher />
+                        </div>
                         <Link
                             to="/app"
                             className="block text-center px-4 py-2 text-sm font-medium bg-indigo-500 text-white rounded-lg"
                             onClick={() => setMobileOpen(false)}
                         >
-                            立即开始创作
+                            {t('landing.navbar.getStarted')}
                         </Link>
                     </div>
                 )}
