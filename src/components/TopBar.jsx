@@ -28,9 +28,9 @@ export default function TopBar({
     isExporting,
 }) {
     return (
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center px-3 h-[48px] border-b border-white/[0.04] bg-[#16162a]/60 backdrop-blur-xl shrink-0 gap-3">
+        <div className="flex items-center px-3 h-[48px] border-b border-white/[0.04] bg-[#16162a]/60 backdrop-blur-xl shrink-0 gap-3 overflow-hidden">
             {/* Left: Undo + Card Name */}
-            <div className="flex items-center gap-2 min-w-0">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
                 <button
                     type="button"
                     disabled
@@ -51,7 +51,7 @@ export default function TopBar({
             </div>
 
             {/* Center: Style Selector */}
-            <div className="flex items-center gap-[2px] bg-white/[0.04] rounded-lg p-[3px] shrink-0">
+            <div className="flex items-center gap-[2px] bg-white/[0.04] rounded-lg p-[3px] shrink overflow-hidden">
                 {markdownStyles.map((style) => (
                     <button
                         key={style.id}
@@ -59,7 +59,7 @@ export default function TopBar({
                         onClick={() => onStyleChange(style)}
                         title={style.description}
                         aria-label={`排版风格: ${style.name}`}
-                        className={`px-2.5 py-[4px] text-[11px] font-medium rounded-[5px] ${
+                        className={`px-2.5 py-[4px] text-[11px] font-medium rounded-[5px] whitespace-nowrap ${
                             currentStyle.id === style.id
                                 ? 'bg-white/[0.10] text-white/90 shadow-sm shadow-black/10'
                                 : 'text-white/28 hover:text-white/55'
@@ -71,7 +71,7 @@ export default function TopBar({
             </div>
 
             {/* Right: Actions */}
-            <div className="flex items-center justify-end gap-0.5">
+            <div className="flex items-center gap-0.5 shrink-0 whitespace-nowrap">
                 <button
                     type="button"
                     disabled
