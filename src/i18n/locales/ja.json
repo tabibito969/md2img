@@ -119,7 +119,8 @@
             "excerpt": "書評", "memo": "メモ", "bento": "弁当",
             "noir": "ノワール", "frame": "フレーム", "minimal": "ミニマル", "story": "ストーリー",
             "glass": "グラス", "brutal": "ブルータル", "editorial": "エディトリアル",
-            "code": "コード", "midnight": "ミッドナイト", "vapor": "ヴェイパー"
+            "code": "コード", "midnight": "ミッドナイト", "vapor": "ヴェイパー",
+            "social": "ソーシャル", "notion": "Notion", "news": "ニュース", "poster": "ポスター"
         },
         "templateDesc": {
             "default": "クラシックグラデ + 角丸カード", "transparent": "淡い背景 + 半透明カード",
@@ -129,7 +130,9 @@
             "minimal": "極シンプル白地 + 影なし", "story": "ピンクグラデ + 柔らか角丸",
             "glass": "ガラス調 + 柔らかいハイライト", "brutal": "高コントラスト + ハードシャドウ",
             "editorial": "編集レイアウト + 余白多め", "code": "ダークコードカード",
-            "midnight": "低彩度ダーク + 繊細な質感", "vapor": "ネオン + レトロ感"
+            "midnight": "低彩度ダーク + 繊細な質感", "vapor": "ネオン + レトロ感",
+            "social": "SNS風スクショ + クリーンカード", "notion": "ドキュメント風 + 軽い余白",
+            "news": "ニュースレイアウト + 高可読性", "poster": "大見出し + 強いコントラスト"
         },
         "mdStyle": {
             "prose": "Tailwind Typography",

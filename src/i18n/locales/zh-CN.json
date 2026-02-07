@@ -119,7 +119,8 @@
             "excerpt": "书摘", "memo": "备忘录", "bento": "便当",
             "noir": "黑日", "frame": "框界", "minimal": "简约", "story": "故事",
             "glass": "玻璃", "brutal": "粗野", "editorial": "杂志",
-            "code": "代码", "midnight": "暗黑极简", "vapor": "蒸汽波"
+            "code": "代码", "midnight": "暗黑极简", "vapor": "蒸汽波",
+            "social": "社媒", "notion": "Notion", "news": "新闻", "poster": "海报"
         },
         "templateDesc": {
             "default": "经典渐变背景 + 圆角卡片", "transparent": "淡色背景 + 半透明卡片",
@@ -129,7 +130,9 @@
             "minimal": "极简白底 + 无阴影", "story": "粉色渐变 + 柔和圆角",
             "glass": "玻璃拟态 + 轻柔高光", "brutal": "高对比 + 硬朗阴影",
             "editorial": "编辑排版 + 大留白", "code": "深色代码卡片",
-            "midnight": "低饱和暗色 + 细腻质感", "vapor": "霓虹渐变 + 复古氛围"
+            "midnight": "低饱和暗色 + 细腻质感", "vapor": "霓虹渐变 + 复古氛围",
+            "social": "社媒截图风 + 清爽卡片", "notion": "文档风格 + 轻量留白",
+            "news": "新闻排版 + 高可读性", "poster": "大字海报 + 强对比"
         },
         "mdStyle": {
             "prose": "Tailwind Typography 排版",

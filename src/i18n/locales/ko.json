@@ -119,7 +119,8 @@
             "excerpt": "서평", "memo": "메모", "bento": "벤토",
             "noir": "느와르", "frame": "프레임", "minimal": "미니멀", "story": "스토리",
             "glass": "글래스", "brutal": "브루탈", "editorial": "에디토리얼",
-            "code": "코드", "midnight": "미드나이트", "vapor": "베이퍼"
+            "code": "코드", "midnight": "미드나이트", "vapor": "베이퍼",
+            "social": "소셜", "notion": "Notion", "news": "뉴스", "poster": "포스터"
         },
         "templateDesc": {
             "default": "클래식 그라데이션 + 둥근 카드", "transparent": "밝은 배경 + 반투명 카드",
@@ -129,7 +130,9 @@
             "minimal": "미니멀 흰색 + 그림자 없음", "story": "핑크 그라데이션 + 부드러운 모서리",
             "glass": "글래스모피즘 + 부드러운 하이라이트", "brutal": "고대비 + 하드 섀도우",
             "editorial": "에디토리얼 레이아웃 + 여백", "code": "다크 코드 카드",
-            "midnight": "저채도 다크 + 섬세한 질감", "vapor": "네온 그라데이션 + 레트로 감성"
+            "midnight": "저채도 다크 + 섬세한 질감", "vapor": "네온 그라데이션 + 레트로 감성",
+            "social": "소셜 스크린샷 + 클린 카드", "notion": "문서 스타일 + 가벼운 여백",
+            "news": "뉴스 레이아웃 + 높은 가독성", "poster": "큰 제목 + 강한 대비"
         },
         "mdStyle": {
             "prose": "Tailwind Typography",

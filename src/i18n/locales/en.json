@@ -119,7 +119,8 @@
             "excerpt": "Excerpt", "memo": "Memo", "bento": "Bento",
             "noir": "Noir", "frame": "Frame", "minimal": "Minimal", "story": "Story",
             "glass": "Glass", "brutal": "Brutal", "editorial": "Editorial",
-            "code": "Code", "midnight": "Midnight", "vapor": "Vaporwave"
+            "code": "Code", "midnight": "Midnight", "vapor": "Vaporwave",
+            "social": "Social", "notion": "Notion", "news": "News", "poster": "Poster"
         },
         "templateDesc": {
             "default": "Classic gradient + rounded card", "transparent": "Light bg + translucent card",
@@ -129,7 +130,9 @@
             "minimal": "Minimal white + no shadow", "story": "Pink gradient + soft corners",
             "glass": "Glassmorphism + soft highlights", "brutal": "High contrast + hard shadow",
             "editorial": "Editorial layout + generous whitespace", "code": "Dark code card",
-            "midnight": "Muted dark + subtle texture", "vapor": "Neon gradient + retro vibe"
+            "midnight": "Muted dark + subtle texture", "vapor": "Neon gradient + retro vibe",
+            "social": "Social screenshot style + clean card", "notion": "Doc-style + light whitespace",
+            "news": "News layout + high readability", "poster": "Big headline + strong contrast"
         },
         "mdStyle": {
             "prose": "Tailwind Typography",
