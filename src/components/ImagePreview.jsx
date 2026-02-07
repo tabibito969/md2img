@@ -1,10 +1,11 @@
 /**
  * ============================================================================
- * [INPUT]: 接收 markdown、theme、padding、markdownStyle props
+ * [INPUT]: 接收 markdown、theme、padding、borderRadius、cardWidth、
+ *          markdownStyle、shadowStyle、overlayStyle props
  *          依赖 react-markdown + remark-gfm 渲染 Markdown
  *          依赖 react-syntax-highlighter 代码高亮
  * [OUTPUT]: 对外提供 ImagePreview 组件（forwardRef 默认导出）
- * [POS]: 右侧图片预览面板，ref 指向的 DOM 即为导出内容
+ * [POS]: 卡片预览，ref 指向的 DOM 即为导出内容
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
@@ -13,9 +14,10 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { shadowPresets, overlayTextures } from '@/config/shadows'
 
 /* ========================================================================== */
-/*                              IMAGE PREVIEW                                 */
+/*                              IMAGE PREVIEW                                  */
 /* ========================================================================== */
 
 const isRelativeUrl = (value) => {
@@ -65,10 +67,24 @@ const getBodyClassName = (styleId, isDark) => {
 }
 
 const ImagePreview = forwardRef(function ImagePreview(
-    { markdown, theme, padding = 48, markdownStyle = 'prose' },
+    {
+        markdown,
+        theme,
+        padding = 33,
+        borderRadius = 15,
+        cardWidth = 540,
+        cardHeight = 0,
+        markdownStyle = 'prose',
+        shadowId = 'soft',
+        overlayId = 'none',
+    },
     ref,
 ) {
     const isDark = theme.variant === 'dark'
+
+    /* ---------- Resolve shadow and overlay ---------- */
+    const resolvedShadow = shadowPresets.find((s) => s.id === shadowId)
+    const resolvedOverlay = overlayTextures.find((o) => o.id === overlayId)
 
     /* ---------- 根据主题明暗动态切换代码高亮风格 ---------- */
     const markdownComponents = useMemo(
@@ -130,17 +146,43 @@ const ImagePreview = forwardRef(function ImagePreview(
 
     const bodyClassName = getBodyClassName(markdownStyle, isDark)
 
+    /* ---------- Build outer style ---------- */
+    const outerStyle = {
+        background: theme.background,
+        padding: `${padding}px`,
+        width: cardWidth || 540,
+        position: 'relative',
+        overflow: 'hidden',
+    }
+    if (cardHeight > 0) {
+        outerStyle.height = `${cardHeight}px`
+    }
+
     return (
-        <div
-            ref={ref}
-            style={{
-                background: theme.background,
-                padding: `${padding}px`,
-                width: 680,
-            }}
-        >
+        <div ref={ref} style={outerStyle}>
+            {/* Overlay texture layer */}
+            {resolvedOverlay?.css && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: resolvedOverlay.css,
+                        backgroundSize: resolvedOverlay.cssSize || 'auto',
+                        pointerEvents: 'none',
+                        zIndex: 1,
+                    }}
+                />
+            )}
+
+            {/* Card */}
             <div
                 className={`preview-card ${isDark ? 'variant-dark' : 'variant-light'}`}
+                style={{
+                    borderRadius: `${borderRadius}px`,
+                    boxShadow: resolvedShadow?.boxShadow || 'none',
+                    position: 'relative',
+                    zIndex: 2,
+                }}
             >
                 <div className={bodyClassName}>
                     <ReactMarkdown
