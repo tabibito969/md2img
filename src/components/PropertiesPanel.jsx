@@ -7,7 +7,7 @@
  * ============================================================================
  */
 import { useState } from 'react'
-import { Info, Minus, Plus } from 'lucide-react'
+import { Info } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 /* ---------- Section Header ---------- */
@@ -24,10 +24,34 @@ function SectionLabel({ children, info }) {
 
 /* ---------- Number Input with +/- buttons ---------- */
 function NumberInput({ label, value, onChange, min = 0, max = 200, step = 1, unit = 'px' }) {
+    const clamp = (next) => Math.max(min, Math.min(max, next))
+    const handleLabelPointerDown = (event) => {
+        if (event.button !== 0 && event.pointerType !== 'touch') return
+        event.preventDefault()
+        const startX = event.clientX
+        const startValue = value
+        const pixelsPerStep = 6
+        const handleMove = (moveEvent) => {
+            const deltaSteps = Math.round((moveEvent.clientX - startX) / pixelsPerStep)
+            const nextValue = clamp(startValue + deltaSteps * step)
+            onChange(nextValue)
+        }
+        const handleUp = () => {
+            document.body.style.cursor = ''
+            window.removeEventListener('pointermove', handleMove)
+            window.removeEventListener('pointerup', handleUp)
+        }
+        document.body.style.cursor = 'ew-resize'
+        window.addEventListener('pointermove', handleMove)
+        window.addEventListener('pointerup', handleUp)
+    }
     return (
         <div className="flex items-center gap-1">
             <div className="flex items-center flex-1 bg-white/[0.04] rounded-lg border border-white/[0.04] overflow-hidden h-8">
-                <span className="px-2 text-[11px] text-white/30 w-7 text-center shrink-0">
+                <span
+                    className="px-2 text-[11px] text-white/30 w-7 text-center shrink-0 cursor-ew-resize select-none touch-none"
+                    onPointerDown={handleLabelPointerDown}
+                >
                     {label}
                 </span>
                 <input
@@ -35,26 +59,12 @@ function NumberInput({ label, value, onChange, min = 0, max = 200, step = 1, uni
                     value={value}
                     onChange={(e) => {
                         const v = parseInt(e.target.value) || 0
-                        onChange(Math.max(min, Math.min(max, v)))
+                        onChange(clamp(v))
                     }}
                     className="flex-1 bg-transparent text-white/75 text-[12px] py-1 px-0.5 outline-none text-center w-10 font-mono [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
                 <span className="text-[10px] text-white/20 pr-1.5 shrink-0">{unit}</span>
             </div>
-            <button
-                type="button"
-                onClick={() => onChange(Math.max(min, value - step))}
-                className="p-1 text-white/20 hover:text-white/50 hover:bg-white/[0.04] rounded-md h-8 w-6 flex items-center justify-center"
-            >
-                <Minus className="h-3 w-3" strokeWidth={1.5} />
-            </button>
-            <button
-                type="button"
-                onClick={() => onChange(Math.min(max, value + step))}
-                className="p-1 text-white/20 hover:text-white/50 hover:bg-white/[0.04] rounded-md h-8 w-6 flex items-center justify-center"
-            >
-                <Plus className="h-3 w-3" strokeWidth={1.5} />
-            </button>
         </div>
     )
 }
