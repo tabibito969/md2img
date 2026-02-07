@@ -17,7 +17,6 @@ export const templates = [
             padding: 33,
             borderRadius: 15,
             shadow: 'soft',
-            overlay: 'none',
             width: 540,
         },
         preview: {
@@ -36,7 +35,6 @@ export const templates = [
             padding: 33,
             borderRadius: 15,
             shadow: 'ambient',
-            overlay: 'none',
             width: 540,
         },
         preview: {
@@ -55,7 +53,6 @@ export const templates = [
             padding: 40,
             borderRadius: 20,
             shadow: 'elevated',
-            overlay: 'none',
             width: 540,
         },
         preview: {
@@ -74,7 +71,6 @@ export const templates = [
             padding: 36,
             borderRadius: 12,
             shadow: 'soft',
-            overlay: 'none',
             width: 540,
         },
         preview: {
@@ -93,7 +89,6 @@ export const templates = [
             padding: 24,
             borderRadius: 10,
             shadow: 'medium',
-            overlay: 'none',
             width: 540,
         },
         preview: {
@@ -112,7 +107,6 @@ export const templates = [
             padding: 20,
             borderRadius: 16,
             shadow: 'hard',
-            overlay: 'none',
             width: 540,
         },
         preview: {
@@ -131,7 +125,6 @@ export const templates = [
             padding: 33,
             borderRadius: 15,
             shadow: 'glow-purple',
-            overlay: 'noise-light',
             width: 540,
         },
         preview: {
@@ -150,7 +143,6 @@ export const templates = [
             padding: 28,
             borderRadius: 8,
             shadow: 'sharp',
-            overlay: 'grid',
             width: 540,
         },
         preview: {
@@ -169,7 +161,6 @@ export const templates = [
             padding: 40,
             borderRadius: 0,
             shadow: 'none',
-            overlay: 'none',
             width: 540,
         },
         preview: {
@@ -188,11 +179,118 @@ export const templates = [
             padding: 36,
             borderRadius: 24,
             shadow: 'elevated',
-            overlay: 'none',
             width: 540,
         },
         preview: {
             background: 'linear-gradient(135deg, #ff9a9e, #fecfef, #fdfcfb)',
+            cardBg: '#ffffff',
+            textColor: '#1a1a2e',
+        },
+    },
+    {
+        id: 'glass',
+        name: '玻璃',
+        description: '玻璃拟态 + 轻柔高光',
+        config: {
+            theme: 'mesh-2',
+            mdStyle: 'prose',
+            padding: 32,
+            borderRadius: 18,
+            shadow: 'soft',
+            width: 540,
+        },
+        preview: {
+            background: 'linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4)',
+            cardBg: 'rgba(255, 255, 255, 0.7)',
+            textColor: '#1a1a2e',
+        },
+    },
+    {
+        id: 'brutal',
+        name: '粗野',
+        description: '高对比 + 硬朗阴影',
+        config: {
+            theme: 'solid-3',
+            mdStyle: 'classic',
+            padding: 28,
+            borderRadius: 6,
+            shadow: 'sharp',
+            width: 540,
+        },
+        preview: {
+            background: '#09090b',
+            cardBg: '#f8fafc',
+            textColor: '#0f172a',
+        },
+    },
+    {
+        id: 'editorial',
+        name: '杂志',
+        description: '编辑排版 + 大留白',
+        config: {
+            theme: 'solid-2',
+            mdStyle: 'classic',
+            padding: 44,
+            borderRadius: 6,
+            shadow: 'ambient',
+            width: 540,
+        },
+        preview: {
+            background: '#e2e8f0',
+            cardBg: '#ffffff',
+            textColor: '#1f2937',
+        },
+    },
+    {
+        id: 'code',
+        name: '代码',
+        description: '深色代码卡片',
+        config: {
+            theme: 'dark-6',
+            mdStyle: 'github',
+            padding: 28,
+            borderRadius: 12,
+            shadow: 'medium',
+            width: 540,
+        },
+        preview: {
+            background: 'linear-gradient(135deg, #141e30, #243b55)',
+            cardBg: '#0f172a',
+            textColor: '#e2e8f0',
+        },
+    },
+    {
+        id: 'midnight',
+        name: '暗黑极简',
+        description: '低饱和暗色 + 细腻质感',
+        config: {
+            theme: 'solid-3',
+            mdStyle: 'prose',
+            padding: 34,
+            borderRadius: 12,
+            shadow: 'ambient',
+            width: 540,
+        },
+        preview: {
+            background: '#09090b',
+            cardBg: '#1f2937',
+            textColor: '#e5e7eb',
+        },
+    },
+    {
+        id: 'vapor',
+        name: '蒸汽波',
+        description: '霓虹渐变 + 复古氛围',
+        config: {
+            theme: 'mesh-1',
+            mdStyle: 'classic',
+            padding: 30,
+            borderRadius: 18,
+            shadow: 'glow-pink',
+            width: 540,
+        },
+        preview: {
+            background: 'linear-gradient(45deg, #f953c6, #b91d73, #e91e63)',
             cardBg: '#ffffff',
             textColor: '#1a1a2e',
         },

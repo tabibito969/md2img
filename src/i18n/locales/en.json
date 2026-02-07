@@ -117,14 +117,19 @@
         "templateName": {
             "default": "Default", "transparent": "Transparent", "quote": "Quote",
             "excerpt": "Excerpt", "memo": "Memo", "bento": "Bento",
-            "noir": "Noir", "frame": "Frame", "minimal": "Minimal", "story": "Story"
+            "noir": "Noir", "frame": "Frame", "minimal": "Minimal", "story": "Story",
+            "glass": "Glass", "brutal": "Brutal", "editorial": "Editorial",
+            "code": "Code", "midnight": "Midnight", "vapor": "Vaporwave"
         },
         "templateDesc": {
             "default": "Classic gradient + rounded card", "transparent": "Light bg + translucent card",
             "quote": "Warm gradient + large quote", "excerpt": "Elegant style + refined typography",
             "memo": "Clean white + GitHub style", "bento": "Vibrant gradient + compact layout",
             "noir": "Dark style + emerald typography", "frame": "Grid texture + squared layout",
-            "minimal": "Minimal white + no shadow", "story": "Pink gradient + soft corners"
+            "minimal": "Minimal white + no shadow", "story": "Pink gradient + soft corners",
+            "glass": "Glassmorphism + soft highlights", "brutal": "High contrast + hard shadow",
+            "editorial": "Editorial layout + generous whitespace", "code": "Dark code card",
+            "midnight": "Muted dark + subtle texture", "vapor": "Neon gradient + retro vibe"
         },
         "mdStyle": {
             "prose": "Tailwind Typography",

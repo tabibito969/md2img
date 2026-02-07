@@ -117,14 +117,19 @@
         "templateName": {
             "default": "デフォルト", "transparent": "透明", "quote": "名言",
             "excerpt": "書評", "memo": "メモ", "bento": "弁当",
-            "noir": "ノワール", "frame": "フレーム", "minimal": "ミニマル", "story": "ストーリー"
+            "noir": "ノワール", "frame": "フレーム", "minimal": "ミニマル", "story": "ストーリー",
+            "glass": "グラス", "brutal": "ブルータル", "editorial": "エディトリアル",
+            "code": "コード", "midnight": "ミッドナイト", "vapor": "ヴェイパー"
         },
         "templateDesc": {
             "default": "クラシックグラデ + 角丸カード", "transparent": "淡い背景 + 半透明カード",
             "quote": "暖色グラデ + 大文字引用", "excerpt": "上品なスタイル + 洗練された組版",
             "memo": "シンプル白地 + GitHub スタイル", "bento": "鮮やかグラデ + コンパクト",
             "noir": "ダークスタイル + エメラルド組版", "frame": "グリッドテクスチャ + 四角",
-            "minimal": "極シンプル白地 + 影なし", "story": "ピンクグラデ + 柔らか角丸"
+            "minimal": "極シンプル白地 + 影なし", "story": "ピンクグラデ + 柔らか角丸",
+            "glass": "ガラス調 + 柔らかいハイライト", "brutal": "高コントラスト + ハードシャドウ",
+            "editorial": "編集レイアウト + 余白多め", "code": "ダークコードカード",
+            "midnight": "低彩度ダーク + 繊細な質感", "vapor": "ネオン + レトロ感"
         },
         "mdStyle": {
             "prose": "Tailwind Typography",

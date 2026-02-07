@@ -117,14 +117,19 @@
         "templateName": {
             "default": "默认", "transparent": "透明", "quote": "金句",
             "excerpt": "书摘", "memo": "备忘录", "bento": "便当",
-            "noir": "黑日", "frame": "框界", "minimal": "简约", "story": "故事"
+            "noir": "黑日", "frame": "框界", "minimal": "简约", "story": "故事",
+            "glass": "玻璃", "brutal": "粗野", "editorial": "杂志",
+            "code": "代码", "midnight": "暗黑极简", "vapor": "蒸汽波"
         },
         "templateDesc": {
             "default": "经典渐变背景 + 圆角卡片", "transparent": "淡色背景 + 半透明卡片",
             "quote": "温暖渐变 + 大字引言", "excerpt": "淡雅风格 + 优雅排版",
             "memo": "简洁白底 + GitHub 排版", "bento": "鲜艳渐变 + 紧凑布局",
             "noir": "暗黑风格 + 翡翠排版", "frame": "网格纹理 + 方正布局",
-            "minimal": "极简白底 + 无阴影", "story": "粉色渐变 + 柔和圆角"
+            "minimal": "极简白底 + 无阴影", "story": "粉色渐变 + 柔和圆角",
+            "glass": "玻璃拟态 + 轻柔高光", "brutal": "高对比 + 硬朗阴影",
+            "editorial": "编辑排版 + 大留白", "code": "深色代码卡片",
+            "midnight": "低饱和暗色 + 细腻质感", "vapor": "霓虹渐变 + 复古氛围"
         },
         "mdStyle": {
             "prose": "Tailwind Typography 排版",
