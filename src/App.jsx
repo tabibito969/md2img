@@ -99,7 +99,6 @@ const createCard = ({
     theme = defaultThemeId,
     mdStyle = defaultStyleId,
     shadow = 'soft',
-    overlay = 'none',
     templateId = null,
     config = {},
 } = {}) => ({
@@ -109,7 +108,6 @@ const createCard = ({
     theme: resolveTheme(theme),
     mdStyle: resolveMdStyle(mdStyle),
     shadow,
-    overlay,
     templateId,
     config: { ...DEFAULT_CARD_CONFIG, ...config },
 })
@@ -163,7 +161,6 @@ function App() {
         ...(activeCard?.config || {}),
     }
     const activeShadow = activeCard?.shadow || 'soft'
-    const activeOverlay = activeCard?.overlay || 'none'
     const activeTemplateId = activeCard?.templateId || null
     const activeCardName = activeCard?.name || ''
     const activeMarkdown = activeCard?.markdown || ''
@@ -241,7 +238,6 @@ function App() {
             theme: activeTheme,
             mdStyle: activeStyle,
             shadow: activeShadow,
-            overlay: activeOverlay,
             templateId: activeTemplateId,
             config: activeConfig,
         })
@@ -249,7 +245,7 @@ function App() {
             setActiveIndex(prev.length)
             return [...prev, newCard]
         })
-    }, [activeConfig, activeOverlay, activeShadow, activeStyle, activeTemplateId, activeTheme])
+    }, [activeConfig, activeShadow, activeStyle, activeTemplateId, activeTheme])
 
     const deleteCard = useCallback((index) => {
         setCards((prev) => {
@@ -306,13 +302,6 @@ function App() {
         [updateCardsWithSync],
     )
 
-    const handleOverlayChange = useCallback(
-        (nextOverlay) => {
-            updateCardsWithSync((card) => ({ ...card, overlay: nextOverlay }))
-        },
-        [updateCardsWithSync],
-    )
-
     const handleConfigChange = useCallback(
         (key, value) => {
             if (key === 'syncAll') {
@@ -328,7 +317,6 @@ function App() {
                                     theme: activeTheme,
                                     mdStyle: activeStyle,
                                     shadow: activeShadow,
-                                    overlay: activeOverlay,
                                     templateId: activeTemplateId,
                                     config: { ...activeConfig },
                                 },
@@ -350,7 +338,6 @@ function App() {
             activeCard,
             activeConfig,
             activeIndex,
-            activeOverlay,
             activeShadow,
             activeStyle,
             activeTemplateId,
@@ -383,7 +370,6 @@ function App() {
                         ? resolveMdStyle(templateConfig.mdStyle)
                         : card.mdStyle,
                     shadow: templateConfig.shadow || card.shadow,
-                    overlay: templateConfig.overlay || card.overlay,
                     config: nextConfig,
                 }
             })
@@ -462,8 +448,6 @@ function App() {
                 onThemeChange={handleThemeChange}
                 currentShadow={activeShadow}
                 onShadowChange={handleShadowChange}
-                currentOverlay={activeOverlay}
-                onOverlayChange={handleOverlayChange}
                 onApplyTemplate={handleApplyTemplate}
                 activeTemplateId={activeTemplateId}
             />
@@ -522,7 +506,6 @@ function App() {
                                     cardWidth={activeConfig.width}
                                     cardHeight={activeConfig.height}
                                     shadowId={activeShadow}
-                                    overlayId={activeOverlay}
                                     watermark={activeConfig.watermark}
                                 />
                             </div>

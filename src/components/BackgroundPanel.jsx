@@ -1,7 +1,6 @@
 /**
  * ============================================================================
- * [INPUT]: 接收 currentTheme, onThemeChange, currentShadow, onShadowChange,
- *          currentOverlay, onOverlayChange props
+ * [INPUT]: 接收 currentTheme, onThemeChange, currentShadow, onShadowChange props
  * [OUTPUT]: 对外提供 BackgroundPanel 组件（默认导出）
  * [POS]: 背景选择面板，含颜色和阴影两个 Tab
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
@@ -24,8 +23,6 @@ export default function BackgroundPanel({
     onThemeChange,
     currentShadow,
     onShadowChange,
-    currentOverlay,
-    onOverlayChange,
 }) {
     const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('color')
@@ -179,8 +176,6 @@ export default function BackgroundPanel({
                     <ShadowPanel
                         currentShadow={currentShadow}
                         onShadowChange={onShadowChange}
-                        currentOverlay={currentOverlay}
-                        onOverlayChange={onOverlayChange}
                     />
                 )}
             </div>

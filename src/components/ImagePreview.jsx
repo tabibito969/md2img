@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * [INPUT]: 接收 markdown、theme、padding、borderRadius、cardWidth、
- *          markdownStyle、shadowStyle、overlayStyle、watermark props
+ *          markdownStyle、shadowStyle、watermark props
  *          依赖 react-markdown + remark-gfm 渲染 Markdown
  *          依赖 react-syntax-highlighter 代码高亮
  * [OUTPUT]: 对外提供 ImagePreview 组件（forwardRef 默认导出）
@@ -15,7 +15,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { shadowPresets, overlayTextures } from '@/config/shadows'
+import { shadowPresets } from '@/config/shadows'
 
 /* ========================================================================== */
 /*                              IMAGE PREVIEW                                  */
@@ -77,7 +77,6 @@ const ImagePreview = forwardRef(function ImagePreview(
         cardHeight = 0,
         markdownStyle = 'prose',
         shadowId = 'soft',
-        overlayId = 'none',
         watermark = false,
     },
     ref,
@@ -86,9 +85,8 @@ const ImagePreview = forwardRef(function ImagePreview(
     const isDark = theme.variant === 'dark'
     const watermarkLabel = t('watermark.text', { defaultValue: 'markdown2imge' })
 
-    /* ---------- Resolve shadow and overlay ---------- */
+    /* ---------- Resolve shadow ---------- */
     const resolvedShadow = shadowPresets.find((s) => s.id === shadowId)
-    const resolvedOverlay = overlayTextures.find((o) => o.id === overlayId)
 
     /* ---------- 根据主题明暗动态切换代码高亮风格 ---------- */
     const markdownComponents = useMemo(
@@ -164,20 +162,6 @@ const ImagePreview = forwardRef(function ImagePreview(
 
     return (
         <div ref={ref} style={outerStyle}>
-            {/* Overlay texture layer */}
-            {resolvedOverlay?.css && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        inset: 0,
-                        backgroundImage: resolvedOverlay.css,
-                        backgroundSize: resolvedOverlay.cssSize || 'auto',
-                        pointerEvents: 'none',
-                        zIndex: 1,
-                    }}
-                />
-            )}
-
             {/* Card */}
             <div
                 className={`preview-card ${isDark ? 'variant-dark' : 'variant-light'}`}
@@ -185,7 +169,7 @@ const ImagePreview = forwardRef(function ImagePreview(
                     borderRadius: `${borderRadius}px`,
                     boxShadow: resolvedShadow?.boxShadow || 'none',
                     position: 'relative',
-                    zIndex: 2,
+                    zIndex: 1,
                 }}
             >
                 <div className={bodyClassName}>

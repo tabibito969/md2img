@@ -16,8 +16,6 @@ export default function ContentSidebar({
     onThemeChange,
     currentShadow,
     onShadowChange,
-    currentOverlay,
-    onOverlayChange,
     // Template props
     onApplyTemplate,
     activeTemplateId,
@@ -36,8 +34,6 @@ export default function ContentSidebar({
                     onThemeChange={onThemeChange}
                     currentShadow={currentShadow}
                     onShadowChange={onShadowChange}
-                    currentOverlay={currentOverlay}
-                    onOverlayChange={onOverlayChange}
                 />
             )}
         </div>
