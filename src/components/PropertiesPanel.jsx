@@ -107,7 +107,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
     )
 
     const updateConfig = (key, value) => {
-        onConfigChange((prev) => ({ ...prev, [key]: value }))
+        onConfigChange(key, value)
     }
 
     const handleAspectRatioChange = (ratio) => {

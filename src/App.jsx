@@ -23,6 +23,31 @@ import { markdownStyles, defaultStyleId } from '@/config/markdownStyles'
 import { getDefaultMarkdown } from '@/config/defaults'
 
 const DEFAULT_DOWNLOAD_NAME = 'markdown-image'
+const DEFAULT_CARD_CONFIG = {
+    padding: 33,
+    borderRadius: 15,
+    width: 540,
+    height: 0, // 0 = auto
+    watermark: false,
+}
+
+const FALLBACK_THEME =
+    themes.find((item) => item.id === defaultThemeId) ||
+    themes[0] || {
+        id: 'fallback-theme',
+        name: 'Default',
+        dot: '#111118',
+        background: '#111118',
+        variant: 'dark',
+    }
+
+const FALLBACK_STYLE =
+    markdownStyles.find((item) => item.id === defaultStyleId) ||
+    markdownStyles[0] || {
+        id: 'prose',
+        name: 'Prose',
+        description: '',
+    }
 
 const stripControlChars = (value) =>
     Array.from(value)
@@ -48,6 +73,46 @@ const getDownloadFilename = (name) => {
     const base = sanitizeFilename(name)
     return base.toLowerCase().endsWith('.png') ? base : `${base}.png`
 }
+
+const resolveTheme = (value) => {
+    if (value && typeof value === 'object' && value.background) return value
+    if (typeof value === 'string') {
+        const match = themes.find((item) => item.id === value)
+        if (match) return match
+    }
+    return FALLBACK_THEME
+}
+
+const resolveMdStyle = (value) => {
+    if (value && typeof value === 'object' && value.id) return value
+    if (typeof value === 'string') {
+        const match = markdownStyles.find((item) => item.id === value)
+        if (match) return match
+    }
+    return FALLBACK_STYLE
+}
+
+const createCard = ({
+    id,
+    name = '',
+    markdown = getDefaultMarkdown(),
+    theme = defaultThemeId,
+    mdStyle = defaultStyleId,
+    shadow = 'soft',
+    overlay = 'none',
+    templateId = null,
+    config = {},
+} = {}) => ({
+    id,
+    name,
+    markdown,
+    theme: resolveTheme(theme),
+    mdStyle: resolveMdStyle(mdStyle),
+    shadow,
+    overlay,
+    templateId,
+    config: { ...DEFAULT_CARD_CONFIG, ...config },
+})
 
 const canCopyImage = (t) => {
     if (!window.isSecureContext || !navigator?.clipboard) {
@@ -88,36 +153,23 @@ function App() {
     const [sidebarTab, setSidebarTab] = useState('template')
 
     /* ----------------------- CARD STATE ----------------------- */
-    const [cards, setCards] = useState([
-        { id: 1, name: '', markdown: getDefaultMarkdown() },
-    ])
+    const [cards, setCards] = useState([createCard({ id: 1 })])
     const [activeIndex, setActiveIndex] = useState(0)
     const activeCard = cards[activeIndex] ?? cards[0]
+    const activeTheme = resolveTheme(activeCard?.theme)
+    const activeStyle = resolveMdStyle(activeCard?.mdStyle)
+    const activeConfig = {
+        ...DEFAULT_CARD_CONFIG,
+        ...(activeCard?.config || {}),
+    }
+    const activeShadow = activeCard?.shadow || 'soft'
+    const activeOverlay = activeCard?.overlay || 'none'
+    const activeTemplateId = activeCard?.templateId || null
+    const activeCardName = activeCard?.name || ''
+    const activeMarkdown = activeCard?.markdown || ''
 
-    /* ----------------------- TEMPLATE ID STATE ----------------------- */
-    const [activeTemplateId, setActiveTemplateId] = useState(null)
-
-    /* ----------------------- STYLE STATE ----------------------- */
-    const [theme, setTheme] = useState(
-        themes.find((t) => t.id === defaultThemeId),
-    )
-    const [mdStyle, setMdStyle] = useState(
-        markdownStyles.find((s) => s.id === defaultStyleId),
-    )
-
-    /* ----------------------- CARD CONFIG ----------------------- */
-    const [cardConfig, setCardConfig] = useState({
-        padding: 33,
-        borderRadius: 15,
-        width: 540,
-        height: 0, // 0 = auto
-        watermark: false,
-        syncAll: false,
-    })
-
-    /* ----------------------- SHADOW STATE ----------------------- */
-    const [shadow, setShadow] = useState('soft')
-    const [overlay, setOverlay] = useState('none')
+    /* ----------------------- CARD OPTIONS ----------------------- */
+    const [syncAll, setSyncAll] = useState(false)
 
     /* ----------------------- EXPORT STATE ----------------------- */
     const [copied, setCopied] = useState(false)
@@ -147,7 +199,7 @@ function App() {
         return () => observer.disconnect()
     }, [])
 
-    const cardTotalWidth = (cardConfig.width || 540) + cardConfig.padding * 2
+    const cardTotalWidth = (activeConfig.width || 540) + activeConfig.padding * 2
     const canvasPadding = 48
     const availableWidth = canvasWidth - canvasPadding * 2
     const scale = availableWidth > 0 && cardTotalWidth > availableWidth
@@ -171,18 +223,33 @@ function App() {
         [activeIndex],
     )
 
+    const updateCardsWithSync = useCallback(
+        (updater) => {
+            setCards((prev) =>
+                prev.map((card, i) =>
+                    syncAll || i === activeIndex ? updater(card) : card,
+                ),
+            )
+        },
+        [activeIndex, syncAll],
+    )
+
     const addCard = useCallback(() => {
         cardIdCounterRef.current++
-        const newCard = {
+        const newCard = createCard({
             id: cardIdCounterRef.current,
-            name: '',
-            markdown: getDefaultMarkdown(),
-        }
+            theme: activeTheme,
+            mdStyle: activeStyle,
+            shadow: activeShadow,
+            overlay: activeOverlay,
+            templateId: activeTemplateId,
+            config: activeConfig,
+        })
         setCards((prev) => {
             setActiveIndex(prev.length)
             return [...prev, newCard]
         })
-    }, [])
+    }, [activeConfig, activeOverlay, activeShadow, activeStyle, activeTemplateId, activeTheme])
 
     const deleteCard = useCallback((index) => {
         setCards((prev) => {
@@ -216,36 +283,112 @@ function App() {
         [updateActiveCard],
     )
 
+    const handleThemeChange = useCallback(
+        (nextTheme) => {
+            const resolved = resolveTheme(nextTheme)
+            updateCardsWithSync((card) => ({ ...card, theme: resolved }))
+        },
+        [updateCardsWithSync],
+    )
+
+    const handleStyleChange = useCallback(
+        (nextStyle) => {
+            const resolved = resolveMdStyle(nextStyle)
+            updateCardsWithSync((card) => ({ ...card, mdStyle: resolved }))
+        },
+        [updateCardsWithSync],
+    )
+
+    const handleShadowChange = useCallback(
+        (nextShadow) => {
+            updateCardsWithSync((card) => ({ ...card, shadow: nextShadow }))
+        },
+        [updateCardsWithSync],
+    )
+
+    const handleOverlayChange = useCallback(
+        (nextOverlay) => {
+            updateCardsWithSync((card) => ({ ...card, overlay: nextOverlay }))
+        },
+        [updateCardsWithSync],
+    )
+
+    const handleConfigChange = useCallback(
+        (key, value) => {
+            if (key === 'syncAll') {
+                const nextValue = Boolean(value)
+                setSyncAll(nextValue)
+                if (nextValue && activeCard) {
+                    setCards((prev) =>
+                        prev.map((card, i) =>
+                            i === activeIndex
+                                ? card
+                                : {
+                                    ...card,
+                                    theme: activeTheme,
+                                    mdStyle: activeStyle,
+                                    shadow: activeShadow,
+                                    overlay: activeOverlay,
+                                    templateId: activeTemplateId,
+                                    config: { ...activeConfig },
+                                },
+                        ),
+                    )
+                }
+                return
+            }
+            updateCardsWithSync((card) => ({
+                ...card,
+                config: {
+                    ...DEFAULT_CARD_CONFIG,
+                    ...(card.config || {}),
+                    [key]: value,
+                },
+            }))
+        },
+        [
+            activeCard,
+            activeConfig,
+            activeIndex,
+            activeOverlay,
+            activeShadow,
+            activeStyle,
+            activeTemplateId,
+            activeTheme,
+            updateCardsWithSync,
+        ],
+    )
+
     /* ----------------------- TEMPLATE APPLY ----------------------- */
     const handleApplyTemplate = useCallback(
         (templateId, templateConfig) => {
-            setActiveTemplateId(templateId)
-            if (templateConfig.theme) {
-                const t = themes.find((th) => th.id === templateConfig.theme)
-                if (t) setTheme(t)
-            }
-            if (templateConfig.mdStyle) {
-                const s = markdownStyles.find(
-                    (st) => st.id === templateConfig.mdStyle,
-                )
-                if (s) setMdStyle(s)
-            }
-            setCardConfig((prev) => ({
-                ...prev,
-                ...(templateConfig.padding !== undefined && {
-                    padding: templateConfig.padding,
-                }),
-                ...(templateConfig.borderRadius !== undefined && {
-                    borderRadius: templateConfig.borderRadius,
-                }),
-                ...(templateConfig.width !== undefined && {
-                    width: templateConfig.width,
-                }),
-            }))
-            if (templateConfig.shadow) setShadow(templateConfig.shadow)
-            if (templateConfig.overlay) setOverlay(templateConfig.overlay)
+            updateCardsWithSync((card) => {
+                const nextConfig = { ...card.config }
+                if (templateConfig.padding !== undefined) {
+                    nextConfig.padding = templateConfig.padding
+                }
+                if (templateConfig.borderRadius !== undefined) {
+                    nextConfig.borderRadius = templateConfig.borderRadius
+                }
+                if (templateConfig.width !== undefined) {
+                    nextConfig.width = templateConfig.width
+                }
+                return {
+                    ...card,
+                    templateId,
+                    theme: templateConfig.theme
+                        ? resolveTheme(templateConfig.theme)
+                        : card.theme,
+                    mdStyle: templateConfig.mdStyle
+                        ? resolveMdStyle(templateConfig.mdStyle)
+                        : card.mdStyle,
+                    shadow: templateConfig.shadow || card.shadow,
+                    overlay: templateConfig.overlay || card.overlay,
+                    config: nextConfig,
+                }
+            })
         },
-        [],
+        [updateCardsWithSync],
     )
 
     /* ----------------------- SHARED CAPTURE ----------------------- */
@@ -267,10 +410,10 @@ function App() {
             if (!blob) throw new Error(t('toast.imageEmpty'))
             const url = URL.createObjectURL(blob)
             const link = document.createElement('a')
-            link.download = getDownloadFilename(activeCard?.name)
+            link.download = getDownloadFilename(activeCardName)
             link.href = url
             link.click()
-            URL.revokeObjectURL(url)
+            setTimeout(() => URL.revokeObjectURL(url), 1000)
             toast.success(t('toast.downloaded'))
         } catch (err) {
             console.error('导出失败:', err)
@@ -278,7 +421,7 @@ function App() {
         } finally {
             setIsExporting(false)
         }
-    }, [captureImage, activeCard?.name, t])
+    }, [captureImage, activeCardName, t])
 
     const handleCopy = useCallback(async () => {
         if (!previewRef.current) return
@@ -315,12 +458,12 @@ function App() {
             {/* ========================= CONTENT SIDEBAR ========================= */}
             <ContentSidebar
                 activeTab={sidebarTab}
-                currentTheme={theme}
-                onThemeChange={setTheme}
-                currentShadow={shadow}
-                onShadowChange={setShadow}
-                currentOverlay={overlay}
-                onOverlayChange={setOverlay}
+                currentTheme={activeTheme}
+                onThemeChange={handleThemeChange}
+                currentShadow={activeShadow}
+                onShadowChange={handleShadowChange}
+                currentOverlay={activeOverlay}
+                onOverlayChange={handleOverlayChange}
                 onApplyTemplate={handleApplyTemplate}
                 activeTemplateId={activeTemplateId}
             />
@@ -329,10 +472,10 @@ function App() {
             <div className="flex-1 flex flex-col min-w-0">
                 {/* TopBar */}
                 <TopBar
-                    cardName={activeCard.name}
+                    cardName={activeCardName}
                     onCardNameChange={setCardName}
-                    currentStyle={mdStyle}
-                    onStyleChange={setMdStyle}
+                    currentStyle={activeStyle}
+                    onStyleChange={handleStyleChange}
                     onDownload={handleDownload}
                     onCopy={handleCopy}
                     copied={copied}
@@ -371,15 +514,15 @@ function App() {
                             >
                                 <ImagePreview
                                     ref={previewRef}
-                                    markdown={activeCard.markdown}
-                                    theme={theme}
-                                    markdownStyle={mdStyle.id}
-                                    padding={cardConfig.padding}
-                                    borderRadius={cardConfig.borderRadius}
-                                    cardWidth={cardConfig.width}
-                                    cardHeight={cardConfig.height}
-                                    shadowId={shadow}
-                                    overlayId={overlay}
+                                    markdown={activeMarkdown}
+                                    theme={activeTheme}
+                                    markdownStyle={activeStyle.id}
+                                    padding={activeConfig.padding}
+                                    borderRadius={activeConfig.borderRadius}
+                                    cardWidth={activeConfig.width}
+                                    cardHeight={activeConfig.height}
+                                    shadowId={activeShadow}
+                                    overlayId={activeOverlay}
                                 />
                             </div>
 
@@ -432,9 +575,9 @@ function App() {
 
             {/* ========================= PROPERTIES PANEL ========================= */}
             <PropertiesPanel
-                cardConfig={cardConfig}
-                onConfigChange={setCardConfig}
-                currentTheme={theme}
+                cardConfig={{ ...activeConfig, syncAll }}
+                onConfigChange={handleConfigChange}
+                currentTheme={activeTheme}
             />
 
             {/* ========================= INLINE EDITOR OVERLAY ========================= */}
@@ -453,7 +596,7 @@ function App() {
                                     {t('editor.markdown')}
                                 </span>
                                 <span className="text-[10px] text-white/15 font-mono">
-                                    {t('editor.chars', { count: activeCard.markdown.length })}
+                                    {t('editor.chars', { count: activeMarkdown.length })}
                                 </span>
                             </div>
                             <div className="flex items-center gap-2">
@@ -473,7 +616,7 @@ function App() {
                         {/* Editor Textarea */}
                         <textarea
                             aria-label={t('editor.editorLabel')}
-                            value={activeCard.markdown}
+                            value={activeMarkdown}
                             onChange={(e) => setMarkdown(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Escape') setIsEditing(false)
