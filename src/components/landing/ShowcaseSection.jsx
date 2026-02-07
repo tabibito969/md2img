@@ -74,7 +74,7 @@ export default function ShowcaseSection() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
-                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"
+                    className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4"
                 >
                     {showcaseCards.map((card, i) => (
                         <motion.div key={i} variants={item}>

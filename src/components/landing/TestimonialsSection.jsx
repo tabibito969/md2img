@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 
 const row1 = [
@@ -24,10 +25,10 @@ const row2 = [
 
 function TestimonialCard({ t }) {
     return (
-        <div className="flex-shrink-0 w-[300px] p-5 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+        <div className="shrink-0 w-[300px] p-5 rounded-2xl border border-white/6 bg-white/2">
             <p className="text-[13px] text-white/50 leading-relaxed mb-4">"{t.text}"</p>
             <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500/40 to-purple-500/40 flex items-center justify-center text-[11px] font-bold text-white/70">
+                <div className="w-8 h-8 rounded-full bg-linear-to-br from-indigo-500/40 to-purple-500/40 flex items-center justify-center text-[11px] font-bold text-white/70">
                     {t.name[0]}
                 </div>
                 <div>
@@ -39,7 +40,7 @@ function TestimonialCard({ t }) {
     )
 }
 
-function ScrollRow({ items, direction = 'left', duration = 40 }) {
+function ScrollRow({ items, direction = 'left', duration = 40, paused = false }) {
     const doubled = [...items, ...items]
     return (
         <div className="relative overflow-hidden">
@@ -48,6 +49,7 @@ function ScrollRow({ items, direction = 'left', duration = 40 }) {
                 style={{
                     animation: `scroll-${direction} ${duration}s linear infinite`,
                     width: 'max-content',
+                    animationPlayState: paused ? 'paused' : 'running',
                 }}
             >
                 {doubled.map((t, i) => (
@@ -59,6 +61,7 @@ function ScrollRow({ items, direction = 'left', duration = 40 }) {
 }
 
 export default function TestimonialsSection() {
+    const [paused, setPaused] = useState(false)
     return (
         <section id="testimonials" className="py-20 md:py-28 overflow-hidden">
             {/* Header */}
@@ -77,10 +80,14 @@ export default function TestimonialsSection() {
                 </p>
             </motion.div>
 
-            {/* Scrolling rows */}
-            <div className="space-y-4">
-                <ScrollRow items={row1} direction="left" duration={45} />
-                <ScrollRow items={row2} direction="right" duration={50} />
+            {/* Scrolling rows - pause on hover */}
+            <div
+                className="space-y-4"
+                onMouseEnter={() => setPaused(true)}
+                onMouseLeave={() => setPaused(false)}
+            >
+                <ScrollRow items={row1} direction="left" duration={45} paused={paused} />
+                <ScrollRow items={row2} direction="right" duration={50} paused={paused} />
             </div>
 
             {/* CSS keyframes injected inline */}

@@ -1,16 +1,43 @@
-# React + Vite
+# Md2Img — Markdown 转图片
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+将 Markdown 快速转为高质视觉卡片：40+ 渐变背景、多套排版模板、多卡片管理，一键导出 PNG。
 
-Currently, two official plugins are available:
+- **技术栈**: React 19 + Vite 7 + TailwindCSS 4 + Framer Motion
+- **路由**: `/` 落地页，`/app` 编辑器
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 开发
 
-## React Compiler
+```bash
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+浏览器打开 http://localhost:5173/ 查看落地页，点击「立即开始创作」进入编辑器。
 
-## Expanding the ESLint configuration
+## 构建与预览
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm run build
+npm run preview
+```
+
+## 部署
+
+构建产物在 `dist/`。已配置 SPA 回退：
+
+- **Vercel**: 使用项目根目录的 `vercel.json`，直接 `vercel` 部署即可，`/app` 直链与刷新正常。
+- **Netlify**: 使用根目录的 `netlify.toml`，发布目录设为 `dist`，`/app` 直链与刷新正常。
+- **其他静态托管**: 将未匹配路径回退到 `index.html`（例如 Nginx `try_files $uri $uri/ /index.html`）。
+
+## 脚本
+
+| 命令 | 说明 |
+|------|------|
+| `npm run dev` | 开发服务器 |
+| `npm run build` | 生产构建 |
+| `npm run preview` | 预览构建结果 |
+| `npm run lint` | ESLint 检查 |
+
+## 项目结构
+
+见 [CLAUDE.md](./CLAUDE.md)。

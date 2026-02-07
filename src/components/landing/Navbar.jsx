@@ -13,7 +13,11 @@ const navLinks = [
 export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false)
     const { scrollY } = useScroll()
-    const bgOpacity = useTransform(scrollY, [0, 100], [0, 0.85])
+    const backgroundColor = useTransform(
+        scrollY,
+        [0, 100],
+        ['rgba(10,10,20,0)', 'rgba(10,10,20,0.92)'],
+    )
 
     /* Close mobile menu on resize */
     useEffect(() => {
@@ -25,7 +29,7 @@ export default function Navbar() {
     return (
         <motion.nav
             className="fixed top-0 inset-x-0 z-50 border-b border-white/[0.04]"
-            style={{ backgroundColor: useTransform(bgOpacity, (v) => `rgba(10,10,20,${v})`) }}
+            style={{ backgroundColor }}
         >
             <div className="backdrop-blur-xl">
                 <div className="max-w-6xl mx-auto flex items-center justify-between h-16 px-5">
