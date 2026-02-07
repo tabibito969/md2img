@@ -2,7 +2,8 @@
     "sidebar": {
         "template": "テンプレート",
         "background": "背景",
-        "nav": "サイドバー"
+        "nav": "サイドバー",
+        "home": "ホーム"
     },
     "templatePanel": {
         "template": "テンプレート",

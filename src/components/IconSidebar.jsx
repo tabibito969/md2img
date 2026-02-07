@@ -6,7 +6,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { LayoutTemplate, Image, Sparkles } from 'lucide-react'
+import { LayoutTemplate, Image, Home } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcher from './LanguageSwitcher'
 
@@ -19,10 +19,14 @@ export default function IconSidebar({ activeTab, onTabChange }) {
     return (
         <div className="flex flex-col items-center w-[52px] h-full bg-gradient-to-b from-[#16162a] to-[#111122] border-r border-white/[0.04] shrink-0 select-none">
             {/* Logo */}
-            <div className="flex items-center justify-center w-full h-[52px]" aria-hidden="true">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                    <Sparkles className="h-3.5 w-3.5 text-white" />
-                </div>
+            <div className="flex items-center justify-center w-full h-[52px]">
+                <a
+                    href="/"
+                    aria-label={t('sidebar.home')}
+                    className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-shadow"
+                >
+                    <Home className="h-3.5 w-3.5 text-white" />
+                </a>
             </div>
 
             {/* Divider */}

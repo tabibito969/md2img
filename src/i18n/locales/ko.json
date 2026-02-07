@@ -2,7 +2,8 @@
     "sidebar": {
         "template": "템플릿",
         "background": "배경",
-        "nav": "사이드바 내비게이션"
+        "nav": "사이드바 내비게이션",
+        "home": "홈"
     },
     "templatePanel": {
         "template": "템플릿",

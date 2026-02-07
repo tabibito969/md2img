@@ -2,7 +2,8 @@
     "sidebar": {
         "template": "Templates",
         "background": "Background",
-        "nav": "Sidebar navigation"
+        "nav": "Sidebar navigation",
+        "home": "Home"
     },
     "templatePanel": {
         "template": "Templates",

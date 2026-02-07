@@ -2,7 +2,8 @@
     "sidebar": {
         "template": "模板",
         "background": "背景",
-        "nav": "侧栏导航"
+        "nav": "侧栏导航",
+        "home": "首页"
     },
     "templatePanel": {
         "template": "模板",
