@@ -26,11 +26,11 @@ function TemplateThumbnail({ template, isActive, onClick, t }) {
         >
             {/* Preview card */}
             <div
-                className="aspect-[3/4] flex items-start justify-center pt-4 px-3"
+                className="aspect-square flex items-center justify-center p-3"
                 style={{ background: preview.background }}
             >
                 <div
-                    className="w-full rounded-md p-3 shadow-md"
+                    className="w-full h-full rounded-md p-3 shadow-md overflow-hidden"
                     style={{
                         backgroundColor: preview.cardBg,
                         color: preview.textColor,
