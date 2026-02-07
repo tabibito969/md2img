@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { motion } from 'framer-motion'
+import { motion as Motion } from 'framer-motion'
 
 export default function CTASection() {
     return (
@@ -9,7 +9,7 @@ export default function CTASection() {
                 <div className="w-[600px] h-[400px] bg-gradient-to-r from-indigo-500/15 via-purple-500/10 to-pink-500/15 rounded-full blur-[120px]" />
             </div>
 
-            <motion.div
+            <Motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -33,7 +33,7 @@ export default function CTASection() {
                 >
                     开始使用
                 </Link>
-            </motion.div>
+            </Motion.div>
         </section>
     )
 }

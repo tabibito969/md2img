@@ -8,7 +8,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { toBlob } from 'html-to-image'
 import { Toaster, toast } from 'sonner'
 import { Plus, ChevronLeft, ChevronRight } from 'lucide-react'
@@ -20,6 +20,61 @@ import ImagePreview from '@/components/ImagePreview'
 import { themes, defaultThemeId } from '@/config/themes'
 import { markdownStyles, defaultStyleId } from '@/config/markdownStyles'
 import { defaultMarkdown } from '@/config/defaults'
+
+const DEFAULT_DOWNLOAD_NAME = 'markdown-image'
+
+const stripControlChars = (value) =>
+    Array.from(value)
+        .filter((ch) => {
+            const code = ch.charCodeAt(0)
+            return code >= 32 && code !== 127
+        })
+        .join('')
+
+const sanitizeFilename = (name) => {
+    const raw = typeof name === 'string' ? name : ''
+    const trimmed = raw.trim()
+    if (!trimmed) return DEFAULT_DOWNLOAD_NAME
+    const withoutControls = stripControlChars(trimmed)
+    const withoutReserved = withoutControls.replace(/[<>:"/\\|?*]+/g, '')
+    const normalized = withoutReserved.replace(/\s+/g, ' ').trim()
+    const strippedTrailing = normalized.replace(/[. ]+$/g, '')
+    const safe = strippedTrailing.slice(0, 80)
+    return safe || DEFAULT_DOWNLOAD_NAME
+}
+
+const getDownloadFilename = (name) => {
+    const base = sanitizeFilename(name)
+    return base.toLowerCase().endsWith('.png') ? base : `${base}.png`
+}
+
+const canCopyImage = () => {
+    if (!window.isSecureContext || !navigator?.clipboard) {
+        toast.error('当前环境不支持剪贴板复制，请使用下载')
+        return false
+    }
+    if (typeof ClipboardItem === 'undefined') {
+        toast.error('当前浏览器不支持图片复制，请使用下载')
+        return false
+    }
+    return true
+}
+
+const ensureClipboardPermission = async () => {
+    if (!navigator.permissions?.query) return true
+    try {
+        const result = await navigator.permissions.query({
+            name: 'clipboard-write',
+        })
+        if (result.state === 'denied') {
+            toast.error('剪贴板权限被拒绝')
+            return false
+        }
+    } catch {
+        return true
+    }
+    return true
+}
 
 /* ========================================================================== */
 /*                                    APP                                     */
@@ -209,7 +264,7 @@ function App() {
             if (!blob) throw new Error('生成图片为空')
             const url = URL.createObjectURL(blob)
             const link = document.createElement('a')
-            link.download = `${activeCard.name || 'markdown-image'}.png`
+            link.download = getDownloadFilename(activeCard?.name)
             link.href = url
             link.click()
             URL.revokeObjectURL(url)
@@ -224,6 +279,8 @@ function App() {
 
     const handleCopy = useCallback(async () => {
         if (!previewRef.current) return
+        if (!canCopyImage()) return
+        if (!(await ensureClipboardPermission())) return
         setIsExporting(true)
         try {
             const blob = await captureImage()

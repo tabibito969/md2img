@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion as Motion } from 'framer-motion'
 import * as Accordion from '@radix-ui/react-accordion'
 import { ChevronDown } from 'lucide-react'
 
@@ -33,7 +33,7 @@ export default function FAQSection() {
     return (
         <section id="faq" className="py-20 md:py-28 px-5">
             <div className="max-w-3xl mx-auto">
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -42,9 +42,9 @@ export default function FAQSection() {
                 >
                     <span className="text-[12px] text-indigo-400 font-medium tracking-wider uppercase">FAQS</span>
                     <h2 className="mt-3 text-3xl md:text-4xl font-bold text-white">常见问题</h2>
-                </motion.div>
+                </Motion.div>
 
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -71,7 +71,7 @@ export default function FAQSection() {
                             </Accordion.Item>
                         ))}
                     </Accordion.Root>
-                </motion.div>
+                </Motion.div>
             </div>
         </section>
     )

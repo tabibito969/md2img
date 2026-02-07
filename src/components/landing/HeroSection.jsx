@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { motion } from 'framer-motion'
+import { motion as Motion } from 'framer-motion'
 import { Eye, Palette, LayoutTemplate, ImageDown } from 'lucide-react'
 
 const badges = [
@@ -22,7 +22,7 @@ export default function HeroSection() {
 
             <div className="relative max-w-4xl mx-auto px-5 text-center">
                 {/* Tagline */}
-                <motion.div
+                <Motion.div
                     initial="hidden"
                     animate="visible"
                     custom={0}
@@ -30,10 +30,10 @@ export default function HeroSection() {
                     className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/20 bg-indigo-500/5 text-[12px] text-indigo-300 mb-6"
                 >
                     为创作者与自媒体团队而设
-                </motion.div>
+                </Motion.div>
 
                 {/* Main headline */}
-                <motion.h1
+                <Motion.h1
                     initial="hidden"
                     animate="visible"
                     custom={1}
@@ -46,10 +46,10 @@ export default function HeroSection() {
                     </span>
                     <br className="hidden sm:block" />
                     <span className="text-white"> 让你的文字一眼出彩</span>
-                </motion.h1>
+                </Motion.h1>
 
                 {/* Subtitle */}
-                <motion.p
+                <Motion.p
                     initial="hidden"
                     animate="visible"
                     custom={2}
@@ -57,10 +57,10 @@ export default function HeroSection() {
                     className="mt-5 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed"
                 >
                     将 Markdown 快速转为高质视觉卡片，40+ 渐变背景，10+ 排版模板，一键导出高清 PNG。
-                </motion.p>
+                </Motion.p>
 
                 {/* Badges */}
-                <motion.div
+                <Motion.div
                     initial="hidden"
                     animate="visible"
                     custom={3}
@@ -81,10 +81,10 @@ export default function HeroSection() {
                             </span>
                         )
                     })}
-                </motion.div>
+                </Motion.div>
 
                 {/* CTA buttons */}
-                <motion.div
+                <Motion.div
                     initial="hidden"
                     animate="visible"
                     custom={4}
@@ -103,10 +103,10 @@ export default function HeroSection() {
                     >
                         了解更多
                     </a>
-                </motion.div>
+                </Motion.div>
 
                 {/* Product screenshot mock */}
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 50, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ delay: 0.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -159,10 +159,10 @@ export default function HeroSection() {
                             </div>
                         </div>
                     </div>
-                </motion.div>
+                </Motion.div>
 
                 {/* Bottom text */}
-                <motion.p
+                <Motion.p
                     initial="hidden"
                     animate="visible"
                     custom={5}
@@ -170,7 +170,7 @@ export default function HeroSection() {
                     className="mt-6 text-[12px] text-white/25"
                 >
                     无需注册，免费使用
-                </motion.p>
+                </Motion.p>
             </div>
         </section>
     )

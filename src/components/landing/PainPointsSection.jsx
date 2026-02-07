@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion as Motion } from 'framer-motion'
 
 const painPoints = [
     {
@@ -38,7 +38,7 @@ export default function PainPointsSection() {
         <section className="py-20 md:py-28 px-5">
             <div className="max-w-6xl mx-auto">
                 {/* Section header */}
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -52,10 +52,10 @@ export default function PainPointsSection() {
                     <p className="mt-3 text-white/35 text-sm max-w-lg mx-auto">
                         关注真实创作场景，我们提炼出最常见的阻碍，并提供即用即得的解决方案。
                     </p>
-                </motion.div>
+                </Motion.div>
 
                 {/* Cards grid */}
-                <motion.div
+                <Motion.div
                     variants={container}
                     initial="hidden"
                     whileInView="visible"
@@ -63,7 +63,7 @@ export default function PainPointsSection() {
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
                 >
                     {painPoints.map((p) => (
-                        <motion.div
+                        <Motion.div
                             key={p.num}
                             variants={item}
                             className="group relative p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.1] transition-colors"
@@ -73,9 +73,9 @@ export default function PainPointsSection() {
                             </span>
                             <h3 className="text-[15px] font-semibold text-white mb-2">{p.title}</h3>
                             <p className="text-[13px] text-white/35 leading-relaxed">{p.desc}</p>
-                        </motion.div>
+                        </Motion.div>
                     ))}
-                </motion.div>
+                </Motion.div>
             </div>
         </section>
     )

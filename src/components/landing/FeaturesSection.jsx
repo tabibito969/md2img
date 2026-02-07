@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion as Motion } from 'framer-motion'
 import {
     FileText,
     Palette,
@@ -62,7 +62,7 @@ export default function FeaturesSection() {
         <section id="features" className="py-20 md:py-28 px-5">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -76,10 +76,10 @@ export default function FeaturesSection() {
                     <p className="mt-3 text-white/35 text-sm max-w-lg mx-auto">
                         从内容创作到分享发布，为你提供全方位支持。
                     </p>
-                </motion.div>
+                </Motion.div>
 
                 {/* Feature cards */}
-                <motion.div
+                <Motion.div
                     variants={container}
                     initial="hidden"
                     whileInView="visible"
@@ -89,7 +89,7 @@ export default function FeaturesSection() {
                     {features.map((f) => {
                         const Icon = f.icon
                         return (
-                            <motion.div
+                            <Motion.div
                                 key={f.title}
                                 variants={item}
                                 className="group p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.1] hover:-translate-y-1 transition-all duration-300"
@@ -99,10 +99,10 @@ export default function FeaturesSection() {
                                 </div>
                                 <h3 className="text-[15px] font-semibold text-white mb-2">{f.title}</h3>
                                 <p className="text-[13px] text-white/35 leading-relaxed">{f.desc}</p>
-                            </motion.div>
+                            </Motion.div>
                         )
                     })}
-                </motion.div>
+                </Motion.div>
             </div>
         </section>
     )

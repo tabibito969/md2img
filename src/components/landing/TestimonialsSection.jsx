@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion as Motion } from 'framer-motion'
 
 const row1 = [
     { name: '林一', role: '内容创作者', text: 'Markdown 转图片太方便了，几分钟就能把一篇稿件变成精美卡片，背景还能一键切换。' },
@@ -65,7 +65,7 @@ export default function TestimonialsSection() {
     return (
         <section id="testimonials" className="py-20 md:py-28 overflow-hidden">
             {/* Header */}
-            <motion.div
+            <Motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -78,7 +78,7 @@ export default function TestimonialsSection() {
                 <p className="mt-3 text-white/35 text-sm">
                     来自各行各业用户的真实反馈
                 </p>
-            </motion.div>
+            </Motion.div>
 
             {/* Scrolling rows - pause on hover */}
             <div

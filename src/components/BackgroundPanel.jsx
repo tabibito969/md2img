@@ -8,9 +8,15 @@
  * ============================================================================
  */
 import { useState, useRef } from 'react'
+import { toast } from 'sonner'
 import { Upload } from 'lucide-react'
 import { backgroundCategories } from '@/config/themes'
 import ShadowPanel from './ShadowPanel'
+
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024
+
+const isValidImageFile = (file) =>
+    Boolean(file && file.type && file.type.startsWith('image/'))
 
 export default function BackgroundPanel({
     currentTheme,
@@ -28,6 +34,16 @@ export default function BackgroundPanel({
     const handleUpload = (e) => {
         const file = e.target.files?.[0]
         if (!file) return
+        if (!isValidImageFile(file)) {
+            toast.error('仅支持图片文件')
+            e.target.value = ''
+            return
+        }
+        if (file.size > MAX_UPLOAD_BYTES) {
+            toast.error('图片过大，请小于 10MB')
+            e.target.value = ''
+            return
+        }
         const reader = new FileReader()
         reader.onload = (ev) => {
             const dataUrl = ev.target.result

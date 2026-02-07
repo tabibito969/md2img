@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import { Sparkles, Menu, X } from 'lucide-react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion as Motion, useScroll, useTransform } from 'framer-motion'
 
 const navLinks = [
     { label: '功能特点', href: '#features' },
@@ -27,7 +27,7 @@ export default function Navbar() {
     }, [])
 
     return (
-        <motion.nav
+        <Motion.nav
             className="fixed top-0 inset-x-0 z-50 border-b border-white/[0.04]"
             style={{ backgroundColor }}
         >
@@ -97,6 +97,6 @@ export default function Navbar() {
                     </div>
                 )}
             </div>
-        </motion.nav>
+        </Motion.nav>
     )
 }

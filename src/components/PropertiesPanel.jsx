@@ -6,7 +6,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Info, Minus, Plus } from 'lucide-react'
 
 /* ---------- Section Header ---------- */
@@ -87,30 +87,28 @@ const aspectRatios = [
     { label: '16:9', value: '16:9' },
 ]
 
+const resolveAspectRatio = (width, height) => {
+    if (height === 0) return 'auto'
+    const match = aspectRatios.find((ar) => {
+        if (ar.value === 'auto') return false
+        const [w, h] = ar.value.split(':').map(Number)
+        return height === Math.round(width * (h / w))
+    })
+    return match ? match.value : 'auto'
+}
+
 export default function PropertiesPanel({ cardConfig, onConfigChange, currentTheme }) {
     const [activeTab, setActiveTab] = useState('properties')
-    const [aspectRatio, setAspectRatio] = useState('auto')
-
-    /* Sync aspectRatio when cardConfig changes externally (e.g., via template) */
-    useEffect(() => {
-        if (cardConfig.height === 0) {
-            setAspectRatio('auto')
-        } else {
-            const match = aspectRatios.find((ar) => {
-                if (ar.value === 'auto') return false
-                const [w, h] = ar.value.split(':').map(Number)
-                return cardConfig.height === Math.round(cardConfig.width * (h / w))
-            })
-            setAspectRatio(match ? match.value : 'auto')
-        }
-    }, [cardConfig.height, cardConfig.width])
+    const activeAspectRatio = resolveAspectRatio(
+        cardConfig.width,
+        cardConfig.height,
+    )
 
     const updateConfig = (key, value) => {
         onConfigChange((prev) => ({ ...prev, [key]: value }))
     }
 
     const handleAspectRatioChange = (ratio) => {
-        setAspectRatio(ratio)
         if (ratio === 'auto') {
             updateConfig('height', 0)
         } else {
@@ -229,7 +227,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
                                             type="button"
                                             onClick={() => handleAspectRatioChange(ar.value)}
                                             className={`py-[5px] text-[11px] rounded-md ${
-                                                aspectRatio === ar.value
+                                                activeAspectRatio === ar.value
                                                     ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25'
                                                     : 'bg-white/[0.03] text-white/35 hover:text-white/55 border border-white/[0.04] hover:border-white/[0.08]'
                                             }`}

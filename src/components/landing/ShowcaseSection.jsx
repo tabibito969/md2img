@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion as Motion } from 'framer-motion'
 
 /* Showcase cards simulate different theme + style combos */
 const showcaseCards = [
@@ -54,7 +54,7 @@ export default function ShowcaseSection() {
     return (
         <section id="showcase" className="py-20 md:py-28 px-5">
             <div className="max-w-6xl mx-auto">
-                <motion.div
+                <Motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -67,9 +67,9 @@ export default function ShowcaseSection() {
                     <p className="mt-3 text-white/35 text-sm">
                         不同背景 + 排版风格的卡片效果展示
                     </p>
-                </motion.div>
+                </Motion.div>
 
-                <motion.div
+                <Motion.div
                     variants={container}
                     initial="hidden"
                     whileInView="visible"
@@ -77,11 +77,11 @@ export default function ShowcaseSection() {
                     className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4"
                 >
                     {showcaseCards.map((card, i) => (
-                        <motion.div key={i} variants={item}>
+                        <Motion.div key={i} variants={item}>
                             <MiniCard card={card} />
-                        </motion.div>
+                        </Motion.div>
                     ))}
-                </motion.div>
+                </Motion.div>
             </div>
         </section>
     )
