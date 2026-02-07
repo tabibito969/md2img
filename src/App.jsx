@@ -8,7 +8,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { toBlob } from 'html-to-image'
 import { Toaster, toast } from 'sonner'
 import { Plus, ChevronLeft, ChevronRight } from 'lucide-react'
@@ -67,7 +67,30 @@ function App() {
 
     /* ----------------------- REFS ----------------------- */
     const previewRef = useRef(null)
+    const canvasRef = useRef(null)
     const copiedTimer = useRef(null)
+
+    /* ----------------------- CANVAS SCALE ----------------------- */
+    const [canvasWidth, setCanvasWidth] = useState(600)
+
+    useEffect(() => {
+        const el = canvasRef.current
+        if (!el) return
+        const observer = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                setCanvasWidth(entry.contentRect.width)
+            }
+        })
+        observer.observe(el)
+        return () => observer.disconnect()
+    }, [])
+
+    const cardTotalWidth = (cardConfig.width || 540) + cardConfig.padding * 2
+    const canvasPadding = 48
+    const availableWidth = canvasWidth - canvasPadding * 2
+    const scale = availableWidth > 0 && cardTotalWidth > availableWidth
+        ? availableWidth / cardTotalWidth
+        : 1
 
     /* -------------------- cleanup timer on unmount -------------------- */
     useEffect(() => {
@@ -248,26 +271,33 @@ function App() {
                 />
 
                 {/* Card Canvas */}
-                <div className="flex-1 overflow-auto bg-[#111118]">
-                    <div className="flex items-start justify-center p-6 md:p-10 min-h-full">
-                        {/* Card Navigation */}
-                        <div className="flex items-start gap-2">
-                            {/* Left Arrow (hidden if first) */}
+                <div
+                    ref={canvasRef}
+                    className="flex-1 overflow-auto bg-gradient-to-br from-[#0e0e1a] via-[#111120] to-[#0d0d18]"
+                >
+                    <div className="flex flex-col items-center justify-start p-6 md:p-8 min-h-full">
+                        {/* Card + Navigation */}
+                        <div className="flex items-center gap-3">
+                            {/* Left Arrow */}
                             {cards.length > 1 && (
                                 <button
                                     type="button"
                                     onClick={goToPrevCard}
                                     disabled={activeIndex === 0}
-                                    className="mt-20 p-1.5 rounded-full bg-white/[0.06] text-white/40 hover:text-white/80 hover:bg-white/[0.1] transition-colors disabled:opacity-20 disabled:pointer-events-none"
+                                    className="p-2 rounded-full bg-white/[0.03] text-white/25 hover:text-white/60 hover:bg-white/[0.06] disabled:opacity-0 disabled:pointer-events-none"
                                 >
-                                    <ChevronLeft className="h-4 w-4" />
+                                    <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
                                 </button>
                             )}
 
-                            {/* Card */}
+                            {/* Card - scaled to fit canvas */}
                             <div
-                                className="cursor-pointer"
+                                className="cursor-pointer group relative"
                                 onClick={() => setIsEditing(true)}
+                                style={{
+                                    transform: scale < 1 ? `scale(${scale})` : undefined,
+                                    transformOrigin: 'top center',
+                                }}
                             >
                                 <ImagePreview
                                     ref={previewRef}
@@ -283,48 +313,46 @@ function App() {
                                 />
                             </div>
 
-                            {/* Right Arrow (hidden if last) */}
+                            {/* Right Arrow */}
                             {cards.length > 1 && (
                                 <button
                                     type="button"
                                     onClick={goToNextCard}
-                                    disabled={
-                                        activeIndex === cards.length - 1
-                                    }
-                                    className="mt-20 p-1.5 rounded-full bg-white/[0.06] text-white/40 hover:text-white/80 hover:bg-white/[0.1] transition-colors disabled:opacity-20 disabled:pointer-events-none"
+                                    disabled={activeIndex === cards.length - 1}
+                                    className="p-2 rounded-full bg-white/[0.03] text-white/25 hover:text-white/60 hover:bg-white/[0.06] disabled:opacity-0 disabled:pointer-events-none"
                                 >
-                                    <ChevronRight className="h-4 w-4" />
+                                    <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
                                 </button>
                             )}
                         </div>
-                    </div>
 
-                    {/* Add Card Button */}
-                    <div className="flex justify-center pb-6 -mt-2">
-                        <button
-                            type="button"
-                            onClick={addCard}
-                            className="flex items-center gap-2 px-6 py-2 border border-dashed border-white/20 rounded-lg text-sm text-white/40 hover:text-white/70 hover:border-white/40 transition-colors"
-                        >
-                            <Plus className="h-4 w-4" />
-                            添加卡片
-                        </button>
-                    </div>
-
-                    {/* Card Counter & Controls */}
-                    <div className="flex items-center justify-center gap-3 pb-4">
-                        <span className="text-xs text-white/30">
-                            卡片 {activeIndex + 1}/{cards.length}
-                        </span>
-                        {cards.length > 1 && (
+                        {/* Add Card Button */}
+                        <div className="flex justify-center mt-5">
                             <button
                                 type="button"
-                                onClick={() => deleteCard(activeIndex)}
-                                className="text-xs text-red-400/50 hover:text-red-400 transition-colors"
+                                onClick={addCard}
+                                className="flex items-center gap-1.5 px-5 py-1.5 border border-dashed border-white/10 rounded-lg text-[12px] text-white/25 hover:text-white/55 hover:border-white/25 hover:bg-white/[0.02]"
                             >
-                                删除当前
+                                <Plus className="h-3.5 w-3.5" strokeWidth={1.5} />
+                                添加卡片
                             </button>
-                        )}
+                        </div>
+
+                        {/* Card Counter & Controls */}
+                        <div className="flex items-center justify-center gap-3 mt-2.5 mb-4">
+                            <span className="text-[11px] text-white/20 font-mono">
+                                卡片 {activeIndex + 1}/{cards.length}
+                            </span>
+                            {cards.length > 1 && (
+                                <button
+                                    type="button"
+                                    onClick={() => deleteCard(activeIndex)}
+                                    className="text-[11px] text-red-400/30 hover:text-red-400/70"
+                                >
+                                    删除
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -339,32 +367,32 @@ function App() {
             {/* ========================= INLINE EDITOR OVERLAY ========================= */}
             {isEditing && (
                 <div
-                    className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center animate-in fade-in duration-200"
+                    className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center animate-in fade-in duration-150"
                     onClick={(e) => {
                         if (e.target === e.currentTarget) setIsEditing(false)
                     }}
                 >
-                    <div className="w-[640px] max-h-[85vh] bg-[#1e1e2e] rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
+                    <div className="w-[620px] max-h-[82vh] bg-gradient-to-b from-[#1e1e34] to-[#1a1a2e] rounded-2xl border border-white/[0.08] shadow-2xl shadow-black/40 overflow-hidden flex flex-col animate-in zoom-in-95 duration-150">
                         {/* Editor Header */}
-                        <div className="flex items-center justify-between px-4 h-10 border-b border-white/[0.06] shrink-0">
+                        <div className="flex items-center justify-between px-4 h-11 border-b border-white/[0.05] shrink-0">
                             <div className="flex items-center gap-3">
-                                <span className="text-[11px] uppercase tracking-widest text-white/30 font-mono">
-                                    Markdown 编辑器
+                                <span className="text-[10px] uppercase tracking-[0.15em] text-white/25 font-medium">
+                                    Markdown
                                 </span>
-                                <span className="text-[10px] text-white/20">
-                                    {activeCard.markdown.length} 字符
+                                <span className="text-[10px] text-white/15 font-mono">
+                                    {activeCard.markdown.length} chars
                                 </span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <kbd className="text-[10px] text-white/30 px-1.5 py-0.5 rounded border border-white/10 bg-white/[0.04]">
+                                <kbd className="text-[9px] text-white/25 px-1.5 py-[2px] rounded border border-white/[0.06] bg-white/[0.03] font-mono">
                                     ESC
                                 </kbd>
                                 <button
                                     type="button"
                                     onClick={() => setIsEditing(false)}
-                                    className="text-xs text-white/40 hover:text-white/80 px-2 py-0.5 rounded bg-white/[0.06] hover:bg-white/[0.1] transition-colors"
+                                    className="text-[11px] text-white/50 hover:text-white/90 px-2.5 py-1 rounded-md bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/20 font-medium"
                                 >
-                                    完成
+                                    完成编辑
                                 </button>
                             </div>
                         </div>
@@ -375,7 +403,6 @@ function App() {
                             onChange={(e) => setMarkdown(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Escape') setIsEditing(false)
-                                // Tab indent support
                                 if (e.key === 'Tab') {
                                     e.preventDefault()
                                     const start = e.target.selectionStart
@@ -392,7 +419,7 @@ function App() {
                                     })
                                 }
                             }}
-                            className="flex-1 min-h-[450px] w-full resize-none bg-transparent p-5 text-[14px] text-white/85 font-mono leading-relaxed outline-none placeholder:text-white/20 selection:bg-indigo-500/30 scrollbar-thin"
+                            className="flex-1 min-h-[420px] w-full resize-none bg-transparent p-5 text-[13px] text-white/80 font-mono leading-[1.8] outline-none placeholder:text-white/15 selection:bg-indigo-500/25 sidebar-scroll"
                             placeholder="在这里输入或粘贴 Markdown..."
                             spellCheck={false}
                             autoFocus

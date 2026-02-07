@@ -15,14 +15,19 @@ const tabs = [
 
 export default function IconSidebar({ activeTab, onTabChange }) {
     return (
-        <div className="flex flex-col items-center w-[50px] h-full bg-[#141422] border-r border-white/[0.06] shrink-0">
+        <div className="flex flex-col items-center w-[52px] h-full bg-gradient-to-b from-[#16162a] to-[#111122] border-r border-white/[0.04] shrink-0 select-none">
             {/* Logo */}
-            <div className="flex items-center justify-center w-full h-14 mb-2">
-                <Sparkles className="h-5 w-5 text-indigo-400" />
+            <div className="flex items-center justify-center w-full h-[52px]">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <Sparkles className="h-3.5 w-3.5 text-white" />
+                </div>
             </div>
 
+            {/* Divider */}
+            <div className="w-6 h-px bg-white/[0.06] mb-2" />
+
             {/* Nav Icons */}
-            <div className="flex flex-col items-center gap-1 w-full px-1">
+            <div className="flex flex-col items-center gap-0.5 w-full px-1.5">
                 {tabs.map((tab) => {
                     const Icon = tab.icon
                     const isActive = activeTab === tab.id
@@ -31,15 +36,29 @@ export default function IconSidebar({ activeTab, onTabChange }) {
                             key={tab.id}
                             type="button"
                             onClick={() => onTabChange(tab.id)}
-                            className={`group flex flex-col items-center justify-center w-full py-2 rounded-lg transition-all duration-200 ${
-                                isActive
-                                    ? 'bg-white/[0.08] text-white'
-                                    : 'text-white/40 hover:text-white/70 hover:bg-white/[0.04]'
-                            }`}
+                            className="group relative flex flex-col items-center justify-center w-full py-2.5 rounded-lg"
                             title={tab.label}
                         >
-                            <Icon className="h-[18px] w-[18px]" />
-                            <span className="text-[10px] mt-1 leading-none">
+                            {/* Active indicator - left bar */}
+                            {isActive && (
+                                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-4 rounded-r-full bg-indigo-400" />
+                            )}
+
+                            <Icon
+                                className={`h-[17px] w-[17px] transition-colors ${
+                                    isActive
+                                        ? 'text-white'
+                                        : 'text-white/30 group-hover:text-white/60'
+                                }`}
+                                strokeWidth={isActive ? 2 : 1.5}
+                            />
+                            <span
+                                className={`text-[9px] mt-1.5 leading-none tracking-wide transition-colors ${
+                                    isActive
+                                        ? 'text-white/80'
+                                        : 'text-white/25 group-hover:text-white/50'
+                                }`}
+                            >
                                 {tab.label}
                             </span>
                         </button>

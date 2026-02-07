@@ -16,62 +16,78 @@ function TemplateThumbnail({ template, isActive, onClick }) {
         <button
             type="button"
             onClick={onClick}
-            className={`group relative w-full rounded-lg overflow-hidden transition-all duration-200 ${
+            className={`group relative w-full rounded-xl overflow-hidden transition-all duration-200 ${
                 isActive
-                    ? 'ring-2 ring-indigo-400 ring-offset-2 ring-offset-[#1c1c30]'
-                    : 'hover:ring-1 hover:ring-white/20 opacity-80 hover:opacity-100'
+                    ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-2 ring-offset-[#1a1a30] shadow-lg shadow-indigo-500/10'
+                    : 'ring-1 ring-white/[0.06] hover:ring-white/[0.12] opacity-85 hover:opacity-100'
             }`}
             title={`${template.name} — ${template.description}`}
         >
             {/* Preview card */}
             <div
-                className="aspect-[4/5] flex items-center justify-center p-3"
+                className="aspect-[3/4] flex items-start justify-center pt-4 px-3"
                 style={{ background: preview.background }}
             >
                 <div
-                    className="w-full rounded-md p-2.5 shadow-lg"
+                    className="w-full rounded-md p-3 shadow-md"
                     style={{
                         backgroundColor: preview.cardBg,
                         color: preview.textColor,
                     }}
                 >
-                    {/* Mini content preview */}
-                    <div className="space-y-1.5">
+                    {/* Mini content preview — refined proportions */}
+                    <div className="space-y-[5px]">
                         <div
-                            className="h-1.5 rounded-full w-3/4"
+                            className="h-[5px] rounded-full w-[70%]"
                             style={{
                                 backgroundColor: preview.textColor,
-                                opacity: 0.7,
+                                opacity: 0.6,
+                            }}
+                        />
+                        <div className="h-1.5" />
+                        <div
+                            className="h-[3px] rounded-full w-full"
+                            style={{
+                                backgroundColor: preview.textColor,
+                                opacity: 0.15,
                             }}
                         />
                         <div
-                            className="h-1 rounded-full w-full"
+                            className="h-[3px] rounded-full w-[90%]"
                             style={{
                                 backgroundColor: preview.textColor,
-                                opacity: 0.2,
+                                opacity: 0.15,
                             }}
                         />
                         <div
-                            className="h-1 rounded-full w-5/6"
+                            className="h-[3px] rounded-full w-[60%]"
                             style={{
                                 backgroundColor: preview.textColor,
-                                opacity: 0.2,
+                                opacity: 0.12,
+                            }}
+                        />
+                        <div className="h-1" />
+                        <div
+                            className="h-[3px] rounded-full w-full"
+                            style={{
+                                backgroundColor: preview.textColor,
+                                opacity: 0.12,
                             }}
                         />
                         <div
-                            className="h-1 rounded-full w-2/3"
+                            className="h-[3px] rounded-full w-[75%]"
                             style={{
                                 backgroundColor: preview.textColor,
-                                opacity: 0.2,
+                                opacity: 0.1,
                             }}
                         />
                     </div>
                 </div>
             </div>
 
-            {/* Label */}
-            <div className="absolute bottom-0 left-0 right-0 bg-black/40 backdrop-blur-sm px-2 py-1">
-                <span className="text-[11px] text-white/80">
+            {/* Label — frosted glass */}
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 via-black/30 to-transparent pt-5 pb-1.5 px-2">
+                <span className="text-[10px] font-medium text-white/90 tracking-wide">
                     {template.name}
                 </span>
             </div>
@@ -85,33 +101,32 @@ export default function TemplatePanel({ onApplyTemplate, activeTemplateId }) {
     return (
         <div className="flex flex-col h-full">
             {/* Tabs */}
-            <div className="flex items-center border-b border-white/[0.06] shrink-0">
-                <button
-                    type="button"
-                    onClick={() => setActiveTab('template')}
-                    className={`flex-1 py-3 text-sm font-medium text-center transition-colors ${
-                        activeTab === 'template'
-                            ? 'text-white/90 border-b-2 border-indigo-400'
-                            : 'text-white/40 hover:text-white/60'
-                    }`}
-                >
-                    模板
-                </button>
-                <button
-                    type="button"
-                    onClick={() => setActiveTab('layout')}
-                    className={`flex-1 py-3 text-sm font-medium text-center transition-colors ${
-                        activeTab === 'layout'
-                            ? 'text-white/90 border-b-2 border-indigo-400'
-                            : 'text-white/40 hover:text-white/60'
-                    }`}
-                >
-                    布局
-                </button>
+            <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0">
+                {[
+                    { id: 'template', label: '模板' },
+                    { id: 'layout', label: '布局' },
+                ].map((tab) => (
+                    <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`flex-1 py-2.5 text-[13px] font-medium text-center transition-colors relative ${
+                            activeTab === tab.id
+                                ? 'text-white/90'
+                                : 'text-white/35 hover:text-white/55'
+                        }`}
+                    >
+                        {tab.label}
+                        {activeTab === tab.id && (
+                            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[2px] rounded-full bg-indigo-400" />
+                        )}
+                    </button>
+                ))}
             </div>
+            <div className="h-px bg-white/[0.06]" />
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-3">
+            <div className="flex-1 overflow-y-auto sidebar-scroll p-2.5">
                 {activeTab === 'template' && (
                     <div className="grid grid-cols-2 gap-2">
                         {templates.map((tpl) => (
@@ -125,8 +140,8 @@ export default function TemplatePanel({ onApplyTemplate, activeTemplateId }) {
                     </div>
                 )}
                 {activeTab === 'layout' && (
-                    <div className="text-xs text-white/30 text-center py-8">
-                        布局选项 — 即将推出
+                    <div className="text-xs text-white/25 text-center py-12">
+                        布局选项即将推出
                     </div>
                 )}
             </div>

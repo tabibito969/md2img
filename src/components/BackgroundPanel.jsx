@@ -49,42 +49,41 @@ export default function BackgroundPanel({
     return (
         <div className="flex flex-col h-full">
             {/* Tabs */}
-            <div className="flex items-center border-b border-white/[0.06] shrink-0">
-                <button
-                    type="button"
-                    onClick={() => setActiveTab('color')}
-                    className={`flex-1 py-3 text-sm font-medium text-center transition-colors ${
-                        activeTab === 'color'
-                            ? 'text-white/90 border-b-2 border-indigo-400'
-                            : 'text-white/40 hover:text-white/60'
-                    }`}
-                >
-                    颜色
-                </button>
-                <button
-                    type="button"
-                    onClick={() => setActiveTab('shadow')}
-                    className={`flex-1 py-3 text-sm font-medium text-center transition-colors ${
-                        activeTab === 'shadow'
-                            ? 'text-white/90 border-b-2 border-indigo-400'
-                            : 'text-white/40 hover:text-white/60'
-                    }`}
-                >
-                    阴影
-                </button>
+            <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0">
+                {[
+                    { id: 'color', label: '颜色' },
+                    { id: 'shadow', label: '阴影' },
+                ].map((tab) => (
+                    <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`flex-1 py-2.5 text-[13px] font-medium text-center transition-colors relative ${
+                            activeTab === tab.id
+                                ? 'text-white/90'
+                                : 'text-white/35 hover:text-white/55'
+                        }`}
+                    >
+                        {tab.label}
+                        {activeTab === tab.id && (
+                            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-[2px] rounded-full bg-indigo-400" />
+                        )}
+                    </button>
+                ))}
             </div>
+            <div className="h-px bg-white/[0.06]" />
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto sidebar-scroll">
                 {activeTab === 'color' && (
-                    <div className="p-3">
+                    <div className="p-2.5">
                         {/* Upload Button */}
                         <button
                             type="button"
                             onClick={() => fileInputRef.current?.click()}
-                            className="w-full flex items-center justify-center gap-2 py-2 mb-4 border border-dashed border-white/20 rounded-lg text-sm text-white/40 hover:text-white/70 hover:border-white/40 transition-colors"
+                            className="w-full flex items-center justify-center gap-2 py-2 mb-3 border border-dashed border-white/10 rounded-lg text-[12px] text-white/30 hover:text-white/60 hover:border-white/25 hover:bg-white/[0.02]"
                         >
-                            <Upload className="h-4 w-4" />
+                            <Upload className="h-3.5 w-3.5" strokeWidth={1.5} />
                             上传背景
                         </button>
                         <input
@@ -98,18 +97,18 @@ export default function BackgroundPanel({
                         {/* Custom Uploaded Backgrounds */}
                         {customBackgrounds.length > 0 && (
                             <div className="mb-4">
-                                <h4 className="text-xs text-white/40 mb-2 font-medium">
+                                <h4 className="text-[11px] text-white/30 mb-2 font-medium tracking-wide">
                                     自定义
                                 </h4>
-                                <div className="grid grid-cols-5 gap-2">
+                                <div className="grid grid-cols-5 gap-1.5">
                                     {customBackgrounds.map((bg) => (
                                         <button
                                             key={bg.id}
                                             type="button"
                                             onClick={() => onThemeChange(bg)}
-                                            className={`aspect-square rounded-lg overflow-hidden transition-all duration-200 ${
+                                            className={`aspect-square rounded-[8px] overflow-hidden transition-all duration-150 ${
                                                 currentTheme.id === bg.id
-                                                    ? 'ring-2 ring-indigo-400 ring-offset-2 ring-offset-[#1c1c30] scale-105'
+                                                    ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-1 ring-offset-[#1a1a30] scale-105'
                                                     : 'hover:scale-105 opacity-80 hover:opacity-100'
                                             }`}
                                             title={bg.name}
@@ -131,18 +130,18 @@ export default function BackgroundPanel({
                         {/* Categorized Backgrounds */}
                         {backgroundCategories.map((category) => (
                             <div key={category.name} className="mb-4">
-                                <h4 className="text-xs text-white/40 mb-2 font-medium">
+                                <h4 className="text-[11px] text-white/30 mb-2 font-medium tracking-wide">
                                     {category.name}
                                 </h4>
-                                <div className="grid grid-cols-5 gap-2">
+                                <div className="grid grid-cols-5 gap-1.5">
                                     {category.items.map((bg) => (
                                         <button
                                             key={bg.id}
                                             type="button"
                                             onClick={() => onThemeChange(bg)}
-                                            className={`aspect-square rounded-lg transition-all duration-200 ${
+                                            className={`aspect-square rounded-[8px] transition-all duration-150 ${
                                                 currentTheme.id === bg.id
-                                                    ? 'ring-2 ring-indigo-400 ring-offset-2 ring-offset-[#1c1c30] scale-105'
+                                                    ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-1 ring-offset-[#1a1a30] scale-105'
                                                     : 'hover:scale-105 opacity-80 hover:opacity-100'
                                             }`}
                                             style={{ background: bg.dot }}

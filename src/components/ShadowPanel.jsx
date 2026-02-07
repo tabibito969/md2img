@@ -15,28 +15,27 @@ export default function ShadowPanel({
     onOverlayChange,
 }) {
     return (
-        <div className="p-3">
+        <div className="p-2.5">
             {/* Shadow Presets */}
             <div className="mb-5">
-                <h4 className="text-xs text-white/40 mb-2 font-medium">
+                <h4 className="text-[11px] text-white/30 mb-2 font-medium tracking-wide">
                     选择阴影
                 </h4>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-1.5">
                     {shadowPresets.map((preset) => (
                         <button
                             key={preset.id}
                             type="button"
                             onClick={() => onShadowChange(preset.id)}
-                            className={`group relative aspect-square rounded-lg bg-[#252540] flex items-center justify-center transition-all duration-200 ${
+                            className={`group relative aspect-square rounded-lg bg-[#222240] flex items-center justify-center ${
                                 currentShadow === preset.id
-                                    ? 'ring-2 ring-indigo-400 ring-offset-2 ring-offset-[#1c1c30]'
-                                    : 'hover:bg-[#2a2a48] opacity-80 hover:opacity-100'
+                                    ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-1 ring-offset-[#1a1a30]'
+                                    : 'ring-1 ring-white/[0.04] hover:ring-white/[0.1] opacity-80 hover:opacity-100'
                             }`}
                             title={preset.name}
                         >
-                            {/* Shadow preview: a small white card with the shadow applied */}
                             <div
-                                className="w-7 h-7 bg-white/90 rounded"
+                                className="w-6 h-6 bg-white/90 rounded-[4px]"
                                 style={{
                                     boxShadow:
                                         preset.id === 'none'
@@ -44,7 +43,7 @@ export default function ShadowPanel({
                                             : preset.boxShadow,
                                 }}
                             />
-                            <span className="absolute bottom-0.5 left-0 right-0 text-[9px] text-white/30 text-center truncate px-0.5">
+                            <span className="absolute bottom-[3px] left-0 right-0 text-[8px] text-white/25 text-center truncate px-0.5 leading-none">
                                 {preset.name}
                             </span>
                         </button>
@@ -54,31 +53,31 @@ export default function ShadowPanel({
 
             {/* Overlay Textures */}
             <div>
-                <h4 className="text-xs text-white/40 mb-2 font-medium">
-                    选择阴影
+                <h4 className="text-[11px] text-white/30 mb-2 font-medium tracking-wide">
+                    纹理叠加
                 </h4>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-1.5">
                     {overlayTextures.map((texture) => (
                         <button
                             key={texture.id}
                             type="button"
                             onClick={() => onOverlayChange(texture.id)}
-                            className={`group relative aspect-square rounded-lg overflow-hidden transition-all duration-200 ${
+                            className={`group relative aspect-square rounded-lg overflow-hidden ${
                                 currentOverlay === texture.id
-                                    ? 'ring-2 ring-indigo-400 ring-offset-2 ring-offset-[#1c1c30]'
-                                    : 'opacity-80 hover:opacity-100'
+                                    ? 'ring-[1.5px] ring-indigo-400/70 ring-offset-1 ring-offset-[#1a1a30]'
+                                    : 'ring-1 ring-white/[0.04] hover:ring-white/[0.1] opacity-80 hover:opacity-100'
                             }`}
                             title={texture.name}
                         >
                             <div
-                                className="w-full h-full bg-[#252540]"
+                                className="w-full h-full bg-[#222240]"
                                 style={{
                                     backgroundImage: texture.preview || 'none',
                                     backgroundSize:
                                         texture.previewSize || 'auto',
                                 }}
                             />
-                            <span className="absolute bottom-0.5 left-0 right-0 text-[9px] text-white/30 text-center truncate px-0.5">
+                            <span className="absolute bottom-[3px] left-0 right-0 text-[8px] text-white/25 text-center truncate px-0.5 leading-none">
                                 {texture.name}
                             </span>
                         </button>

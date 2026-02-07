@@ -23,7 +23,7 @@ export default function ContentSidebar({
     activeTemplateId,
 }) {
     return (
-        <div className="flex flex-col w-[240px] h-full bg-[#1c1c30] border-r border-white/[0.06] shrink-0 overflow-hidden">
+        <div className="flex flex-col w-[232px] h-full bg-gradient-to-b from-[#1a1a30] to-[#18182c] border-r border-white/[0.04] shrink-0 overflow-hidden">
             {activeTab === 'template' && (
                 <TemplatePanel
                     onApplyTemplate={onApplyTemplate}
