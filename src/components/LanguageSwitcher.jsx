@@ -52,8 +52,8 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
             </button>
 
             {open && (
-                <div className={`absolute z-[100] mt-1 py-1 rounded-xl border border-white/[0.08] bg-[#1e1e34]/95 backdrop-blur-xl shadow-2xl shadow-black/40 min-w-[150px] ${
-                    variant === 'sidebar' ? 'left-full ml-2 top-0' : 'right-0 top-full'
+                <div className={`absolute z-[100] py-1 rounded-xl border border-white/[0.08] bg-[#1e1e34]/95 backdrop-blur-xl shadow-2xl shadow-black/40 min-w-[150px] ${
+                    variant === 'sidebar' ? 'left-full ml-2 bottom-full mb-2' : 'right-0 top-full mt-1'
                 }`}>
                     {languages.map((lang) => (
                         <button
