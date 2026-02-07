@@ -579,6 +579,7 @@ function App() {
                 cardConfig={{ ...activeConfig, syncAll }}
                 onConfigChange={handleConfigChange}
                 currentTheme={activeTheme}
+                onThemeChange={handleThemeChange}
             />
 
             {/* ========================= INLINE EDITOR OVERLAY ========================= */}

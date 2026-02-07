@@ -1,14 +1,15 @@
 /**
  * ============================================================================
- * [INPUT]: 接收 cardConfig, onConfigChange, currentTheme props
+ * [INPUT]: 接收 cardConfig, onConfigChange, currentTheme, onThemeChange props
  * [OUTPUT]: 对外提供 PropertiesPanel 组件（默认导出）
  * [POS]: 右侧属性面板，控制卡片尺寸/内边距/圆角/水印等
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { useState } from 'react'
-import { Info } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { ChevronDown, Info } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { themes } from '@/config/themes'
 
 /* ---------- Section Header ---------- */
 function SectionLabel({ children, info }) {
@@ -108,13 +109,37 @@ const resolveAspectRatio = (width, height) => {
     return match ? match.value : 'auto'
 }
 
-export default function PropertiesPanel({ cardConfig, onConfigChange, currentTheme }) {
+export default function PropertiesPanel({
+    cardConfig,
+    onConfigChange,
+    currentTheme,
+    onThemeChange,
+}) {
     const { t } = useTranslation()
     const [activeTab, setActiveTab] = useState('properties')
+    const [isThemePickerOpen, setIsThemePickerOpen] = useState(false)
+    const themePickerRef = useRef(null)
+    const themeOptions = useMemo(() => {
+        const list = [...themes]
+        if (currentTheme && !list.find((item) => item.id === currentTheme.id)) {
+            return [currentTheme, ...list]
+        }
+        return list
+    }, [currentTheme])
     const activeAspectRatio = resolveAspectRatio(
         cardConfig.width,
         cardConfig.height,
     )
+
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            if (!themePickerRef.current?.contains(event.target)) {
+                setIsThemePickerOpen(false)
+            }
+        }
+        window.addEventListener('pointerdown', handleOutsideClick)
+        return () => window.removeEventListener('pointerdown', handleOutsideClick)
+    }, [])
 
     const updateConfig = (key, value) => {
         onConfigChange(key, value)
@@ -159,7 +184,7 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
             <div className="h-px bg-white/[0.06]" />
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto sidebar-scroll">
+            <div className="flex-1 overflow-y-auto sidebar-scroll bg-[#191919]">
                 {activeTab === 'properties' && (
                     <div className="p-4 space-y-4">
                         {/* Sync All Cards */}
@@ -216,16 +241,68 @@ export default function PropertiesPanel({ cardConfig, onConfigChange, currentThe
                             </div>
 
                             {/* Background Color Display */}
-                            <div className="mb-3.5">
+                            <div className="mb-3.5" ref={themePickerRef}>
                                 <SectionLabel info>{t('properties.bgColor')}</SectionLabel>
-                                <div className="flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.04] rounded-lg px-3 py-2 h-8">
-                                    <span
-                                        className="w-4 h-4 rounded-full shrink-0 ring-1 ring-white/10"
-                                        style={{ background: currentTheme.dot }}
-                                    />
-                                    <span className="text-[12px] text-white/50 truncate">
-                                        {t(`config.theme.${currentTheme.id}`, currentTheme.name)}
-                                    </span>
+                                <div className="relative">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsThemePickerOpen((prev) => !prev)}
+                                        className="flex items-center justify-between gap-2.5 bg-white/[0.04] border border-white/[0.04] rounded-lg px-3 py-2 h-8 w-full"
+                                        aria-label={t('properties.bgColor')}
+                                        aria-expanded={isThemePickerOpen}
+                                    >
+                                        <div className="flex items-center gap-2.5 min-w-0">
+                                            <span
+                                                className="w-4 h-4 rounded-full shrink-0 ring-1 ring-white/10"
+                                                style={{ background: currentTheme.dot }}
+                                            />
+                                            <span className="text-[12px] text-white/50 truncate">
+                                                {t(
+                                                    `config.theme.${currentTheme.id}`,
+                                                    currentTheme.name,
+                                                )}
+                                            </span>
+                                        </div>
+                                        <ChevronDown
+                                            className={`h-3.5 w-3.5 text-white/35 transition-transform ${
+                                                isThemePickerOpen ? 'rotate-180' : ''
+                                            }`}
+                                            strokeWidth={1.5}
+                                        />
+                                    </button>
+                                    {isThemePickerOpen && (
+                                        <div className="absolute left-0 right-0 top-full mt-2 max-h-56 overflow-y-auto rounded-lg border border-white/[0.08] bg-[#1a1a30] shadow-lg shadow-black/40 z-20">
+                                            {themeOptions.map((theme) => {
+                                                const isActive = theme.id === currentTheme.id
+                                                return (
+                                                    <button
+                                                        key={theme.id}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            onThemeChange?.(theme)
+                                                            setIsThemePickerOpen(false)
+                                                        }}
+                                                        className={`flex w-full items-center gap-2 px-2.5 py-2 text-left text-[12px] transition-colors ${
+                                                            isActive
+                                                                ? 'bg-indigo-500/15 text-indigo-200'
+                                                                : 'text-white/60 hover:bg-white/[0.06]'
+                                                        }`}
+                                                    >
+                                                        <span
+                                                            className="w-4 h-4 rounded-full shrink-0 ring-1 ring-white/10"
+                                                            style={{ background: theme.dot }}
+                                                        />
+                                                        <span className="truncate">
+                                                            {t(
+                                                                `config.theme.${theme.id}`,
+                                                                theme.name,
+                                                            )}
+                                                        </span>
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
