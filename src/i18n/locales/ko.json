@@ -48,6 +48,9 @@
         "borderRadius": "모서리 둥글기",
         "visibilityComingSoon": "표시 설정 출시 예정"
     },
+    "watermark": {
+        "text": "markdown2imge"
+    },
     "editor": {
         "markdown": "Markdown",
         "chars": "{{count}}자",

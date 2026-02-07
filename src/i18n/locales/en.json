@@ -48,6 +48,9 @@
         "borderRadius": "Border Radius",
         "visibilityComingSoon": "Visibility settings coming soon"
     },
+    "watermark": {
+        "text": "markdown2imge"
+    },
     "editor": {
         "markdown": "Markdown",
         "chars": "{{count}} chars",

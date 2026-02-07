@@ -523,6 +523,7 @@ function App() {
                                     cardHeight={activeConfig.height}
                                     shadowId={activeShadow}
                                     overlayId={activeOverlay}
+                                    watermark={activeConfig.watermark}
                                 />
                             </div>
 

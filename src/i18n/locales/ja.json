@@ -48,6 +48,9 @@
         "borderRadius": "角丸",
         "visibilityComingSoon": "表示設定は近日公開"
     },
+    "watermark": {
+        "text": "markdown2imge"
+    },
     "editor": {
         "markdown": "Markdown",
         "chars": "{{count}} 文字",

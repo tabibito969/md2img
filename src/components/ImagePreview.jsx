@@ -1,7 +1,7 @@
 /**
  * ============================================================================
  * [INPUT]: 接收 markdown、theme、padding、borderRadius、cardWidth、
- *          markdownStyle、shadowStyle、overlayStyle props
+ *          markdownStyle、shadowStyle、overlayStyle、watermark props
  *          依赖 react-markdown + remark-gfm 渲染 Markdown
  *          依赖 react-syntax-highlighter 代码高亮
  * [OUTPUT]: 对外提供 ImagePreview 组件（forwardRef 默认导出）
@@ -78,11 +78,13 @@ const ImagePreview = forwardRef(function ImagePreview(
         markdownStyle = 'prose',
         shadowId = 'soft',
         overlayId = 'none',
+        watermark = false,
     },
     ref,
 ) {
     const { t } = useTranslation()
     const isDark = theme.variant === 'dark'
+    const watermarkLabel = t('watermark.text', { defaultValue: 'markdown2imge' })
 
     /* ---------- Resolve shadow and overlay ---------- */
     const resolvedShadow = shadowPresets.find((s) => s.id === shadowId)
@@ -194,6 +196,26 @@ const ImagePreview = forwardRef(function ImagePreview(
                         {markdown}
                     </ReactMarkdown>
                 </div>
+                {watermark && (
+                    <div
+                        aria-hidden="true"
+                        style={{
+                            position: 'absolute',
+                            right: '14px',
+                            bottom: '12px',
+                            fontSize: '10px',
+                            letterSpacing: '0.12em',
+                            textTransform: 'uppercase',
+                            color: isDark
+                                ? 'rgba(255, 255, 255, 0.45)'
+                                : 'rgba(0, 0, 0, 0.38)',
+                            pointerEvents: 'none',
+                            userSelect: 'none',
+                        }}
+                    >
+                        {watermarkLabel}
+                    </div>
+                )}
             </div>
         </div>
     )

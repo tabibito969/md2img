@@ -48,6 +48,9 @@
         "borderRadius": "圆角半径",
         "visibilityComingSoon": "显示隐藏设置即将推出"
     },
+    "watermark": {
+        "text": "markdown2imge"
+    },
     "editor": {
         "markdown": "Markdown",
         "chars": "{{count}} 字符",

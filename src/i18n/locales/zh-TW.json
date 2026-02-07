@@ -48,6 +48,9 @@
         "borderRadius": "圓角半徑",
         "visibilityComingSoon": "顯示隱藏設定即將推出"
     },
+    "watermark": {
+        "text": "markdown2imge"
+    },
     "editor": {
         "markdown": "Markdown",
         "chars": "{{count}} 字元",
