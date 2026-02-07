@@ -31,7 +31,7 @@ export default function TopBar({
     const { t } = useTranslation()
 
     return (
-        <div className="flex items-center px-3 h-[48px] border-b border-white/[0.04] bg-[#16162a]/60 backdrop-blur-xl shrink-0 gap-3 overflow-hidden">
+        <div className="flex items-center px-3 h-[48px] border-b border-white/[0.04] bg-[#18181A] shrink-0 gap-3 overflow-hidden">
             {/* Left: Undo + Card Name */}
             <div className="flex items-center gap-2 min-w-0 flex-1">
                 <button

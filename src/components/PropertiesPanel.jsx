@@ -159,7 +159,7 @@ export default function PropertiesPanel({
     return (
         <div className="flex flex-col w-[268px] h-full bg-gradient-to-b from-[#1a1a30] to-[#18182c] border-l border-white/[0.04] shrink-0 overflow-hidden">
             {/* Header Tabs */}
-            <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0">
+            <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0 bg-[#18181A]">
                 {[
                     { id: 'properties', label: t('properties.properties') },
                     { id: 'visibility', label: t('properties.visibility') },

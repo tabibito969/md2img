@@ -17,9 +17,9 @@ export default function IconSidebar({ activeTab, onTabChange }) {
         { id: 'background', icon: Image, labelKey: 'sidebar.background' },
     ]
     return (
-        <div className="flex flex-col items-center w-[52px] h-full bg-gradient-to-b from-[#16162a] to-[#111122] border-r border-white/[0.04] shrink-0 select-none">
+        <div className="flex flex-col items-center w-[52px] h-full bg-[#18181A] border-r border-white/[0.04] shrink-0 select-none">
             {/* Logo */}
-            <div className="flex items-center justify-center w-full h-[52px]">
+            <div className="flex items-center justify-center w-full h-[52px] bg-[#18181A]">
                 <a
                     href="/"
                     aria-label={t('sidebar.home')}

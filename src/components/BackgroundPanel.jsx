@@ -70,7 +70,7 @@ export default function BackgroundPanel({
     return (
         <div className="flex flex-col h-full">
             {/* Tabs */}
-            <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0">
+            <div className="flex items-center gap-0 px-1.5 pt-1.5 pb-0 shrink-0 bg-[#18181A]">
                 {[
                     { id: 'color', label: t('backgroundPanel.color') },
                     { id: 'shadow', label: t('backgroundPanel.shadow') },
