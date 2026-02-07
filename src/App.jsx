@@ -485,7 +485,7 @@ function App() {
                 {/* Card Canvas */}
                 <div
                     ref={canvasRef}
-                    className="flex-1 overflow-auto bg-gradient-to-br from-[#0e0e1a] via-[#111120] to-[#0d0d18]"
+                    className="flex-1 overflow-auto bg-[#101010]"
                 >
                     <div className="flex flex-col items-center justify-start p-6 md:p-8 min-h-full">
                         {/* Card + Navigation */}

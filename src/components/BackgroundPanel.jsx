@@ -97,7 +97,7 @@ export default function BackgroundPanel({
             {/* Content */}
             <div className="flex-1 overflow-y-auto sidebar-scroll">
                 {activeTab === 'color' && (
-                    <div className="p-2.5">
+                    <div className="p-2.5 bg-[#101010]">
                         {/* Upload Button */}
                         <button
                             type="button"
