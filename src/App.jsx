@@ -327,6 +327,8 @@ function App() {
     const copiedTimer = useRef(null)
     const cardIdCounterRef = useRef(initialWorkspace.nextCardId)
     const cardsRef = useRef(cards)
+    const touchDragPointerIdRef = useRef(null)
+    const suppressCardSelectRef = useRef(false)
     const undoStackRef = useRef([])
     const redoStackRef = useRef([])
     const lastSnapshotRef = useRef(null)
@@ -618,6 +620,57 @@ function App() {
     }, [draggingIndex, reorderCards])
 
     const handleCardDragEnd = useCallback(() => {
+        setDraggingIndex(null)
+        setDragOverIndex(null)
+    }, [])
+
+    const getSortItemIndexFromPoint = useCallback((x, y) => {
+        if (typeof document === 'undefined') return null
+        const el = document.elementFromPoint(x, y)
+        const target = el?.closest?.('[data-sort-item-index]')
+        if (!target) return null
+        const value = Number.parseInt(target.getAttribute('data-sort-item-index') || '', 10)
+        return Number.isInteger(value) ? value : null
+    }, [])
+
+    const handleSortItemPointerDown = useCallback((index, event) => {
+        if (event.pointerType !== 'touch') return
+        touchDragPointerIdRef.current = event.pointerId
+        setDraggingIndex(index)
+        setDragOverIndex(index)
+        event.currentTarget.setPointerCapture?.(event.pointerId)
+    }, [])
+
+    const handleSortItemPointerMove = useCallback((event) => {
+        if (touchDragPointerIdRef.current !== event.pointerId) return
+        const nextIndex = getSortItemIndexFromPoint(event.clientX, event.clientY)
+        if (nextIndex !== null && nextIndex !== dragOverIndex) {
+            setDragOverIndex(nextIndex)
+        }
+        event.preventDefault()
+    }, [dragOverIndex, getSortItemIndexFromPoint])
+
+    const handleSortItemPointerUp = useCallback((event) => {
+        if (touchDragPointerIdRef.current !== event.pointerId) return
+        event.currentTarget.releasePointerCapture?.(event.pointerId)
+
+        const fromIndex = draggingIndex
+        const toIndex = dragOverIndex
+        if (Number.isInteger(fromIndex) && Number.isInteger(toIndex)) {
+            if (fromIndex !== toIndex) {
+                reorderCards(fromIndex, toIndex)
+                suppressCardSelectRef.current = true
+            }
+        }
+
+        touchDragPointerIdRef.current = null
+        setDraggingIndex(null)
+        setDragOverIndex(null)
+    }, [draggingIndex, dragOverIndex, reorderCards])
+
+    const handleSortItemPointerCancel = useCallback((event) => {
+        if (touchDragPointerIdRef.current !== event.pointerId) return
+        touchDragPointerIdRef.current = null
         setDraggingIndex(null)
         setDragOverIndex(null)
     }, [])
@@ -1086,11 +1139,22 @@ function App() {
                                                 key={card.id}
                                                 type="button"
                                                 draggable
-                                                onClick={() => setActiveIndex(index)}
+                                                data-sort-item-index={index}
+                                                onClick={() => {
+                                                    if (suppressCardSelectRef.current) {
+                                                        suppressCardSelectRef.current = false
+                                                        return
+                                                    }
+                                                    setActiveIndex(index)
+                                                }}
                                                 onDragStart={(event) => handleCardDragStart(index, event)}
                                                 onDragOver={(event) => handleCardDragOver(index, event)}
                                                 onDrop={(event) => handleCardDrop(index, event)}
                                                 onDragEnd={handleCardDragEnd}
+                                                onPointerDown={(event) => handleSortItemPointerDown(index, event)}
+                                                onPointerMove={handleSortItemPointerMove}
+                                                onPointerUp={handleSortItemPointerUp}
+                                                onPointerCancel={handleSortItemPointerCancel}
                                                 aria-label={t('editor.cardSortItem', { number: index + 1 })}
                                                 className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md border text-[10px] max-w-[150px] ${
                                                     isActive
@@ -1100,7 +1164,7 @@ function App() {
                                                     isDragging ? 'opacity-45' : ''
                                                 } ${
                                                     isDragOver ? 'ring-1 ring-indigo-400/55' : ''
-                                                }`}
+                                                } touch-none`}
                                             >
                                                 <GripVertical className="h-3 w-3 shrink-0 text-white/35" strokeWidth={1.6} />
                                                 <span className="font-mono shrink-0">{index + 1}</span>
