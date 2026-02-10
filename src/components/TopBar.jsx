@@ -11,7 +11,8 @@ import {
     Copy,
     Check,
     Loader2,
-    Share2,
+    CopyPlus,
+    Trash2,
     Undo2,
     ChevronDown,
 } from 'lucide-react'
@@ -23,6 +24,8 @@ export default function TopBar({
     onCardNameChange,
     currentStyle,
     onStyleChange,
+    onDuplicateCard,
+    onResetWorkspace,
     onDownload,
     onCopy,
     copied,
@@ -77,12 +80,12 @@ export default function TopBar({
             <div className="flex items-center gap-0.5 shrink-0 whitespace-nowrap">
                 <button
                     type="button"
-                    disabled
-                    aria-label={t('topBar.share')}
-                    className="p-1.5 text-white/20 rounded-md opacity-30 cursor-not-allowed"
-                    title={t('topBar.shareComingSoon')}
+                    onClick={onDuplicateCard}
+                    aria-label={t('topBar.duplicateCard')}
+                    className="p-1.5 text-white/35 rounded-md hover:bg-white/[0.04] hover:text-white/70"
+                    title={t('topBar.duplicateCard')}
                 >
-                    <Share2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
+                    <CopyPlus className="h-[14px] w-[14px]" strokeWidth={1.5} />
                 </button>
 
                 <button
@@ -98,6 +101,16 @@ export default function TopBar({
                         <Copy className="h-3.5 w-3.5" strokeWidth={1.5} />
                     )}
                     <span>{copied ? t('topBar.copied') : t('topBar.copy')}</span>
+                </button>
+
+                <button
+                    type="button"
+                    onClick={onResetWorkspace}
+                    aria-label={t('topBar.resetWorkspace')}
+                    className="p-1.5 text-red-300/40 rounded-md hover:bg-red-500/10 hover:text-red-300/75"
+                    title={t('topBar.resetWorkspace')}
+                >
+                    <Trash2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
                 </button>
 
                 <button

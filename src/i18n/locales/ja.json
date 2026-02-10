@@ -30,6 +30,9 @@
         "styleLabel": "スタイル: {{name}}",
         "share": "共有",
         "shareComingSoon": "共有（近日公開）",
+        "duplicateCard": "カードを複製",
+        "resetWorkspace": "ワークスペースをリセット",
+        "resetWorkspaceConfirm": "ワークスペースをリセットしますか？すべてのカードとローカル下書きが削除されます。",
         "copy": "コピー",
         "copied": "コピー済",
         "export": "エクスポート"
@@ -75,8 +78,10 @@
         "imageEmpty": "画像が空です",
         "downloaded": "画像をダウンロードしました",
         "exportFailed": "エクスポートに失敗しました。再試行してください",
+        "cardDuplicated": "カードを複製しました",
         "copiedToClipboard": "クリップボードにコピーしました",
-        "copyFailed": "コピーに失敗しました。再試行してください"
+        "copyFailed": "コピーに失敗しました。再試行してください",
+        "workspaceReset": "ワークスペースをリセットしました"
     },
     "config": {
         "themeCategory": {

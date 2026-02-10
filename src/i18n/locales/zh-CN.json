@@ -30,6 +30,9 @@
         "styleLabel": "排版风格: {{name}}",
         "share": "分享",
         "shareComingSoon": "分享（即将推出）",
+        "duplicateCard": "复制当前卡片",
+        "resetWorkspace": "重置工作区",
+        "resetWorkspaceConfirm": "确定要重置工作区吗？这会删除所有卡片和本地草稿。",
         "copy": "复制",
         "copied": "已复制",
         "export": "导出"
@@ -75,8 +78,10 @@
         "imageEmpty": "生成图片为空",
         "downloaded": "图片已下载",
         "exportFailed": "导出失败，请重试",
+        "cardDuplicated": "已复制当前卡片",
         "copiedToClipboard": "已复制到剪贴板",
-        "copyFailed": "复制失败，请重试"
+        "copyFailed": "复制失败，请重试",
+        "workspaceReset": "工作区已重置"
     },
     "config": {
         "themeCategory": {

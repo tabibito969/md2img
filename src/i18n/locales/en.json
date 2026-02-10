@@ -30,6 +30,9 @@
         "styleLabel": "Typography: {{name}}",
         "share": "Share",
         "shareComingSoon": "Share (coming soon)",
+        "duplicateCard": "Duplicate card",
+        "resetWorkspace": "Reset workspace",
+        "resetWorkspaceConfirm": "Reset workspace? This will remove all cards and local drafts.",
         "copy": "Copy",
         "copied": "Copied",
         "export": "Export"
@@ -75,8 +78,10 @@
         "imageEmpty": "Generated image is empty",
         "downloaded": "Image downloaded",
         "exportFailed": "Export failed, please try again",
+        "cardDuplicated": "Card duplicated",
         "copiedToClipboard": "Copied to clipboard",
-        "copyFailed": "Copy failed, please try again"
+        "copyFailed": "Copy failed, please try again",
+        "workspaceReset": "Workspace reset"
     },
     "config": {
         "themeCategory": {

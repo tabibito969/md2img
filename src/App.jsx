@@ -8,7 +8,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import { toBlob } from 'html-to-image'
 import { Toaster, toast } from 'sonner'
 import { Plus, ChevronLeft, ChevronRight } from 'lucide-react'
@@ -23,6 +23,8 @@ import { markdownStyles, defaultStyleId } from '@/config/markdownStyles'
 import { getDefaultMarkdown } from '@/config/defaults'
 
 const DEFAULT_DOWNLOAD_NAME = 'markdown-image'
+const WORKSPACE_STORAGE_KEY = 'md2img:workspace:v1'
+const AUTOSAVE_DELAY = 350
 const DEFAULT_CARD_CONFIG = {
     padding: 33,
     borderRadius: 15,
@@ -112,6 +114,80 @@ const createCard = ({
     config: { ...DEFAULT_CARD_CONFIG, ...config },
 })
 
+const serializeCard = (card) => ({
+    id: card.id,
+    name: typeof card.name === 'string' ? card.name : '',
+    markdown: typeof card.markdown === 'string' ? card.markdown : '',
+    theme: resolveTheme(card.theme).id,
+    mdStyle: resolveMdStyle(card.mdStyle).id,
+    shadow: typeof card.shadow === 'string' ? card.shadow : 'soft',
+    templateId: typeof card.templateId === 'string' ? card.templateId : null,
+    config: {
+        ...DEFAULT_CARD_CONFIG,
+        ...(card.config || {}),
+    },
+})
+
+const createDefaultWorkspace = () => ({
+    cards: [createCard({ id: 1 })],
+    activeIndex: 0,
+    syncAll: false,
+    nextCardId: 1,
+})
+
+const loadWorkspace = () => {
+    if (typeof window === 'undefined') return createDefaultWorkspace()
+    try {
+        const raw = window.localStorage.getItem(WORKSPACE_STORAGE_KEY)
+        if (!raw) return createDefaultWorkspace()
+        const parsed = JSON.parse(raw)
+        if (!parsed || !Array.isArray(parsed.cards) || parsed.cards.length === 0) {
+            return createDefaultWorkspace()
+        }
+
+        const cards = parsed.cards.map((rawCard, index) => {
+            const rawId = Number(rawCard?.id)
+            const id = Number.isFinite(rawId) && rawId > 0
+                ? Math.trunc(rawId)
+                : index + 1
+            return createCard({
+                id,
+                name: typeof rawCard?.name === 'string' ? rawCard.name : '',
+                markdown:
+                    typeof rawCard?.markdown === 'string'
+                        ? rawCard.markdown
+                        : getDefaultMarkdown(),
+                theme: rawCard?.theme,
+                mdStyle: rawCard?.mdStyle,
+                shadow: typeof rawCard?.shadow === 'string' ? rawCard.shadow : 'soft',
+                templateId:
+                    typeof rawCard?.templateId === 'string'
+                        ? rawCard.templateId
+                        : null,
+                config:
+                    rawCard?.config && typeof rawCard.config === 'object'
+                        ? rawCard.config
+                        : {},
+            })
+        })
+
+        const maxCardId = cards.reduce((max, card) => Math.max(max, card.id), 1)
+        const rawActiveIndex = Number(parsed.activeIndex)
+        const activeIndex = Number.isInteger(rawActiveIndex)
+            ? Math.max(0, Math.min(cards.length - 1, rawActiveIndex))
+            : 0
+
+        return {
+            cards,
+            activeIndex,
+            syncAll: Boolean(parsed.syncAll),
+            nextCardId: maxCardId,
+        }
+    } catch {
+        return createDefaultWorkspace()
+    }
+}
+
 const canCopyImage = (t) => {
     if (!window.isSecureContext || !navigator?.clipboard) {
         toast.error(t('toast.clipboardNotSupported'))
@@ -122,6 +198,17 @@ const canCopyImage = (t) => {
         return false
     }
     return true
+}
+
+const waitForFontsReady = async () => {
+    if (typeof document === 'undefined') return
+    const fonts = document.fonts
+    if (!fonts?.ready) return
+    try {
+        await fonts.ready
+    } catch {
+        // Ignore font readiness failures and continue exporting.
+    }
 }
 
 const ensureClipboardPermission = async (t) => {
@@ -146,27 +233,31 @@ const ensureClipboardPermission = async (t) => {
 
 function App() {
     const { t } = useTranslation()
+    const initialWorkspace = useMemo(() => loadWorkspace(), [])
 
     /* ----------------------- SIDEBAR STATE ----------------------- */
     const [sidebarTab, setSidebarTab] = useState('template')
 
     /* ----------------------- CARD STATE ----------------------- */
-    const [cards, setCards] = useState([createCard({ id: 1 })])
-    const [activeIndex, setActiveIndex] = useState(0)
+    const [cards, setCards] = useState(initialWorkspace.cards)
+    const [activeIndex, setActiveIndex] = useState(initialWorkspace.activeIndex)
     const activeCard = cards[activeIndex] ?? cards[0]
     const activeTheme = resolveTheme(activeCard?.theme)
     const activeStyle = resolveMdStyle(activeCard?.mdStyle)
-    const activeConfig = {
-        ...DEFAULT_CARD_CONFIG,
-        ...(activeCard?.config || {}),
-    }
+    const activeConfig = useMemo(
+        () => ({
+            ...DEFAULT_CARD_CONFIG,
+            ...(activeCard?.config || {}),
+        }),
+        [activeCard],
+    )
     const activeShadow = activeCard?.shadow || 'soft'
     const activeTemplateId = activeCard?.templateId || null
     const activeCardName = activeCard?.name || ''
     const activeMarkdown = activeCard?.markdown || ''
 
     /* ----------------------- CARD OPTIONS ----------------------- */
-    const [syncAll, setSyncAll] = useState(false)
+    const [syncAll, setSyncAll] = useState(initialWorkspace.syncAll)
 
     /* ----------------------- EXPORT STATE ----------------------- */
     const [copied, setCopied] = useState(false)
@@ -177,7 +268,7 @@ function App() {
     const previewRef = useRef(null)
     const canvasRef = useRef(null)
     const copiedTimer = useRef(null)
-    const cardIdCounterRef = useRef(1)
+    const cardIdCounterRef = useRef(initialWorkspace.nextCardId)
     const cardsRef = useRef(cards)
     cardsRef.current = cards
 
@@ -207,6 +298,26 @@ function App() {
     useEffect(() => {
         return () => clearTimeout(copiedTimer.current)
     }, [])
+
+    /* ----------------------- PERSISTENCE ----------------------- */
+    useEffect(() => {
+        if (typeof window === 'undefined') return undefined
+        const timer = window.setTimeout(() => {
+            try {
+                window.localStorage.setItem(
+                    WORKSPACE_STORAGE_KEY,
+                    JSON.stringify({
+                        activeIndex,
+                        syncAll,
+                        cards: cards.map(serializeCard),
+                    }),
+                )
+            } catch (error) {
+                console.warn('保存草稿失败:', error)
+            }
+        }, AUTOSAVE_DELAY)
+        return () => window.clearTimeout(timer)
+    }, [cards, activeIndex, syncAll])
 
     /* ----------------------- CARD MANAGEMENT ----------------------- */
     const updateActiveCard = useCallback(
@@ -246,6 +357,41 @@ function App() {
             return [...prev, newCard]
         })
     }, [activeConfig, activeShadow, activeStyle, activeTemplateId, activeTheme])
+
+    const duplicateActiveCard = useCallback(() => {
+        if (!activeCard) return
+        cardIdCounterRef.current++
+        const duplicatedCard = createCard({
+            id: cardIdCounterRef.current,
+            name: activeCard.name,
+            markdown: activeCard.markdown,
+            theme: activeTheme,
+            mdStyle: activeStyle,
+            shadow: activeShadow,
+            templateId: activeTemplateId,
+            config: activeConfig,
+        })
+        setCards((prev) => {
+            const insertAt = Math.min(activeIndex + 1, prev.length)
+            const nextCards = [
+                ...prev.slice(0, insertAt),
+                duplicatedCard,
+                ...prev.slice(insertAt),
+            ]
+            setActiveIndex(insertAt)
+            return nextCards
+        })
+        toast.success(t('toast.cardDuplicated'))
+    }, [
+        activeCard,
+        activeConfig,
+        activeIndex,
+        activeShadow,
+        activeStyle,
+        activeTemplateId,
+        activeTheme,
+        t,
+    ])
 
     const deleteCard = useCallback((index) => {
         setCards((prev) => {
@@ -379,11 +525,13 @@ function App() {
 
     /* ----------------------- SHARED CAPTURE ----------------------- */
     const captureImage = useCallback(
-        () =>
-            toBlob(previewRef.current, {
+        async () => {
+            await waitForFontsReady()
+            return toBlob(previewRef.current, {
                 pixelRatio: 2,
                 cacheBust: true,
-            }),
+            })
+        },
         [],
     )
 
@@ -432,7 +580,66 @@ function App() {
         }
     }, [captureImage, t])
 
+    const handleResetWorkspace = useCallback(() => {
+        const confirmed = window.confirm(t('topBar.resetWorkspaceConfirm'))
+        if (!confirmed) return
+        const freshWorkspace = createDefaultWorkspace()
+        setCards(freshWorkspace.cards)
+        setActiveIndex(freshWorkspace.activeIndex)
+        setSyncAll(freshWorkspace.syncAll)
+        setIsEditing(false)
+        cardIdCounterRef.current = freshWorkspace.nextCardId
+        if (typeof window !== 'undefined') {
+            window.localStorage.removeItem(WORKSPACE_STORAGE_KEY)
+        }
+        toast.success(t('toast.workspaceReset'))
+    }, [t])
+
     /* ------------------------------ RENDER ------------------------------ */
+
+    /* 编辑浮层打开时，支持全局 ESC 并锁定页面滚动，避免背景误滚动 */
+    useEffect(() => {
+        if (!isEditing) return undefined
+        const onKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                setIsEditing(false)
+            }
+        }
+        const previousOverflow = document.body.style.overflow
+        document.body.style.overflow = 'hidden'
+        window.addEventListener('keydown', onKeyDown)
+        return () => {
+            document.body.style.overflow = previousOverflow
+            window.removeEventListener('keydown', onKeyDown)
+        }
+    }, [isEditing])
+
+    /* 全局快捷键：Cmd/Ctrl + S 导出，Cmd/Ctrl + Shift + S 复制，Cmd/Ctrl + E 开关编辑器 */
+    useEffect(() => {
+        const onKeyDown = (event) => {
+            if (event.defaultPrevented) return
+            if (!(event.metaKey || event.ctrlKey)) return
+
+            const key = event.key.toLowerCase()
+            if (key === 's') {
+                event.preventDefault()
+                if (event.shiftKey) {
+                    void handleCopy()
+                } else {
+                    void handleDownload()
+                }
+                return
+            }
+            if (key === 'e' && !event.shiftKey && !event.altKey) {
+                event.preventDefault()
+                setIsEditing((prev) => !prev)
+            }
+        }
+
+        window.addEventListener('keydown', onKeyDown)
+        return () => window.removeEventListener('keydown', onKeyDown)
+    }, [handleCopy, handleDownload])
+
     return (
         <div className="flex h-screen bg-[#111118] text-white overflow-hidden">
             {/* ========================= ICON SIDEBAR ========================= */}
@@ -460,6 +667,8 @@ function App() {
                     onCardNameChange={setCardName}
                     currentStyle={activeStyle}
                     onStyleChange={handleStyleChange}
+                    onDuplicateCard={duplicateActiveCard}
+                    onResetWorkspace={handleResetWorkspace}
                     onDownload={handleDownload}
                     onCopy={handleCopy}
                     copied={copied}
