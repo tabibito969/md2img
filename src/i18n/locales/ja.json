@@ -34,6 +34,7 @@
         "duplicateCard": "カードを複製",
         "resetWorkspace": "ワークスペースをリセット",
         "resetWorkspaceConfirm": "ワークスペースをリセットしますか？すべてのカードとローカル下書きが削除されます。",
+        "exportAll": "すべて書き出し",
         "copy": "コピー",
         "copied": "コピー済",
         "export": "エクスポート"
@@ -79,6 +80,8 @@
         "imageEmpty": "画像が空です",
         "downloaded": "画像をダウンロードしました",
         "exportFailed": "エクスポートに失敗しました。再試行してください",
+        "exportedAll": "{{count}} 枚のカードを書き出しました",
+        "exportAllFailed": "一括エクスポートに失敗しました。再試行してください",
         "cardDuplicated": "カードを複製しました",
         "copiedToClipboard": "クリップボードにコピーしました",
         "copyFailed": "コピーに失敗しました。再試行してください",

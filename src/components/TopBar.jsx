@@ -11,6 +11,7 @@ import {
     Copy,
     Check,
     Loader2,
+    Files,
     CopyPlus,
     Trash2,
     Undo2,
@@ -31,6 +32,7 @@ export default function TopBar({
     canRedo,
     onDuplicateCard,
     onResetWorkspace,
+    onDownloadAll,
     onDownload,
     onCopy,
     copied,
@@ -127,6 +129,18 @@ export default function TopBar({
                     title={t('topBar.resetWorkspace')}
                 >
                     <Trash2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
+                </button>
+
+                <button
+                    type="button"
+                    onClick={onDownloadAll}
+                    disabled={isExporting}
+                    aria-label={t('topBar.exportAll')}
+                    className="flex items-center gap-1 px-2 py-[5px] text-[11px] text-white/35 rounded-md hover:bg-white/[0.04] hover:text-white/65 disabled:opacity-30 disabled:pointer-events-none"
+                    title={t('topBar.exportAll')}
+                >
+                    <Files className="h-3.5 w-3.5" strokeWidth={1.5} />
+                    <span>{t('topBar.exportAll')}</span>
                 </button>
 
                 <button

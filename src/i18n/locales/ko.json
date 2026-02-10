@@ -34,6 +34,7 @@
         "duplicateCard": "현재 카드 복제",
         "resetWorkspace": "워크스페이스 초기화",
         "resetWorkspaceConfirm": "워크스페이스를 초기화할까요? 모든 카드와 로컬 초안이 삭제됩니다.",
+        "exportAll": "모두 내보내기",
         "copy": "복사",
         "copied": "복사됨",
         "export": "내보내기"
@@ -79,6 +80,8 @@
         "imageEmpty": "생성된 이미지가 비어있습니다",
         "downloaded": "이미지가 다운로드되었습니다",
         "exportFailed": "내보내기 실패, 다시 시도하세요",
+        "exportedAll": "카드 {{count}}개를 내보냈습니다",
+        "exportAllFailed": "일괄 내보내기에 실패했습니다. 다시 시도하세요",
         "cardDuplicated": "카드를 복제했습니다",
         "copiedToClipboard": "클립보드에 복사되었습니다",
         "copyFailed": "복사 실패, 다시 시도하세요",

@@ -8,8 +8,9 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
+import { useState, useRef, useCallback, useEffect, useMemo, createRef } from 'react'
 import { toBlob } from 'html-to-image'
+import { createRoot } from 'react-dom/client'
 import { Toaster, toast } from 'sonner'
 import { Plus, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -75,6 +76,13 @@ const sanitizeFilename = (name) => {
 const getDownloadFilename = (name) => {
     const base = sanitizeFilename(name)
     return base.toLowerCase().endsWith('.png') ? base : `${base}.png`
+}
+
+const getBatchDownloadFilename = (name, index, total) => {
+    const base = sanitizeFilename(name)
+    const digits = String(total).length
+    const sequence = String(index + 1).padStart(digits, '0')
+    return `${sequence}-${base}.png`
 }
 
 const resolveTheme = (value) => {
@@ -229,6 +237,31 @@ const waitForFontsReady = async () => {
     } catch {
         // Ignore font readiness failures and continue exporting.
     }
+}
+
+const waitForNextPaint = () =>
+    new Promise((resolve) => {
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(resolve)
+        })
+    })
+
+const waitForImageReady = (img) =>
+    new Promise((resolve) => {
+        if (img.complete) {
+            resolve()
+            return
+        }
+        const onDone = () => resolve()
+        img.addEventListener('load', onDone, { once: true })
+        img.addEventListener('error', onDone, { once: true })
+        window.setTimeout(onDone, 3000)
+    })
+
+const waitForImagesInNode = async (node) => {
+    const images = Array.from(node.querySelectorAll('img'))
+    if (images.length === 0) return
+    await Promise.all(images.map((img) => waitForImageReady(img)))
 }
 
 const ensureClipboardPermission = async (t) => {
@@ -647,6 +680,59 @@ function App() {
         [],
     )
 
+    const captureCardImage = useCallback(async (card) => {
+        if (typeof document === 'undefined') {
+            throw new Error('Document is not available')
+        }
+        await waitForFontsReady()
+
+        const theme = resolveTheme(card.theme)
+        const mdStyle = resolveMdStyle(card.mdStyle)
+        const config = {
+            ...DEFAULT_CARD_CONFIG,
+            ...(card.config || {}),
+        }
+        const host = document.createElement('div')
+        host.style.position = 'fixed'
+        host.style.left = '-10000px'
+        host.style.top = '0'
+        host.style.pointerEvents = 'none'
+        host.style.opacity = '0'
+        host.style.zIndex = '-1'
+        document.body.appendChild(host)
+
+        const isolatedRoot = createRoot(host)
+        const isolatedPreviewRef = createRef()
+        try {
+            isolatedRoot.render(
+                <ImagePreview
+                    ref={isolatedPreviewRef}
+                    markdown={card.markdown || ''}
+                    theme={theme}
+                    markdownStyle={mdStyle.id}
+                    padding={config.padding}
+                    borderRadius={config.borderRadius}
+                    cardWidth={config.width}
+                    cardHeight={config.height}
+                    shadowId={card.shadow || 'soft'}
+                    watermark={Boolean(config.watermark)}
+                />,
+            )
+            await waitForNextPaint()
+            const node = isolatedPreviewRef.current
+            if (!node) throw new Error('Offscreen render failed')
+            await waitForImagesInNode(node)
+            await waitForNextPaint()
+            return toBlob(node, {
+                pixelRatio: 2,
+                cacheBust: true,
+            })
+        } finally {
+            isolatedRoot.unmount()
+            host.remove()
+        }
+    }, [])
+
     /* ------------------------------ EXPORT ------------------------------ */
     const handleDownload = useCallback(async () => {
         if (!previewRef.current) return
@@ -668,6 +754,34 @@ function App() {
             setIsExporting(false)
         }
     }, [captureImage, activeCardName, t])
+
+    const handleDownloadAll = useCallback(async () => {
+        if (cards.length === 0) return
+        setIsExporting(true)
+        try {
+            for (const [index, card] of cards.entries()) {
+                const blob = await captureCardImage(card)
+                if (!blob) throw new Error(t('toast.imageEmpty'))
+                const url = URL.createObjectURL(blob)
+                const link = document.createElement('a')
+                link.download = getBatchDownloadFilename(
+                    card.name,
+                    index,
+                    cards.length,
+                )
+                link.href = url
+                link.click()
+                setTimeout(() => URL.revokeObjectURL(url), 1000)
+                await new Promise((resolve) => setTimeout(resolve, 80))
+            }
+            toast.success(t('toast.exportedAll', { count: cards.length }))
+        } catch (err) {
+            console.error('批量导出失败:', err)
+            toast.error(t('toast.exportAllFailed'))
+        } finally {
+            setIsExporting(false)
+        }
+    }, [cards, captureCardImage, t])
 
     const handleCopy = useCallback(async () => {
         if (!previewRef.current) return
@@ -798,6 +912,7 @@ function App() {
                     canRedo={canRedo}
                     onDuplicateCard={duplicateActiveCard}
                     onResetWorkspace={handleResetWorkspace}
+                    onDownloadAll={handleDownloadAll}
                     onDownload={handleDownload}
                     onCopy={handleCopy}
                     copied={copied}

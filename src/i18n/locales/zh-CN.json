@@ -34,6 +34,7 @@
         "duplicateCard": "复制当前卡片",
         "resetWorkspace": "重置工作区",
         "resetWorkspaceConfirm": "确定要重置工作区吗？这会删除所有卡片和本地草稿。",
+        "exportAll": "导出全部",
         "copy": "复制",
         "copied": "已复制",
         "export": "导出"
@@ -79,6 +80,8 @@
         "imageEmpty": "生成图片为空",
         "downloaded": "图片已下载",
         "exportFailed": "导出失败，请重试",
+        "exportedAll": "已导出 {{count}} 张卡片",
+        "exportAllFailed": "批量导出失败，请重试",
         "cardDuplicated": "已复制当前卡片",
         "copiedToClipboard": "已复制到剪贴板",
         "copyFailed": "复制失败，请重试",
