@@ -68,6 +68,8 @@
         "addCard": "Add Card",
         "addNewCard": "Add new card",
         "cardCounter": "Card {{current}}/{{total}}",
+        "dragToSort": "Drag cards below to reorder",
+        "cardSortItem": "Sort card {{number}}",
         "delete": "Delete",
         "deleteCard": "Delete current card",
         "loadingEditor": "Loading editor...",

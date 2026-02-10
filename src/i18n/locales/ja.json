@@ -68,6 +68,8 @@
         "addCard": "カードを追加",
         "addNewCard": "新しいカードを追加",
         "cardCounter": "カード {{current}}/{{total}}",
+        "dragToSort": "下のカードをドラッグして並び替え",
+        "cardSortItem": "カード {{number}} を並び替え",
         "delete": "削除",
         "deleteCard": "このカードを削除",
         "loadingEditor": "エディタを読み込み中...",

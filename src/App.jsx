@@ -12,7 +12,7 @@ import { useState, useRef, useCallback, useEffect, useMemo, createRef } from 're
 import { toBlob } from 'html-to-image'
 import { createRoot } from 'react-dom/client'
 import { Toaster, toast } from 'sonner'
-import { Plus, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Plus, ChevronLeft, ChevronRight, GripVertical } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import IconSidebar from '@/components/IconSidebar'
 import ContentSidebar from '@/components/ContentSidebar'
@@ -318,6 +318,8 @@ function App() {
     const [isEditing, setIsEditing] = useState(false)
     const [canUndo, setCanUndo] = useState(false)
     const [canRedo, setCanRedo] = useState(false)
+    const [draggingIndex, setDraggingIndex] = useState(null)
+    const [dragOverIndex, setDragOverIndex] = useState(null)
 
     /* ----------------------- REFS ----------------------- */
     const previewRef = useRef(null)
@@ -557,6 +559,67 @@ function App() {
 
     const goToNextCard = useCallback(() => {
         setActiveIndex((prev) => Math.min(cardsRef.current.length - 1, prev + 1))
+    }, [])
+
+    const reorderCards = useCallback((fromIndex, toIndex) => {
+        setCards((prev) => {
+            if (
+                fromIndex === toIndex ||
+                fromIndex < 0 ||
+                toIndex < 0 ||
+                fromIndex >= prev.length ||
+                toIndex >= prev.length
+            ) {
+                return prev
+            }
+
+            const nextCards = [...prev]
+            const [moved] = nextCards.splice(fromIndex, 1)
+            nextCards.splice(toIndex, 0, moved)
+
+            setActiveIndex((prevActive) => {
+                if (prevActive === fromIndex) return toIndex
+                if (fromIndex < toIndex && prevActive > fromIndex && prevActive <= toIndex) {
+                    return prevActive - 1
+                }
+                if (fromIndex > toIndex && prevActive >= toIndex && prevActive < fromIndex) {
+                    return prevActive + 1
+                }
+                return prevActive
+            })
+
+            return nextCards
+        })
+    }, [])
+
+    const handleCardDragStart = useCallback((index, event) => {
+        setDraggingIndex(index)
+        setDragOverIndex(index)
+        event.dataTransfer.effectAllowed = 'move'
+        event.dataTransfer.setData('text/plain', String(index))
+    }, [])
+
+    const handleCardDragOver = useCallback((index, event) => {
+        event.preventDefault()
+        event.dataTransfer.dropEffect = 'move'
+        if (dragOverIndex !== index) {
+            setDragOverIndex(index)
+        }
+    }, [dragOverIndex])
+
+    const handleCardDrop = useCallback((index, event) => {
+        event.preventDefault()
+        const data = event.dataTransfer.getData('text/plain')
+        const fromIndex = draggingIndex ?? Number.parseInt(data, 10)
+        if (!Number.isInteger(fromIndex)) return
+        reorderCards(fromIndex, index)
+        setDraggingIndex(null)
+        setDragOverIndex(null)
+    }, [draggingIndex, reorderCards])
+
+    const handleCardDragEnd = useCallback(() => {
+        setDraggingIndex(null)
+        setDragOverIndex(null)
     }, [])
 
     /* ----------------------- MARKDOWN ----------------------- */
@@ -991,7 +1054,7 @@ function App() {
                         </div>
 
                         {/* Card Counter & Controls */}
-                        <div className="flex items-center justify-center gap-3 mt-2.5 mb-4">
+                        <div className="flex items-center justify-center gap-3 mt-2.5">
                             <span className="text-[11px] text-white/20 font-mono">
                                 {t('editor.cardCounter', { current: activeIndex + 1, total: cards.length })}
                             </span>
@@ -1006,6 +1069,50 @@ function App() {
                                 </button>
                             )}
                         </div>
+
+                        {/* Card Sort Strip */}
+                        {cards.length > 1 && (
+                            <div className="flex flex-col items-center gap-2 mt-2 mb-4 w-full">
+                                <span className="text-[10px] text-white/18">
+                                    {t('editor.dragToSort')}
+                                </span>
+                                <div className="flex flex-wrap justify-center gap-1.5 max-w-[560px]">
+                                    {cards.map((card, index) => {
+                                        const isActive = index === activeIndex
+                                        const isDragging = index === draggingIndex
+                                        const isDragOver = index === dragOverIndex && draggingIndex !== null
+                                        return (
+                                            <button
+                                                key={card.id}
+                                                type="button"
+                                                draggable
+                                                onClick={() => setActiveIndex(index)}
+                                                onDragStart={(event) => handleCardDragStart(index, event)}
+                                                onDragOver={(event) => handleCardDragOver(index, event)}
+                                                onDrop={(event) => handleCardDrop(index, event)}
+                                                onDragEnd={handleCardDragEnd}
+                                                aria-label={t('editor.cardSortItem', { number: index + 1 })}
+                                                className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-md border text-[10px] max-w-[150px] ${
+                                                    isActive
+                                                        ? 'bg-indigo-500/18 border-indigo-400/35 text-indigo-200'
+                                                        : 'bg-white/[0.03] border-white/[0.08] text-white/50 hover:text-white/72 hover:bg-white/[0.05]'
+                                                } ${
+                                                    isDragging ? 'opacity-45' : ''
+                                                } ${
+                                                    isDragOver ? 'ring-1 ring-indigo-400/55' : ''
+                                                }`}
+                                            >
+                                                <GripVertical className="h-3 w-3 shrink-0 text-white/35" strokeWidth={1.6} />
+                                                <span className="font-mono shrink-0">{index + 1}</span>
+                                                <span className="truncate">
+                                                    {(card.name || t('topBar.cardNamePlaceholder')).trim()}
+                                                </span>
+                                            </button>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

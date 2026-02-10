@@ -68,6 +68,8 @@
         "addCard": "新增卡片",
         "addNewCard": "新增卡片",
         "cardCounter": "卡片 {{current}}/{{total}}",
+        "dragToSort": "拖曳下方卡片即可排序",
+        "cardSortItem": "排序卡片 {{number}}",
         "delete": "刪除",
         "deleteCard": "刪除目前卡片",
         "loadingEditor": "載入編輯器...",
