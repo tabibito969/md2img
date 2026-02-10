@@ -10,6 +10,7 @@
 - 一键复制当前卡片为新卡片
 - 一键导出 PNG / 复制图片到剪贴板 / 批量导出全部卡片
 - 工作台中心：可分享 / 可协作 / 可管理 / 可复用
+- 邮箱注册与登录（Cloudflare Worker + Neon Postgres）
 - 分享链接：
   - 只读预览链接：`/share?data=...`
   - 可协作编辑链接：`/app?share=...`
@@ -36,6 +37,57 @@ npm run dev
 ```
 
 浏览器打开 http://localhost:5173/ 查看落地页，点击「立即开始创作」进入编辑器。
+
+## 鉴权后端（Neon + Cloudflare Worker）
+
+鉴权 API 位于 `api/`，提供以下接口：
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `GET /api/auth/me`
+
+### 1) 初始化 Neon 数据库
+
+在 Neon SQL Editor 执行：
+
+- `api/sql/001_auth.sql`
+
+### 2) 配置 Worker 环境变量
+
+在 `api/` 目录下配置：
+
+```bash
+cd api
+npm install
+npx wrangler secret put DATABASE_URL
+```
+
+可选变量（在 `api/wrangler.toml`）：
+
+- `SESSION_TTL_SECONDS`：会话有效期秒数，默认 `604800`（7天）
+- `COOKIE_NAME`：会话 Cookie 名称，默认 `md2img_session`
+- `COOKIE_SECURE`：是否仅 HTTPS 发送，默认 `true`
+- `ALLOWED_ORIGIN`：跨域来源，开发可设 `http://localhost:5173`
+
+### 3) 本地联调
+
+终端 A（前端）：
+
+```bash
+npm run dev
+```
+
+终端 B（Worker）：
+
+```bash
+cd api
+npm run dev
+```
+
+默认已在 `vite.config.js` 配置代理：`/api -> http://127.0.0.1:8787`。
+
+如果 API 部署在独立域名，可在前端设置 `VITE_AUTH_API_BASE` 指向该域名。
 
 ## 构建与预览
 

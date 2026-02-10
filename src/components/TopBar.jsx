@@ -18,6 +18,8 @@ import {
     Undo2,
     Redo2,
     ChevronDown,
+    LogOut,
+    UserRound,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { markdownStyles } from '@/config/markdownStyles'
@@ -40,6 +42,10 @@ export default function TopBar({
     onCopy,
     copied,
     isExporting,
+    currentUser,
+    isAuthLoading,
+    onOpenAuth,
+    onLogout,
 }) {
     const { t } = useTranslation()
 
@@ -99,6 +105,38 @@ export default function TopBar({
 
             {/* Right: Actions */}
             <div className="flex items-center gap-0.5 shrink-0 whitespace-nowrap">
+                {currentUser ? (
+                    <div className="flex items-center gap-1 bg-white/[0.04] rounded-md px-1 py-1 mr-1">
+                        <span className="inline-flex items-center gap-1 px-1.5 text-[10px] text-white/65 max-w-[170px]">
+                            <UserRound className="h-3.5 w-3.5 shrink-0 text-indigo-300/80" strokeWidth={1.7} />
+                            <span className="truncate">{currentUser.email}</span>
+                        </span>
+                        <button
+                            type="button"
+                            onClick={onLogout}
+                            className="p-1 rounded text-white/40 hover:text-white/80 hover:bg-white/[0.08]"
+                            title="退出登录"
+                            aria-label="退出登录"
+                        >
+                            <LogOut className="h-3.5 w-3.5" strokeWidth={1.7} />
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={onOpenAuth}
+                        disabled={isAuthLoading}
+                        className="inline-flex items-center gap-1 px-2 py-[5px] text-[11px] text-white/55 rounded-md border border-white/10 hover:border-white/25 hover:text-white/85 disabled:opacity-45 disabled:pointer-events-none mr-1"
+                    >
+                        {isAuthLoading ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                            <UserRound className="h-3.5 w-3.5" strokeWidth={1.6} />
+                        )}
+                        <span>登录</span>
+                    </button>
+                )}
+
                 <button
                     type="button"
                     onClick={onOpenWorkspaceHub}

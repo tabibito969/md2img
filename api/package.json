@@ -1,0 +1,17 @@
+{
+  "name": "markdown2imge-auth-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy",
+    "check": "wrangler types"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  },
+  "devDependencies": {
+    "wrangler": "^4.34.0"
+  }
+}
+

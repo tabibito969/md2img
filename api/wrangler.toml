@@ -1,0 +1,10 @@
+name = "markdown2imge-auth-api"
+main = "src/index.ts"
+compatibility_date = "2026-02-10"
+
+[vars]
+SESSION_TTL_SECONDS = "604800"
+COOKIE_NAME = "md2img_session"
+COOKIE_SECURE = "true"
+ALLOWED_ORIGIN = "*"
+

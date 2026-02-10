@@ -19,11 +19,13 @@ import ContentSidebar from '@/components/ContentSidebar'
 import TopBar from '@/components/TopBar'
 import PropertiesPanel from '@/components/PropertiesPanel'
 import WorkspaceHub from '@/components/WorkspaceHub'
+import AuthDialog from '@/components/AuthDialog'
 import ImagePreview from '@/components/ImagePreview'
 import { themes, defaultThemeId } from '@/config/themes'
 import { markdownStyles, defaultStyleId } from '@/config/markdownStyles'
 import { getDefaultMarkdown } from '@/config/defaults'
 import { encodeSharePayload, decodeSharePayload } from '@/lib/sharePayload'
+import { getCurrentUser, logoutSession } from '@/lib/authApi'
 
 const DEFAULT_DOWNLOAD_NAME = 'markdown-image'
 const WORKSPACE_STORAGE_KEY = 'md2img:workspace:v1'
@@ -397,6 +399,9 @@ function App() {
     const [projects, setProjects] = useState(initialProjects)
     const [customTemplates, setCustomTemplates] = useState(initialTemplates)
     const [shareLinks, setShareLinks] = useState({ view: '', edit: '' })
+    const [currentUser, setCurrentUser] = useState(null)
+    const [isAuthLoading, setIsAuthLoading] = useState(true)
+    const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false)
 
     /* ----------------------- REFS ----------------------- */
     const previewRef = useRef(null)
@@ -439,6 +444,44 @@ function App() {
     useEffect(() => {
         return () => clearTimeout(copiedTimer.current)
     }, [])
+
+    useEffect(() => {
+        let disposed = false
+        const bootstrapSession = async () => {
+            setIsAuthLoading(true)
+            try {
+                const result = await getCurrentUser()
+                if (!disposed) {
+                    setCurrentUser(result?.user || null)
+                }
+            } catch {
+                if (!disposed) {
+                    setCurrentUser(null)
+                }
+            } finally {
+                if (!disposed) {
+                    setIsAuthLoading(false)
+                }
+            }
+        }
+        void bootstrapSession()
+        return () => {
+            disposed = true
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!currentUser?.email) return
+        const identity = currentUser.email
+        setMembers((prev) => {
+            const normalized = normalizeMembers(prev)
+            if (normalized.length === 1 && normalized[0] === '我') {
+                return [identity]
+            }
+            if (normalized.includes(identity)) return normalized
+            return [identity, ...normalized].slice(0, 30)
+        })
+    }, [currentUser])
 
     const buildSnapshot = useCallback(
         () => ({
@@ -1061,6 +1104,20 @@ function App() {
         }
     }, [captureImage, t])
 
+    const handleAuthSuccess = useCallback((user) => {
+        setCurrentUser(user || null)
+    }, [])
+
+    const handleLogout = useCallback(async () => {
+        try {
+            await logoutSession()
+            setCurrentUser(null)
+            toast.success('已退出登录')
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : '退出登录失败')
+        }
+    }, [])
+
     const activeCardComments = useMemo(
         () =>
             comments
@@ -1377,6 +1434,10 @@ function App() {
                     onCopy={handleCopy}
                     copied={copied}
                     isExporting={isExporting}
+                    currentUser={currentUser}
+                    isAuthLoading={isAuthLoading}
+                    onOpenAuth={() => setIsAuthDialogOpen(true)}
+                    onLogout={handleLogout}
                 />
 
                 {/* Card Canvas */}
@@ -1625,6 +1686,12 @@ function App() {
                 onApplyTemplateToCurrent={handleApplyTemplateToCurrent}
                 onInsertTemplateAsCard={handleInsertTemplateAsCard}
                 onDeleteTemplate={handleDeleteTemplate}
+            />
+
+            <AuthDialog
+                open={isAuthDialogOpen}
+                onClose={() => setIsAuthDialogOpen(false)}
+                onAuthenticated={handleAuthSuccess}
             />
 
             {/* ========================= TOAST ========================= */}
