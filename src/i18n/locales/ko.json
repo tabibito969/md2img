@@ -24,6 +24,7 @@
     },
     "topBar": {
         "undo": "실행 취소",
+        "redo": "다시 실행",
         "undoComingSoon": "실행 취소 (출시 예정)",
         "cardNamePlaceholder": "카드 이름 추가",
         "cardName": "카드 이름",

@@ -11,6 +11,8 @@
 - 本地自动保存草稿（刷新后自动恢复）
 - 一键重置工作区（清空本地草稿并恢复初始状态）
 - 快捷键支持：
+  - `Ctrl/Cmd + Z`：撤销（编辑输入框外）
+  - `Ctrl/Cmd + Shift + Z` / `Ctrl/Cmd + Y`：重做（编辑输入框外）
   - `Ctrl/Cmd + S`：导出 PNG
   - `Ctrl/Cmd + Shift + S`：复制图片
   - `Ctrl/Cmd + E`：打开/关闭编辑器弹层

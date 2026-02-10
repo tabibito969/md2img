@@ -14,6 +14,7 @@ import {
     CopyPlus,
     Trash2,
     Undo2,
+    Redo2,
     ChevronDown,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +25,10 @@ export default function TopBar({
     onCardNameChange,
     currentStyle,
     onStyleChange,
+    onUndo,
+    canUndo,
+    onRedo,
+    canRedo,
     onDuplicateCard,
     onResetWorkspace,
     onDownload,
@@ -39,12 +44,23 @@ export default function TopBar({
             <div className="flex items-center gap-2 min-w-0 flex-1">
                 <button
                     type="button"
-                    disabled
+                    onClick={onUndo}
+                    disabled={!canUndo}
                     aria-label={t('topBar.undo')}
-                    className="p-1.5 text-white/20 rounded-md shrink-0 opacity-30 cursor-not-allowed"
-                    title={t('topBar.undoComingSoon')}
+                    className="p-1.5 text-white/35 rounded-md shrink-0 hover:bg-white/[0.04] hover:text-white/65 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-white/35"
+                    title={t('topBar.undo')}
                 >
                     <Undo2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
+                </button>
+                <button
+                    type="button"
+                    onClick={onRedo}
+                    disabled={!canRedo}
+                    aria-label={t('topBar.redo')}
+                    className="p-1.5 text-white/35 rounded-md shrink-0 hover:bg-white/[0.04] hover:text-white/65 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-white/35"
+                    title={t('topBar.redo')}
+                >
+                    <Redo2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
                 </button>
                 <input
                     type="text"

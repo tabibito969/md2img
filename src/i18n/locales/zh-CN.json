@@ -24,6 +24,7 @@
     },
     "topBar": {
         "undo": "撤销",
+        "redo": "重做",
         "undoComingSoon": "撤销（即将推出）",
         "cardNamePlaceholder": "添加卡片名称",
         "cardName": "卡片名称",

@@ -25,6 +25,7 @@ import { getDefaultMarkdown } from '@/config/defaults'
 const DEFAULT_DOWNLOAD_NAME = 'markdown-image'
 const WORKSPACE_STORAGE_KEY = 'md2img:workspace:v1'
 const AUTOSAVE_DELAY = 350
+const MAX_HISTORY_ENTRIES = 80
 const DEFAULT_CARD_CONFIG = {
     padding: 33,
     borderRadius: 15,
@@ -135,57 +136,76 @@ const createDefaultWorkspace = () => ({
     nextCardId: 1,
 })
 
+const normalizeWorkspaceSnapshot = (snapshot) => {
+    if (!snapshot || !Array.isArray(snapshot.cards) || snapshot.cards.length === 0) {
+        return createDefaultWorkspace()
+    }
+
+    const cards = snapshot.cards.map((rawCard, index) => {
+        const rawId = Number(rawCard?.id)
+        const id = Number.isFinite(rawId) && rawId > 0
+            ? Math.trunc(rawId)
+            : index + 1
+        return createCard({
+            id,
+            name: typeof rawCard?.name === 'string' ? rawCard.name : '',
+            markdown:
+                typeof rawCard?.markdown === 'string'
+                    ? rawCard.markdown
+                    : getDefaultMarkdown(),
+            theme: rawCard?.theme,
+            mdStyle: rawCard?.mdStyle,
+            shadow: typeof rawCard?.shadow === 'string' ? rawCard.shadow : 'soft',
+            templateId:
+                typeof rawCard?.templateId === 'string'
+                    ? rawCard.templateId
+                    : null,
+            config:
+                rawCard?.config && typeof rawCard.config === 'object'
+                    ? rawCard.config
+                    : {},
+        })
+    })
+
+    const maxCardId = cards.reduce((max, card) => Math.max(max, card.id), 1)
+    const rawActiveIndex = Number(snapshot.activeIndex)
+    const activeIndex = Number.isInteger(rawActiveIndex)
+        ? Math.max(0, Math.min(cards.length - 1, rawActiveIndex))
+        : 0
+    const rawNextCardId = Number(snapshot.nextCardId)
+    const nextCardId = Number.isInteger(rawNextCardId) && rawNextCardId > 0
+        ? Math.max(rawNextCardId, maxCardId)
+        : maxCardId
+
+    return {
+        cards,
+        activeIndex,
+        syncAll: Boolean(snapshot.syncAll),
+        nextCardId,
+    }
+}
+
 const loadWorkspace = () => {
     if (typeof window === 'undefined') return createDefaultWorkspace()
     try {
         const raw = window.localStorage.getItem(WORKSPACE_STORAGE_KEY)
         if (!raw) return createDefaultWorkspace()
         const parsed = JSON.parse(raw)
-        if (!parsed || !Array.isArray(parsed.cards) || parsed.cards.length === 0) {
-            return createDefaultWorkspace()
-        }
-
-        const cards = parsed.cards.map((rawCard, index) => {
-            const rawId = Number(rawCard?.id)
-            const id = Number.isFinite(rawId) && rawId > 0
-                ? Math.trunc(rawId)
-                : index + 1
-            return createCard({
-                id,
-                name: typeof rawCard?.name === 'string' ? rawCard.name : '',
-                markdown:
-                    typeof rawCard?.markdown === 'string'
-                        ? rawCard.markdown
-                        : getDefaultMarkdown(),
-                theme: rawCard?.theme,
-                mdStyle: rawCard?.mdStyle,
-                shadow: typeof rawCard?.shadow === 'string' ? rawCard.shadow : 'soft',
-                templateId:
-                    typeof rawCard?.templateId === 'string'
-                        ? rawCard.templateId
-                        : null,
-                config:
-                    rawCard?.config && typeof rawCard.config === 'object'
-                        ? rawCard.config
-                        : {},
-            })
-        })
-
-        const maxCardId = cards.reduce((max, card) => Math.max(max, card.id), 1)
-        const rawActiveIndex = Number(parsed.activeIndex)
-        const activeIndex = Number.isInteger(rawActiveIndex)
-            ? Math.max(0, Math.min(cards.length - 1, rawActiveIndex))
-            : 0
-
-        return {
-            cards,
-            activeIndex,
-            syncAll: Boolean(parsed.syncAll),
-            nextCardId: maxCardId,
-        }
+        return normalizeWorkspaceSnapshot(parsed)
     } catch {
         return createDefaultWorkspace()
     }
+}
+
+const isEditableTarget = (target) => {
+    if (!(target instanceof HTMLElement)) return false
+    const tag = target.tagName
+    return (
+        target.isContentEditable ||
+        tag === 'INPUT' ||
+        tag === 'TEXTAREA' ||
+        tag === 'SELECT'
+    )
 }
 
 const canCopyImage = (t) => {
@@ -263,6 +283,8 @@ function App() {
     const [copied, setCopied] = useState(false)
     const [isExporting, setIsExporting] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
+    const [canUndo, setCanUndo] = useState(false)
+    const [canRedo, setCanRedo] = useState(false)
 
     /* ----------------------- REFS ----------------------- */
     const previewRef = useRef(null)
@@ -270,6 +292,11 @@ function App() {
     const copiedTimer = useRef(null)
     const cardIdCounterRef = useRef(initialWorkspace.nextCardId)
     const cardsRef = useRef(cards)
+    const undoStackRef = useRef([])
+    const redoStackRef = useRef([])
+    const lastSnapshotRef = useRef(null)
+    const historyBootstrappedRef = useRef(false)
+    const replayingHistoryRef = useRef(false)
     cardsRef.current = cards
 
     /* ----------------------- CANVAS SCALE ----------------------- */
@@ -299,6 +326,24 @@ function App() {
         return () => clearTimeout(copiedTimer.current)
     }, [])
 
+    const buildSnapshot = useCallback(
+        () => ({
+            cards: cards.map(serializeCard),
+            activeIndex,
+            syncAll,
+            nextCardId: cardIdCounterRef.current,
+        }),
+        [cards, activeIndex, syncAll],
+    )
+
+    const applyWorkspaceSnapshot = useCallback((snapshot) => {
+        const normalized = normalizeWorkspaceSnapshot(snapshot)
+        setCards(normalized.cards)
+        setActiveIndex(normalized.activeIndex)
+        setSyncAll(normalized.syncAll)
+        cardIdCounterRef.current = normalized.nextCardId
+    }, [])
+
     /* ----------------------- PERSISTENCE ----------------------- */
     useEffect(() => {
         if (typeof window === 'undefined') return undefined
@@ -306,18 +351,85 @@ function App() {
             try {
                 window.localStorage.setItem(
                     WORKSPACE_STORAGE_KEY,
-                    JSON.stringify({
-                        activeIndex,
-                        syncAll,
-                        cards: cards.map(serializeCard),
-                    }),
+                    JSON.stringify(buildSnapshot()),
                 )
             } catch (error) {
                 console.warn('保存草稿失败:', error)
             }
         }, AUTOSAVE_DELAY)
         return () => window.clearTimeout(timer)
-    }, [cards, activeIndex, syncAll])
+    }, [buildSnapshot])
+
+    /* ----------------------- HISTORY ----------------------- */
+    useEffect(() => {
+        const serialized = JSON.stringify(buildSnapshot())
+        if (!historyBootstrappedRef.current) {
+            historyBootstrappedRef.current = true
+            lastSnapshotRef.current = serialized
+            return
+        }
+        if (replayingHistoryRef.current) {
+            replayingHistoryRef.current = false
+            lastSnapshotRef.current = serialized
+            return
+        }
+        if (serialized === lastSnapshotRef.current) return
+
+        if (lastSnapshotRef.current) {
+            undoStackRef.current.push(lastSnapshotRef.current)
+            if (undoStackRef.current.length > MAX_HISTORY_ENTRIES) {
+                undoStackRef.current.shift()
+            }
+        }
+        redoStackRef.current = []
+        lastSnapshotRef.current = serialized
+        setCanUndo(undoStackRef.current.length > 0)
+        setCanRedo(false)
+    }, [buildSnapshot])
+
+    const handleUndo = useCallback(() => {
+        if (undoStackRef.current.length === 0) return
+        const previousSerialized = undoStackRef.current.pop()
+        if (!previousSerialized) return
+
+        const currentSerialized = JSON.stringify(buildSnapshot())
+        redoStackRef.current.push(currentSerialized)
+        if (redoStackRef.current.length > MAX_HISTORY_ENTRIES) {
+            redoStackRef.current.shift()
+        }
+
+        try {
+            replayingHistoryRef.current = true
+            lastSnapshotRef.current = previousSerialized
+            applyWorkspaceSnapshot(JSON.parse(previousSerialized))
+            setCanUndo(undoStackRef.current.length > 0)
+            setCanRedo(redoStackRef.current.length > 0)
+        } catch {
+            replayingHistoryRef.current = false
+        }
+    }, [applyWorkspaceSnapshot, buildSnapshot])
+
+    const handleRedo = useCallback(() => {
+        if (redoStackRef.current.length === 0) return
+        const nextSerialized = redoStackRef.current.pop()
+        if (!nextSerialized) return
+
+        const currentSerialized = JSON.stringify(buildSnapshot())
+        undoStackRef.current.push(currentSerialized)
+        if (undoStackRef.current.length > MAX_HISTORY_ENTRIES) {
+            undoStackRef.current.shift()
+        }
+
+        try {
+            replayingHistoryRef.current = true
+            lastSnapshotRef.current = nextSerialized
+            applyWorkspaceSnapshot(JSON.parse(nextSerialized))
+            setCanUndo(undoStackRef.current.length > 0)
+            setCanRedo(redoStackRef.current.length > 0)
+        } catch {
+            replayingHistoryRef.current = false
+        }
+    }, [applyWorkspaceSnapshot, buildSnapshot])
 
     /* ----------------------- CARD MANAGEMENT ----------------------- */
     const updateActiveCard = useCallback(
@@ -584,16 +696,13 @@ function App() {
         const confirmed = window.confirm(t('topBar.resetWorkspaceConfirm'))
         if (!confirmed) return
         const freshWorkspace = createDefaultWorkspace()
-        setCards(freshWorkspace.cards)
-        setActiveIndex(freshWorkspace.activeIndex)
-        setSyncAll(freshWorkspace.syncAll)
+        applyWorkspaceSnapshot(freshWorkspace)
         setIsEditing(false)
-        cardIdCounterRef.current = freshWorkspace.nextCardId
         if (typeof window !== 'undefined') {
             window.localStorage.removeItem(WORKSPACE_STORAGE_KEY)
         }
         toast.success(t('toast.workspaceReset'))
-    }, [t])
+    }, [applyWorkspaceSnapshot, t])
 
     /* ------------------------------ RENDER ------------------------------ */
 
@@ -621,6 +730,22 @@ function App() {
             if (!(event.metaKey || event.ctrlKey)) return
 
             const key = event.key.toLowerCase()
+            if (key === 'z' && !event.altKey) {
+                if (isEditableTarget(event.target)) return
+                event.preventDefault()
+                if (event.shiftKey) {
+                    handleRedo()
+                } else {
+                    handleUndo()
+                }
+                return
+            }
+            if (key === 'y' && !event.shiftKey && !event.altKey) {
+                if (isEditableTarget(event.target)) return
+                event.preventDefault()
+                handleRedo()
+                return
+            }
             if (key === 's') {
                 event.preventDefault()
                 if (event.shiftKey) {
@@ -638,7 +763,7 @@ function App() {
 
         window.addEventListener('keydown', onKeyDown)
         return () => window.removeEventListener('keydown', onKeyDown)
-    }, [handleCopy, handleDownload])
+    }, [handleCopy, handleDownload, handleRedo, handleUndo])
 
     return (
         <div className="flex h-screen bg-[#111118] text-white overflow-hidden">
@@ -667,6 +792,10 @@ function App() {
                     onCardNameChange={setCardName}
                     currentStyle={activeStyle}
                     onStyleChange={handleStyleChange}
+                    onUndo={handleUndo}
+                    canUndo={canUndo}
+                    onRedo={handleRedo}
+                    canRedo={canRedo}
                     onDuplicateCard={duplicateActiveCard}
                     onResetWorkspace={handleResetWorkspace}
                     onDownload={handleDownload}

@@ -24,6 +24,7 @@
     },
     "topBar": {
         "undo": "復原",
+        "redo": "重做",
         "undoComingSoon": "復原（即將推出）",
         "cardNamePlaceholder": "新增卡片名稱",
         "cardName": "卡片名稱",

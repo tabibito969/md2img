@@ -24,6 +24,7 @@
     },
     "topBar": {
         "undo": "元に戻す",
+        "redo": "やり直す",
         "undoComingSoon": "元に戻す（近日公開）",
         "cardNamePlaceholder": "カード名を追加",
         "cardName": "カード名",

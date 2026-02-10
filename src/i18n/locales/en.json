@@ -24,6 +24,7 @@
     },
     "topBar": {
         "undo": "Undo",
+        "redo": "Redo",
         "undoComingSoon": "Undo (coming soon)",
         "cardNamePlaceholder": "Add card name",
         "cardName": "Card name",
