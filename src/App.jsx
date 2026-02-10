@@ -18,15 +18,21 @@ import IconSidebar from '@/components/IconSidebar'
 import ContentSidebar from '@/components/ContentSidebar'
 import TopBar from '@/components/TopBar'
 import PropertiesPanel from '@/components/PropertiesPanel'
+import WorkspaceHub from '@/components/WorkspaceHub'
 import ImagePreview from '@/components/ImagePreview'
 import { themes, defaultThemeId } from '@/config/themes'
 import { markdownStyles, defaultStyleId } from '@/config/markdownStyles'
 import { getDefaultMarkdown } from '@/config/defaults'
+import { encodeSharePayload, decodeSharePayload } from '@/lib/sharePayload'
 
 const DEFAULT_DOWNLOAD_NAME = 'markdown-image'
 const WORKSPACE_STORAGE_KEY = 'md2img:workspace:v1'
+const PROJECTS_STORAGE_KEY = 'md2img:projects:v1'
+const CUSTOM_TEMPLATES_STORAGE_KEY = 'md2img:templates:v1'
 const AUTOSAVE_DELAY = 350
 const MAX_HISTORY_ENTRIES = 80
+const MAX_PROJECT_ENTRIES = 60
+const MAX_TEMPLATE_ENTRIES = 120
 const DEFAULT_CARD_CONFIG = {
     padding: 33,
     borderRadius: 15,
@@ -138,11 +144,63 @@ const serializeCard = (card) => ({
 })
 
 const createDefaultWorkspace = () => ({
+    projectName: '未命名项目',
     cards: [createCard({ id: 1 })],
     activeIndex: 0,
     syncAll: false,
+    members: ['我'],
+    comments: [],
     nextCardId: 1,
 })
+
+const normalizeMembers = (members) => {
+    if (!Array.isArray(members) || members.length === 0) return ['我']
+    const unique = Array.from(
+        new Set(
+            members
+                .map((item) => (typeof item === 'string' ? item.trim() : ''))
+                .filter(Boolean),
+        ),
+    )
+    return unique.length > 0 ? unique.slice(0, 30) : ['我']
+}
+
+const normalizeComments = (comments, cards) => {
+    if (!Array.isArray(comments) || comments.length === 0) return []
+    const validCardIds = new Set(cards.map((item) => Number(item.id)))
+    return comments
+        .map((item) => {
+            const cardId = Number(item?.cardId)
+            return {
+                id: typeof item?.id === 'string' ? item.id : '',
+                cardId,
+                author: typeof item?.author === 'string' ? item.author.trim() : '',
+                text: typeof item?.text === 'string' ? item.text.trim() : '',
+                resolved: Boolean(item?.resolved),
+                createdAt: Number(item?.createdAt) || Date.now(),
+            }
+        })
+        .filter((item) => item.id && item.text && validCardIds.has(item.cardId))
+        .slice(0, 2000)
+}
+
+const createUniqueId = (prefix) =>
+    `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`
+
+const loadCollection = (key) => {
+    if (typeof window === 'undefined') return []
+    try {
+        const raw = window.localStorage.getItem(key)
+        if (!raw) return []
+        const parsed = JSON.parse(raw)
+        return Array.isArray(parsed) ? parsed : []
+    } catch {
+        return []
+    }
+}
+
+const loadProjects = () => loadCollection(PROJECTS_STORAGE_KEY)
+const loadCustomTemplates = () => loadCollection(CUSTOM_TEMPLATES_STORAGE_KEY)
 
 const normalizeWorkspaceSnapshot = (snapshot) => {
     if (!snapshot || !Array.isArray(snapshot.cards) || snapshot.cards.length === 0) {
@@ -184,11 +242,20 @@ const normalizeWorkspaceSnapshot = (snapshot) => {
     const nextCardId = Number.isInteger(rawNextCardId) && rawNextCardId > 0
         ? Math.max(rawNextCardId, maxCardId)
         : maxCardId
+    const projectName =
+        typeof snapshot.projectName === 'string' && snapshot.projectName.trim()
+            ? snapshot.projectName.trim().slice(0, 120)
+            : '未命名项目'
+    const members = normalizeMembers(snapshot.members)
+    const comments = normalizeComments(snapshot.comments, cards)
 
     return {
+        projectName,
         cards,
         activeIndex,
         syncAll: Boolean(snapshot.syncAll),
+        members,
+        comments,
         nextCardId,
     }
 }
@@ -287,6 +354,8 @@ const ensureClipboardPermission = async (t) => {
 function App() {
     const { t } = useTranslation()
     const initialWorkspace = useMemo(() => loadWorkspace(), [])
+    const initialProjects = useMemo(() => loadProjects(), [])
+    const initialTemplates = useMemo(() => loadCustomTemplates(), [])
 
     /* ----------------------- SIDEBAR STATE ----------------------- */
     const [sidebarTab, setSidebarTab] = useState('template')
@@ -311,6 +380,10 @@ function App() {
 
     /* ----------------------- CARD OPTIONS ----------------------- */
     const [syncAll, setSyncAll] = useState(initialWorkspace.syncAll)
+    const [projectName, setProjectName] = useState(initialWorkspace.projectName || '未命名项目')
+    const [members, setMembers] = useState(initialWorkspace.members || ['我'])
+    const [comments, setComments] = useState(initialWorkspace.comments || [])
+    const [currentProjectId, setCurrentProjectId] = useState(null)
 
     /* ----------------------- EXPORT STATE ----------------------- */
     const [copied, setCopied] = useState(false)
@@ -320,6 +393,10 @@ function App() {
     const [canRedo, setCanRedo] = useState(false)
     const [draggingIndex, setDraggingIndex] = useState(null)
     const [dragOverIndex, setDragOverIndex] = useState(null)
+    const [isWorkspaceHubOpen, setIsWorkspaceHubOpen] = useState(false)
+    const [projects, setProjects] = useState(initialProjects)
+    const [customTemplates, setCustomTemplates] = useState(initialTemplates)
+    const [shareLinks, setShareLinks] = useState({ view: '', edit: '' })
 
     /* ----------------------- REFS ----------------------- */
     const previewRef = useRef(null)
@@ -365,19 +442,25 @@ function App() {
 
     const buildSnapshot = useCallback(
         () => ({
+            projectName: projectName.trim() || '未命名项目',
             cards: cards.map(serializeCard),
             activeIndex,
             syncAll,
+            members: normalizeMembers(members),
+            comments,
             nextCardId: cardIdCounterRef.current,
         }),
-        [cards, activeIndex, syncAll],
+        [cards, activeIndex, syncAll, members, comments, projectName],
     )
 
     const applyWorkspaceSnapshot = useCallback((snapshot) => {
         const normalized = normalizeWorkspaceSnapshot(snapshot)
+        setProjectName(normalized.projectName)
         setCards(normalized.cards)
         setActiveIndex(normalized.activeIndex)
         setSyncAll(normalized.syncAll)
+        setMembers(normalized.members)
+        setComments(normalized.comments)
         cardIdCounterRef.current = normalized.nextCardId
     }, [])
 
@@ -396,6 +479,62 @@ function App() {
         }, AUTOSAVE_DELAY)
         return () => window.clearTimeout(timer)
     }, [buildSnapshot])
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+        try {
+            window.localStorage.setItem(
+                PROJECTS_STORAGE_KEY,
+                JSON.stringify(projects.slice(0, MAX_PROJECT_ENTRIES)),
+            )
+        } catch (error) {
+            console.warn('保存项目列表失败:', error)
+        }
+    }, [projects])
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+        try {
+            window.localStorage.setItem(
+                CUSTOM_TEMPLATES_STORAGE_KEY,
+                JSON.stringify(customTemplates.slice(0, MAX_TEMPLATE_ENTRIES)),
+            )
+        } catch (error) {
+            console.warn('保存模板库失败:', error)
+        }
+    }, [customTemplates])
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return
+        const params = new URLSearchParams(window.location.search)
+        const encoded = params.get('share')
+        if (!encoded) return
+
+        const imported = decodeSharePayload(encoded)
+        if (!imported) {
+            toast.error('分享数据无效，无法导入')
+            return
+        }
+
+        applyWorkspaceSnapshot(imported)
+        setCurrentProjectId(null)
+        setIsEditing(false)
+        setIsWorkspaceHubOpen(false)
+
+        undoStackRef.current = []
+        redoStackRef.current = []
+        lastSnapshotRef.current = null
+        historyBootstrappedRef.current = false
+        replayingHistoryRef.current = false
+        setCanUndo(false)
+        setCanRedo(false)
+
+        params.delete('share')
+        const query = params.toString()
+        const nextUrl = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`
+        window.history.replaceState(null, '', nextUrl)
+        toast.success('已导入协作工作区')
+    }, [applyWorkspaceSnapshot])
 
     /* ----------------------- HISTORY ----------------------- */
     useEffect(() => {
@@ -922,12 +1061,215 @@ function App() {
         }
     }, [captureImage, t])
 
+    const activeCardComments = useMemo(
+        () =>
+            comments
+                .filter((item) => Number(item.cardId) === Number(activeCard?.id))
+                .sort((a, b) => b.createdAt - a.createdAt),
+        [comments, activeCard],
+    )
+    const unresolvedCommentsCount = useMemo(
+        () => comments.filter((item) => !item.resolved).length,
+        [comments],
+    )
+    const activeCardLabel = (activeCardName || `卡片 ${activeIndex + 1}`).trim()
+
+    const handleGenerateShareLinks = useCallback(async () => {
+        const encoded = encodeSharePayload(buildSnapshot())
+        const origin = window.location.origin
+        const nextLinks = {
+            view: `${origin}/share?data=${encodeURIComponent(encoded)}`,
+            edit: `${origin}/app?share=${encodeURIComponent(encoded)}`,
+        }
+        setShareLinks(nextLinks)
+        try {
+            await navigator.clipboard.writeText(nextLinks.view)
+            toast.success('已生成分享链接，并复制到剪贴板')
+        } catch {
+            toast.success('已生成分享链接')
+        }
+        return nextLinks
+    }, [buildSnapshot])
+
+    const handleSaveCurrentProject = useCallback(() => {
+        const cleanName = (projectName || '').trim() || `项目 ${new Date().toLocaleDateString()}`
+        const nextSnapshot = { ...buildSnapshot(), projectName: cleanName }
+        const now = Date.now()
+        const nextId = currentProjectId || createUniqueId('project')
+        const nextProject = {
+            id: nextId,
+            name: cleanName,
+            updatedAt: now,
+            snapshot: nextSnapshot,
+        }
+        setProjects((prev) => {
+            const withoutCurrent = prev.filter((item) => item.id !== nextId)
+            return [nextProject, ...withoutCurrent].slice(0, MAX_PROJECT_ENTRIES)
+        })
+        setCurrentProjectId(nextId)
+        setProjectName(cleanName)
+        toast.success(currentProjectId ? '项目已更新' : '项目已保存')
+    }, [buildSnapshot, currentProjectId, projectName])
+
+    const handleLoadProject = useCallback((projectId) => {
+        const target = projects.find((item) => item.id === projectId)
+        if (!target?.snapshot) return
+        applyWorkspaceSnapshot(target.snapshot)
+        setCurrentProjectId(target.id)
+        setIsWorkspaceHubOpen(false)
+        toast.success(`已打开项目：${target.name}`)
+    }, [applyWorkspaceSnapshot, projects])
+
+    const handleDuplicateProject = useCallback((projectId) => {
+        const target = projects.find((item) => item.id === projectId)
+        if (!target?.snapshot) return
+        const duplicated = {
+            id: createUniqueId('project'),
+            name: `${target.name} 副本`,
+            updatedAt: Date.now(),
+            snapshot: {
+                ...target.snapshot,
+                projectName: `${target.name} 副本`,
+            },
+        }
+        setProjects((prev) => [duplicated, ...prev].slice(0, MAX_PROJECT_ENTRIES))
+        toast.success('已复制项目')
+    }, [projects])
+
+    const handleDeleteProject = useCallback((projectId) => {
+        const target = projects.find((item) => item.id === projectId)
+        if (!target) return
+        const confirmed = window.confirm(`确认删除项目「${target.name}」吗？`)
+        if (!confirmed) return
+        setProjects((prev) => prev.filter((item) => item.id !== projectId))
+        if (currentProjectId === projectId) {
+            setCurrentProjectId(null)
+        }
+        toast.success('项目已删除')
+    }, [currentProjectId, projects])
+
+    const handleAddMember = useCallback((rawValue) => {
+        const value = typeof rawValue === 'string' ? rawValue.trim() : ''
+        if (!value) return false
+        if (members.includes(value)) return false
+        setMembers((prev) => [...prev, value].slice(0, 30))
+        toast.success('已添加协作成员')
+        return true
+    }, [members])
+
+    const handleRemoveMember = useCallback((member) => {
+        setMembers((prev) => {
+            if (prev.length <= 1) {
+                toast.error('至少保留 1 位协作成员')
+                return prev
+            }
+            return prev.filter((item) => item !== member)
+        })
+    }, [])
+
+    const handleAddComment = useCallback((author, rawText) => {
+        if (!activeCard) return false
+        const text = typeof rawText === 'string' ? rawText.trim() : ''
+        if (!text) return false
+        const safeAuthor = members.includes(author) ? author : (members[0] || '我')
+        const nextComment = {
+            id: createUniqueId('comment'),
+            cardId: Number(activeCard.id),
+            author: safeAuthor,
+            text,
+            resolved: false,
+            createdAt: Date.now(),
+        }
+        setComments((prev) => [nextComment, ...prev].slice(0, 2000))
+        return true
+    }, [activeCard, members])
+
+    const handleToggleCommentResolved = useCallback((commentId) => {
+        setComments((prev) =>
+            prev.map((item) =>
+                item.id === commentId ? { ...item, resolved: !item.resolved } : item,
+            ),
+        )
+    }, [])
+
+    const handleDeleteComment = useCallback((commentId) => {
+        setComments((prev) => prev.filter((item) => item.id !== commentId))
+    }, [])
+
+    const handleSaveAsTemplate = useCallback((rawName) => {
+        if (!activeCard) return false
+        const fallbackName = activeCard.name || `模板 ${customTemplates.length + 1}`
+        const name = (rawName || fallbackName).trim()
+        if (!name) return false
+        const nextTemplate = {
+            id: createUniqueId('template'),
+            name: name.slice(0, 120),
+            createdAt: Date.now(),
+            card: serializeCard(activeCard),
+        }
+        setCustomTemplates((prev) => [nextTemplate, ...prev].slice(0, MAX_TEMPLATE_ENTRIES))
+        toast.success('模板已保存')
+        return true
+    }, [activeCard, customTemplates.length])
+
+    const handleApplyTemplateToCurrent = useCallback((templateId) => {
+        const target = customTemplates.find((item) => item.id === templateId)
+        if (!target?.card) return
+        const card = target.card
+        updateActiveCard({
+            markdown: card.markdown || getDefaultMarkdown(),
+            theme: resolveTheme(card.theme),
+            mdStyle: resolveMdStyle(card.mdStyle),
+            shadow: card.shadow || 'soft',
+            templateId: target.id,
+            config: {
+                ...DEFAULT_CARD_CONFIG,
+                ...(card.config || {}),
+            },
+        })
+        toast.success('模板已应用到当前卡片')
+    }, [customTemplates, updateActiveCard])
+
+    const handleInsertTemplateAsCard = useCallback((templateId) => {
+        const target = customTemplates.find((item) => item.id === templateId)
+        if (!target?.card) return
+        cardIdCounterRef.current++
+        const nextCard = createCard({
+            id: cardIdCounterRef.current,
+            name: target.card.name || '',
+            markdown: target.card.markdown || '',
+            theme: target.card.theme,
+            mdStyle: target.card.mdStyle,
+            shadow: target.card.shadow,
+            templateId: target.id,
+            config: target.card.config || {},
+        })
+        setCards((prev) => {
+            const insertAt = Math.min(activeIndex + 1, prev.length)
+            const nextCards = [
+                ...prev.slice(0, insertAt),
+                nextCard,
+                ...prev.slice(insertAt),
+            ]
+            setActiveIndex(insertAt)
+            return nextCards
+        })
+        toast.success('模板已插入为新卡片')
+    }, [activeIndex, customTemplates])
+
+    const handleDeleteTemplate = useCallback((templateId) => {
+        setCustomTemplates((prev) => prev.filter((item) => item.id !== templateId))
+    }, [])
+
     const handleResetWorkspace = useCallback(() => {
         const confirmed = window.confirm(t('topBar.resetWorkspaceConfirm'))
         if (!confirmed) return
         const freshWorkspace = createDefaultWorkspace()
         applyWorkspaceSnapshot(freshWorkspace)
+        setCurrentProjectId(null)
+        setShareLinks({ view: '', edit: '' })
         setIsEditing(false)
+        setIsWorkspaceHubOpen(false)
         if (typeof window !== 'undefined') {
             window.localStorage.removeItem(WORKSPACE_STORAGE_KEY)
         }
@@ -1026,6 +1368,8 @@ function App() {
                     canUndo={canUndo}
                     onRedo={handleRedo}
                     canRedo={canRedo}
+                    onOpenWorkspaceHub={() => setIsWorkspaceHubOpen(true)}
+                    pendingComments={unresolvedCommentsCount}
                     onDuplicateCard={duplicateActiveCard}
                     onResetWorkspace={handleResetWorkspace}
                     onDownloadAll={handleDownloadAll}
@@ -1253,6 +1597,35 @@ function App() {
                     </div>
                 </div>
             )}
+
+            {/* ========================= WORKSPACE HUB ========================= */}
+            <WorkspaceHub
+                open={isWorkspaceHubOpen}
+                onClose={() => setIsWorkspaceHubOpen(false)}
+                activeCardLabel={activeCardLabel}
+                shareLinks={shareLinks}
+                onGenerateShareLinks={handleGenerateShareLinks}
+                onSaveCurrentProject={handleSaveCurrentProject}
+                currentProjectId={currentProjectId}
+                projectName={projectName}
+                onProjectNameChange={setProjectName}
+                projects={projects}
+                onLoadProject={handleLoadProject}
+                onDuplicateProject={handleDuplicateProject}
+                onDeleteProject={handleDeleteProject}
+                members={members}
+                onAddMember={handleAddMember}
+                onRemoveMember={handleRemoveMember}
+                comments={activeCardComments}
+                onAddComment={handleAddComment}
+                onToggleCommentResolved={handleToggleCommentResolved}
+                onDeleteComment={handleDeleteComment}
+                templates={customTemplates}
+                onSaveAsTemplate={handleSaveAsTemplate}
+                onApplyTemplateToCurrent={handleApplyTemplateToCurrent}
+                onInsertTemplateAsCard={handleInsertTemplateAsCard}
+                onDeleteTemplate={handleDeleteTemplate}
+            />
 
             {/* ========================= TOAST ========================= */}
             <Toaster position="bottom-center" richColors theme="dark" />

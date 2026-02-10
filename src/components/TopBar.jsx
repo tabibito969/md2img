@@ -12,6 +12,7 @@ import {
     Check,
     Loader2,
     Files,
+    Share2,
     CopyPlus,
     Trash2,
     Undo2,
@@ -30,6 +31,8 @@ export default function TopBar({
     canUndo,
     onRedo,
     canRedo,
+    onOpenWorkspaceHub,
+    pendingComments = 0,
     onDuplicateCard,
     onResetWorkspace,
     onDownloadAll,
@@ -96,6 +99,21 @@ export default function TopBar({
 
             {/* Right: Actions */}
             <div className="flex items-center gap-0.5 shrink-0 whitespace-nowrap">
+                <button
+                    type="button"
+                    onClick={onOpenWorkspaceHub}
+                    aria-label={t('topBar.share')}
+                    className="relative p-1.5 text-white/35 rounded-md hover:bg-white/[0.04] hover:text-white/70"
+                    title={t('topBar.share')}
+                >
+                    <Share2 className="h-[14px] w-[14px]" strokeWidth={1.5} />
+                    {pendingComments > 0 && (
+                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] rounded-full px-1 bg-amber-500 text-[9px] leading-[14px] text-black font-semibold text-center">
+                            {pendingComments > 9 ? '9+' : pendingComments}
+                        </span>
+                    )}
+                </button>
+
                 <button
                     type="button"
                     onClick={onDuplicateCard}

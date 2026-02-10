@@ -17,6 +17,7 @@ import LandingPage from './pages/LandingPage'
 
 /* 编辑器按需加载，落地页不载入重量级 markdown/syntax-highlighter */
 const EditorPage = lazy(() => import('./pages/EditorPage'))
+const SharePage = lazy(() => import('./pages/SharePage'))
 
 function AppRouter() {
     const { i18n, t } = useTranslation()
@@ -41,6 +42,20 @@ function AppRouter() {
                             }
                         >
                             <EditorPage />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/share"
+                    element={
+                        <Suspense
+                            fallback={
+                                <div className="h-screen w-screen flex items-center justify-center bg-[#111118] text-white/40 text-sm">
+                                    {t('editor.loadingEditor')}
+                                </div>
+                            }
+                        >
+                            <SharePage />
                         </Suspense>
                     }
                 />
