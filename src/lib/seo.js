@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 const SITE_NAME = 'Md2Img'
 const DEFAULT_OG_IMAGE = '/android-chrome-512x512.png'
 const JSON_LD_SCRIPT_ID = 'md2img-jsonld'
+const ALT_LINK_MARK = 'data-md2img-alt'
 
 const normalizeSiteUrl = (value) => {
     if (typeof value !== 'string') return ''
@@ -75,6 +76,27 @@ const upsertJsonLd = (jsonLd) => {
     script.textContent = JSON.stringify(jsonLd)
 }
 
+const replaceAlternates = (alternates) => {
+    document.head
+        .querySelectorAll(`link[rel="alternate"][${ALT_LINK_MARK}="1"]`)
+        .forEach((node) => node.remove())
+
+    if (!Array.isArray(alternates) || alternates.length === 0) return
+
+    for (const item of alternates) {
+        if (!item || typeof item.hreflang !== 'string' || typeof item.href !== 'string') continue
+        const href = item.href.trim()
+        const hreflang = item.hreflang.trim()
+        if (!href || !hreflang) continue
+        const link = document.createElement('link')
+        link.setAttribute('rel', 'alternate')
+        link.setAttribute('hreflang', hreflang)
+        link.setAttribute('href', href)
+        link.setAttribute(ALT_LINK_MARK, '1')
+        document.head.appendChild(link)
+    }
+}
+
 const removeJsonLd = () => {
     const script = document.getElementById(JSON_LD_SCRIPT_ID)
     if (script) script.remove()
@@ -89,6 +111,7 @@ export const applySeo = ({
     ogType = 'website',
     ogImage = DEFAULT_OG_IMAGE,
     jsonLd = null,
+    alternates = [],
 }) => {
     if (typeof document === 'undefined') return
 
@@ -114,6 +137,13 @@ export const applySeo = ({
     upsertMeta({ name: 'twitter:title', content: trimmedTitle })
     upsertMeta({ name: 'twitter:description', content: trimmedDescription })
     upsertMeta({ name: 'twitter:image', content: ogImageUrl })
+    const normalizedAlternates = Array.isArray(alternates)
+        ? alternates.map((item) => ({
+            ...item,
+            href: toAbsoluteUrl(siteUrl, item?.href || ''),
+        }))
+        : []
+    replaceAlternates(normalizedAlternates)
 
     if (jsonLd) {
         upsertJsonLd({

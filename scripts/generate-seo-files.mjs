@@ -1,6 +1,12 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import {
+    DEFAULT_LOCALE_SEGMENT,
+    KEYWORD_PAGE_SLUG,
+    LOCALE_CONFIGS,
+    getLocalePath,
+} from '../src/config/locales.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, '..')
@@ -69,7 +75,10 @@ if (siteUrl === 'https://example.com') {
     )
 }
 
-const urls = ['/', '/markdown-to-image']
+const urls = [
+    ...LOCALE_CONFIGS.map((locale) => getLocalePath(locale.segment)),
+    ...LOCALE_CONFIGS.map((locale) => getLocalePath(locale.segment, true)),
+]
 const timestamp = new Date().toISOString()
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -79,7 +88,13 @@ ${urls
     <loc>${siteUrl}${route}</loc>
     <lastmod>${timestamp}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>${route === '/' ? '1.0' : '0.9'}</priority>
+    <priority>${
+        route === getLocalePath(DEFAULT_LOCALE_SEGMENT)
+            ? '1.0'
+            : route.endsWith(`/${KEYWORD_PAGE_SLUG}`)
+              ? '0.9'
+              : '0.8'
+    }</priority>
   </url>`,
     )
     .join('\n')}

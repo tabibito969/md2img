@@ -3,9 +3,10 @@ import { Link } from 'react-router'
 import { Sparkles, Menu, X } from 'lucide-react'
 import { motion as Motion, useScroll, useTransform } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import { getLocalePath } from '@/config/locales'
 import LanguageSwitcher from '../LanguageSwitcher'
 
-export default function Navbar() {
+export default function Navbar({ localeSegment = 'en' }) {
     const { t } = useTranslation()
     const [mobileOpen, setMobileOpen] = useState(false)
     const { scrollY } = useScroll()
@@ -37,7 +38,7 @@ export default function Navbar() {
             <div className="backdrop-blur-xl">
                 <div className="max-w-6xl mx-auto flex items-center justify-between h-16 px-5">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2 shrink-0">
+                    <Link to={getLocalePath(localeSegment)} className="flex items-center gap-2 shrink-0">
                         <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
                             <Sparkles className="h-3.5 w-3.5 text-white" />
                         </div>

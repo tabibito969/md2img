@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "seo:files": "node scripts/generate-seo-files.mjs",
-    "build": "npm run seo:files && vite build",
+    "prerender:routes": "node scripts/prerender-routes.mjs",
+    "build": "npm run seo:files && vite build && npm run prerender:routes",
     "lint": "eslint .",
     "preview": "vite preview"
   },

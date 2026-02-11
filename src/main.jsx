@@ -14,6 +14,12 @@ import { useTranslation } from 'react-i18next'
 import './i18n'
 import './index.css'
 import LandingPage from './pages/LandingPage'
+import {
+    DEFAULT_LOCALE_SEGMENT,
+    KEYWORD_PAGE_SLUG,
+    LOCALE_CONFIGS,
+    getLocalePath,
+} from './config/locales'
 
 /* 编辑器按需加载，落地页不载入重量级 markdown/syntax-highlighter */
 const EditorPage = lazy(() => import('./pages/EditorPage'))
@@ -30,9 +36,53 @@ function AppRouter() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/markdown-to-image" element={<LandingPage />} />
-                <Route path="/md-to-image" element={<Navigate to="/markdown-to-image" replace />} />
+                <Route
+                    path="/"
+                    element={<Navigate to={getLocalePath(DEFAULT_LOCALE_SEGMENT)} replace />}
+                />
+                <Route
+                    path={`/${KEYWORD_PAGE_SLUG}`}
+                    element={
+                        <Navigate
+                            to={getLocalePath(DEFAULT_LOCALE_SEGMENT, true)}
+                            replace
+                        />
+                    }
+                />
+                <Route
+                    path="/md-to-image"
+                    element={
+                        <Navigate
+                            to={getLocalePath(DEFAULT_LOCALE_SEGMENT, true)}
+                            replace
+                        />
+                    }
+                />
+                {LOCALE_CONFIGS.map((locale) => (
+                    <Route
+                        key={`${locale.segment}-home`}
+                        path={`/${locale.segment}`}
+                        element={
+                            <LandingPage
+                                localeSegment={locale.segment}
+                                localeCode={locale.i18n}
+                            />
+                        }
+                    />
+                ))}
+                {LOCALE_CONFIGS.map((locale) => (
+                    <Route
+                        key={`${locale.segment}-keyword`}
+                        path={`/${locale.segment}/${KEYWORD_PAGE_SLUG}`}
+                        element={
+                            <LandingPage
+                                localeSegment={locale.segment}
+                                localeCode={locale.i18n}
+                                isKeywordLanding
+                            />
+                        }
+                    />
+                ))}
                 <Route
                     path="/app"
                     element={
@@ -60,6 +110,10 @@ function AppRouter() {
                             <SharePage />
                         </Suspense>
                     }
+                />
+                <Route
+                    path="*"
+                    element={<Navigate to={getLocalePath(DEFAULT_LOCALE_SEGMENT)} replace />}
                 />
             </Routes>
         </BrowserRouter>

@@ -8,7 +8,12 @@
  */
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation, useNavigate } from 'react-router'
 import { Globe } from 'lucide-react'
+import {
+    localeByI18n,
+    localeBySegment,
+} from '@/config/locales'
 
 const languages = [
     { code: 'zh-CN', flag: '🇨🇳' },
@@ -20,6 +25,8 @@ const languages = [
 
 export default function LanguageSwitcher({ variant = 'dark' }) {
     const { i18n, t } = useTranslation()
+    const location = useLocation()
+    const navigate = useNavigate()
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
 
@@ -32,6 +39,11 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
     }, [])
 
     const currentLang = languages.find((l) => l.code === i18n.language) ?? languages[0]
+    const firstSegment = location.pathname.split('/').filter(Boolean)[0] || ''
+    const activeLocale = localeBySegment(firstSegment)
+    const routeSuffix = activeLocale
+        ? location.pathname.slice(`/${activeLocale.segment}`.length) || '/'
+        : ''
 
     return (
         <div ref={ref} className="relative">
@@ -61,6 +73,11 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
                             type="button"
                             onClick={() => {
                                 i18n.changeLanguage(lang.code)
+                                const nextLocale = localeByI18n(lang.code)
+                                if (activeLocale && nextLocale) {
+                                    const nextPath = `/${nextLocale.segment}${routeSuffix}`
+                                    navigate(`${nextPath}${location.search}${location.hash}`)
+                                }
                                 setOpen(false)
                             }}
                             className={`w-full flex items-center gap-2.5 px-3 py-2 text-[12px] transition-colors ${

@@ -163,7 +163,8 @@
         },
         "markdownToImage": {
             "title": "Markdown to Image 工具 | Md2Img",
-            "description": "需要把 Markdown 转成图片？Md2Img 提供模板、主题与一键 PNG 导出，帮助你快速完成 markdown to image 产出。"
+            "description": "需要把 Markdown 转成图片？Md2Img 提供模板、主题与一键 PNG 导出，帮助你快速完成 markdown to image 产出。",
+            "keywords": "markdown 转图片, markdown to image, markdown 图片生成, markdown 转 png, markdown 图片转换器"
         }
     },
     "landing": {

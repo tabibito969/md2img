@@ -26,14 +26,25 @@ i18n
             ja: { translation: ja },
             ko: { translation: ko },
         },
+        supportedLngs: ['zh-CN', 'zh-TW', 'en', 'ja', 'ko'],
         fallbackLng: 'zh-CN',
         interpolation: {
             escapeValue: false, // React 已处理 XSS
         },
         detection: {
-            order: ['localStorage', 'navigator'],
+            order: ['path', 'localStorage', 'navigator'],
             caches: ['localStorage'],
             lookupLocalStorage: 'md2img-lang',
+            lookupFromPathIndex: 0,
+            convertDetectedLanguage: (lng) => {
+                const normalized = String(lng || '').toLowerCase()
+                if (normalized === 'zh-cn') return 'zh-CN'
+                if (normalized === 'zh-tw') return 'zh-TW'
+                if (normalized === 'en') return 'en'
+                if (normalized === 'ja') return 'ja'
+                if (normalized === 'ko') return 'ko'
+                return lng
+            },
         },
     })
 

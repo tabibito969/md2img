@@ -27,7 +27,7 @@
   - `Ctrl/Cmd + E`：打开/关闭编辑器弹层
 
 - **技术栈**: React 19 + Vite 7 + TailwindCSS 4 + Framer Motion
-- **路由**: `/` 落地页，`/app` 编辑器，`/share` 只读分享页
+- **路由**: 多语言落地页子目录（`/en/`、`/zh-cn/`、`/zh-tw/`、`/ja/`、`/ko/`），关键词页（如 `/en/markdown-to-image`），`/app` 编辑器，`/share` 只读分享页
 
 ## 开发
 
@@ -118,7 +118,8 @@ npm run preview
 |------|------|
 | `npm run dev` | 开发服务器 |
 | `npm run seo:files` | 生成 `robots.txt` 与 `sitemap.xml` |
-| `npm run build` | 生产构建 |
+| `npm run prerender:routes` | 生成多语言预渲染静态页面 |
+| `npm run build` | 生产构建（含 sitemap/robots + 多语言预渲染） |
 | `npm run preview` | 预览构建结果 |
 | `npm run lint` | ESLint 检查 |
 

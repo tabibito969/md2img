@@ -163,7 +163,8 @@
         },
         "markdownToImage": {
             "title": "Markdown to Image Tool | Md2Img",
-            "description": "Need a markdown to image tool? Md2Img helps you convert markdown to image with templates, themes, and one-click PNG export."
+            "description": "Need a markdown to image tool? Md2Img helps you convert markdown to image with templates, themes, and one-click PNG export.",
+            "keywords": "markdown to image, markdown to image tool, convert markdown to image, markdown to png, markdown image converter"
         }
     },
     "landing": {

@@ -155,6 +155,18 @@
     "defaults": {
         "markdown": "# Markdown2Image\n\nMarkdown을 아름다운 이미지로 변환, 원클릭으로 SNS에 공유.\n\n## 하이라이트\n\n- **실시간 미리보기** — 편집하면서 최종 결과 확인\n- **풍부한 배경** — 40+ 그라데이션 / 솔리드 / 커스텀 이미지\n- **그림자 & 텍스처** — 다양한 box-shadow와 오버레이 효과\n- **템플릿 시스템** — 원클릭으로 프리셋 스타일 전환\n- **원클릭 내보내기** — PNG 다운로드 또는 클립보드에 복사\n\n## 코드 예시\n\n```javascript\nfunction hello(name) {\n  console.log(`Hello, ${name}!`);\n}\n\nhello('World');\n```\n\n> \"단순함은 궁극의 정교함이다.\" — 레오나르도 다 빈치\n\n---\n\n*카드를 클릭하면 편집 모드로 진입합니다*"
     },
+    "seo": {
+        "home": {
+            "title": "Markdown 이미지 변환 도구 | Md2Img",
+            "description": "Markdown을 이미지로 빠르게 변환하세요. 40+ 배경, 10+ 템플릿, 원클릭 PNG 내보내기를 지원합니다.",
+            "keywords": "마크다운 이미지 변환, markdown to image, markdown png 변환, 마크다운 이미지 생성, markdown 이미지 변환기"
+        },
+        "markdownToImage": {
+            "title": "Markdown to Image 도구 | Md2Img",
+            "description": "markdown to image 작업에 최적화된 도구. Markdown을 고품질 이미지 카드로 변환하고 PNG를 즉시 내보낼 수 있습니다.",
+            "keywords": "markdown to image, 마크다운 이미지 변환, markdown to image tool, markdown png 변환, 마크다운 이미지 생성"
+        }
+    },
     "landing": {
         "navbar": {
             "features": "기능",

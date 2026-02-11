@@ -155,6 +155,18 @@
     "defaults": {
         "markdown": "# Markdown2Image\n\nMarkdown を美しい画像に変換、ワンクリックで SNS にシェア。\n\n## ハイライト\n\n- **リアルタイムプレビュー** — 編集しながら最終結果を確認\n- **豊富な背景** — 40+ グラデーション / ソリッド / カスタム画像\n- **シャドウ & テクスチャ** — 多彩な box-shadow とオーバーレイ効果\n- **テンプレートシステム** — ワンクリックでプリセットスタイルを切替\n- **ワンクリックエクスポート** — PNG ダウンロードまたはクリップボードにコピー\n\n## コード例\n\n```javascript\nfunction hello(name) {\n  console.log(`Hello, ${name}!`);\n}\n\nhello('World');\n```\n\n> 「シンプルさは究極の洗練である。」—— レオナルド・ダ・ヴィンチ\n\n---\n\n*カードをクリックして編集モードへ*"
     },
+    "seo": {
+        "home": {
+            "title": "Markdown 画像変換ツール | Md2Img",
+            "description": "Markdown を画像に素早く変換。40+ 背景、10+ テンプレート、ワンクリック PNG エクスポート対応。",
+            "keywords": "markdown 画像 変換, markdown to image, markdown png 変換, markdown 画像 生成, markdown 画像化"
+        },
+        "markdownToImage": {
+            "title": "Markdown to Image ツール | Md2Img",
+            "description": "markdown to image 用途に最適。Markdown を高品質な画像カードへ変換し、PNG を即時出力できます。",
+            "keywords": "markdown to image, markdown 画像 変換, markdown to image tool, markdown png 変換, markdown 画像化"
+        }
+    },
     "landing": {
         "navbar": {
             "features": "機能",
