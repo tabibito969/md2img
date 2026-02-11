@@ -6,6 +6,7 @@ import ImagePreview from '@/components/ImagePreview'
 import { themes, defaultThemeId } from '@/config/themes'
 import { markdownStyles, defaultStyleId } from '@/config/markdownStyles'
 import { decodeSharePayload } from '@/lib/sharePayload'
+import { usePageSeo } from '@/lib/seo'
 
 const DEFAULT_CARD_CONFIG = {
     padding: 33,
@@ -80,6 +81,18 @@ const normalizeWorkspace = (value) => {
 }
 
 export default function SharePage() {
+    const seoConfig = useMemo(
+        () => ({
+            title: 'Md2Img Shared Card',
+            description: 'Shared read-only preview page for Md2Img cards.',
+            path: '/share',
+            robots: 'noindex,nofollow',
+        }),
+        [],
+    )
+
+    usePageSeo(seoConfig)
+
     const location = useLocation()
     const dataParam = useMemo(
         () => new URLSearchParams(location.search).get('data'),

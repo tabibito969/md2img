@@ -155,6 +155,17 @@
     "defaults": {
         "markdown": "# Markdown2Image\n\nConvert Markdown into beautiful images, share to social media with one click.\n\n## Highlights\n\n- **Live Preview** — See the final result as you edit\n- **Rich Backgrounds** — 40+ gradients / solid colors / custom images\n- **Shadow & Texture** — Multiple box-shadow and overlay effects\n- **Template System** — Switch preset typography styles with one click\n- **One-Click Export** — Download PNG or copy to clipboard\n\n## Code Example\n\n```javascript\nfunction hello(name) {\n  console.log(`Hello, ${name}!`);\n}\n\nhello('World');\n```\n\n> \"Simplicity is the ultimate sophistication.\" — Leonardo da Vinci\n\n---\n\n*Click the card to enter edit mode*"
     },
+    "seo": {
+        "home": {
+            "title": "Markdown to Image (Md2Img) | Convert Markdown to PNG Cards",
+            "description": "Convert Markdown to image in seconds. Md2Img is a fast markdown to image tool with 40+ backgrounds, 10+ templates, and one-click HD PNG export.",
+            "keywords": "markdown to image, convert markdown to image, markdown to png, markdown image generator, markdown image converter"
+        },
+        "markdownToImage": {
+            "title": "Markdown to Image Tool | Md2Img",
+            "description": "Need a markdown to image tool? Md2Img helps you convert markdown to image with templates, themes, and one-click PNG export."
+        }
+    },
     "landing": {
         "navbar": {
             "features": "Features",
@@ -165,9 +176,9 @@
         },
         "hero": {
             "tagline": "Built for creators and media teams",
-            "headlinePre": "Make your words ",
-            "headlinePost": " stand out instantly",
-            "subtitle": "Turn Markdown into stunning visual cards. 40+ gradient backgrounds, 10+ typography templates, one-click HD PNG export.",
+            "headlinePre": "Markdown to Image with ",
+            "headlinePost": " in seconds",
+            "subtitle": "Use Md2Img as your markdown to image workflow. 40+ gradient backgrounds, 10+ typography templates, and one-click HD PNG export.",
             "badgeLivePreview": "Live Preview",
             "badge40Bg": "40+ Backgrounds",
             "badgeTemplates": "Template System",

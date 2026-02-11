@@ -9,7 +9,7 @@
  */
 import { StrictMode, lazy, Suspense, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import './i18n'
 import './index.css'
@@ -31,6 +31,8 @@ function AppRouter() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/markdown-to-image" element={<LandingPage />} />
+                <Route path="/md-to-image" element={<Navigate to="/markdown-to-image" replace />} />
                 <Route
                     path="/app"
                     element={

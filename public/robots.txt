@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Share links are generated dynamically and should not be indexed.
+Disallow: /share
+
+Sitemap: https://md2img.ash123.top/sitemap.xml

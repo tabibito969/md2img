@@ -36,6 +36,14 @@ npm install
 npm run dev
 ```
 
+可选 SEO 配置（建议）：
+
+```bash
+cp .env.example .env
+# 设置你的线上站点域名，例如 https://md2img.com
+VITE_SITE_URL=...
+```
+
 浏览器打开 http://localhost:5173/ 查看落地页，点击「立即开始创作」进入编辑器。
 
 ## 鉴权后端（Neon + Cloudflare Worker）
@@ -109,6 +117,7 @@ npm run preview
 | 命令 | 说明 |
 |------|------|
 | `npm run dev` | 开发服务器 |
+| `npm run seo:files` | 生成 `robots.txt` 与 `sitemap.xml` |
 | `npm run build` | 生产构建 |
 | `npm run preview` | 预览构建结果 |
 | `npm run lint` | ESLint 检查 |

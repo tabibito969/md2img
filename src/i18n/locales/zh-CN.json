@@ -155,6 +155,17 @@
     "defaults": {
         "markdown": "# Markdown2Image\n\n将 Markdown 转换为精美图片，一键分享到社交媒体。\n\n## 特性亮点\n\n- **实时预览** — 编辑即可看到最终效果\n- **丰富背景** — 40+ 渐变 / 纯色 / 自定义图片\n- **阴影纹理** — 多种 box-shadow 和叠加效果\n- **模板系统** — 一键切换预设排版风格\n- **一键导出** — 下载 PNG 或复制到剪贴板\n\n## 代码示例\n\n```javascript\nfunction hello(name) {\n  console.log(`Hello, ${name}!`);\n}\n\nhello('World');\n```\n\n> \"简约是终极的精致。\" —— 达·芬奇\n\n---\n\n*点击卡片即可进入编辑模式*"
     },
+    "seo": {
+        "home": {
+            "title": "Markdown to Image (Md2Img) | Markdown 转图片工具",
+            "description": "将 Markdown 快速转换为高质量图片卡片。Md2Img 聚焦 markdown to image 场景，支持 40+ 背景、10+ 模板与一键高清 PNG 导出。",
+            "keywords": "markdown to image, convert markdown to image, markdown 转图片, markdown to png, markdown image generator"
+        },
+        "markdownToImage": {
+            "title": "Markdown to Image 工具 | Md2Img",
+            "description": "需要把 Markdown 转成图片？Md2Img 提供模板、主题与一键 PNG 导出，帮助你快速完成 markdown to image 产出。"
+        }
+    },
     "landing": {
         "navbar": {
             "features": "功能特点",
