@@ -6,7 +6,7 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 CLAUDE.md
  * ============================================================================
  */
-import { LayoutTemplate, Image, Home } from 'lucide-react'
+import { LayoutTemplate, Image } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import LanguageSwitcher from './LanguageSwitcher'
 
@@ -23,9 +23,13 @@ export default function IconSidebar({ activeTab, onTabChange }) {
                 <a
                     href="/"
                     aria-label={t('sidebar.home')}
-                    className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-shadow"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-shadow"
                 >
-                    <Home className="h-3.5 w-3.5 text-white" />
+                    <img
+                        src="/favicon-32x32.png"
+                        alt="Md2Img logo"
+                        className="w-7 h-7 rounded-lg"
+                    />
                 </a>
             </div>
 
