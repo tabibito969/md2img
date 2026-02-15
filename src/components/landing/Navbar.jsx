@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
-import { Sparkles, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { motion as Motion, useScroll, useTransform } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { getLocalePath } from '@/config/locales'
@@ -39,9 +39,11 @@ export default function Navbar({ localeSegment = 'en' }) {
                 <div className="max-w-6xl mx-auto flex items-center justify-between h-16 px-5">
                     {/* Logo */}
                     <Link to={getLocalePath(localeSegment)} className="flex items-center gap-2 shrink-0">
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                            <Sparkles className="h-3.5 w-3.5 text-white" />
-                        </div>
+                        <img
+                            src="/favicon-32x32.png"
+                            alt="Md2Img logo"
+                            className="w-7 h-7 rounded-lg shadow-lg shadow-indigo-500/20"
+                        />
                         <span className="text-[15px] font-semibold tracking-tight text-white">Md2Img</span>
                     </Link>
 
